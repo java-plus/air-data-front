@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AfficherFavorisComponent implements OnInit {
 
+
+  
+
+
   constructor() { }
 
   ngOnInit() {

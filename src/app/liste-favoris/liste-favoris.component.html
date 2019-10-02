@@ -1,0 +1,26 @@
+<div>
+
+  <ng-container *ngIf="listeFavoris.length>0">
+    <div *ngFor="let favori of listeFavoris">
+      <div>{{favori.}}</div>
+      <div>
+        <span>
+          <i-feather name="eye">voir</i-feather>
+        </span>
+        <span>
+          <i-feather name="sliders">parametrer</i-feather>
+        </span>
+        <span>
+          <i-feather name="delete">effacer</i-feather>
+        </span>
+      </div>
+    </div>
+  </ng-container>
+
+
+  <div>
+    <div>
+      <span>picto</span>
+    </div>
+    <div>Ajouter un favori</div>
+  </div>
