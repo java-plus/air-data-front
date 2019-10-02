@@ -4,8 +4,8 @@ import {HttpHeaders} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {environment} from 'src/environments/environment';
-import Utilisateur from "../model/Utilisateur";
-import {catchError, flatMap, tap} from "rxjs/operators";
+import Utilisateur from '../model/Utilisateur';
+import {catchError, flatMap, tap} from 'rxjs/operators';
 
 
 const URL_BACKEND = environment.backendUrl;
@@ -60,6 +60,14 @@ export class AuthServiceService {
    * permet de verifier si un utilisateur est connecté et de recuperer ses informations
    */
   isLoggedIn(): Observable<Utilisateur> {
-    return this.http.get<Utilisateur>(`${URL_BACKEND}/auth/user`, {withCredentials: true});
+    return this.http.get<Utilisateur>(`${URL_BACKEND}/auth/user`, {withCredentials: true})
+      .pipe(tap((utilisateur) => this._subConnecte.next(utilisateur)));
+  }
+
+  /**
+   * permet de deconnecter l’utilisateur
+   */
+  deconnexion(): Observable<void> {
+    return this.http.post<void>(environment.backendUrl + '/logout', {}, httpOptions).pipe(tap(() => this._subConnecte.next(undefined)));
   }
 }

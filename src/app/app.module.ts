@@ -10,13 +10,19 @@ import { AccueilComponent } from './accueil/accueil.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ROUTES } from './app.routes';
+import {IconsModule} from './icons/icons.module';
+import { AnalyseComponent } from './analyse/analyse.component';
+import { CompteComponent } from './compte/compte.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     EmailValidatorDirective,
-    AccueilComponent
+    AccueilComponent,
+    AnalyseComponent,
+    CompteComponent
 
 
 
@@ -27,6 +33,7 @@ import { ROUTES } from './app.routes';
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(ROUTES),
+    IconsModule,
 
   ],
   providers: [],
