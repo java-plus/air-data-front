@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AfficherFavorisComponent } from './afficher-favoris/afficher-favoris.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AfficherFavorisComponent
   ],
   imports: [
     BrowserModule,
