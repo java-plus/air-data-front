@@ -9,6 +9,16 @@ export class CreerFavorisComponent implements OnInit {
 
   constructor() { }
 
+
+  
+
+
+  creerFavori() {
+
+  }
+
+
+
   ngOnInit() {
   }
 
