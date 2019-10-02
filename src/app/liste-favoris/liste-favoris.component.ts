@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListeFavorisComponent implements OnInit {
 
-  
-  listeFavoris: Favori[] = [];
+
+  // listeFavoris: Favori[] = [];
 
 
   constructor() { }

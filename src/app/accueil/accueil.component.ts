@@ -7,15 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccueilComponent implements OnInit {
 
-  clickSurCarte:boolean=false;
+  clickSurCarte = false;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  methodeClickSurCarte(){
-    this.clickSurCarte=true;
+  methodeClickSurCarte() {
+    this.clickSurCarte = true;
   }
 
 }

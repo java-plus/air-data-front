@@ -1,6 +1,6 @@
-<div class="row min-vh-100 min-vw-100" style="border-style: solid">
+<div class="row min-vh-100 min-vw-100" style="background-color: red">
 
-  <div class="col-3" style="border-style: solid">
+  <div class="col-3" style="background-color: rgb(168, 158, 158)">
 
     <div class="row" style="height: 20%;border-style: solid">
       Composant Recherche
@@ -16,13 +16,15 @@
 
   <div class="col-9">
 
-      <div class="row"  style='border-style: solid' [style.height]= "clickSurCarte? '80%':'100%'" (click)="methodeClickSurCarte()">
+    <div class="row" style='border-style: solid' [style.height]="clickSurCarte? '80%':'100%'"
+      (click)="methodeClickSurCarte()">
 
-        Composant Carte
-      </div>
+      Composant Carte
+    </div>
 
 
-      <div *ngIf=clickSurCarte class="row" style="border-style: solid" [ngStyle]="{'height': clickSurCarte? '20%':'0%'}">Composant Sous La Carte</div>
+    <div *ngIf=clickSurCarte class="row" style="border-style: solid" [ngStyle]="{'height': clickSurCarte? '20%':'0%'}">
+      Composant Sous La Carte</div>
 
   </div>
 
