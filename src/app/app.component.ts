@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: []
 })
 export class AppComponent {
   navbarOpen = false;
@@ -19,7 +19,6 @@ export class AppComponent {
 
   toggleNavbar() {
     this.navbarOpen = !this.navbarOpen;
-    console.log('ok');
   }
 
   /**
