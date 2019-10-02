@@ -3,7 +3,9 @@ node_js:
   - "12"
 before_script:
   - npm install
-script: npm run build
+script:
+  - npm run build
+  - cp dist/air-data-front/index.html dist/air-data-front/404.html
 deploy:
   local-dir: dist/air-data-front
   provider: pages
