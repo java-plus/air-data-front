@@ -10,13 +10,15 @@ import { AccueilComponent } from './accueil/accueil.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ROUTES } from './app.routes';
+import { CarteComponent } from './carte/carte.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     EmailValidatorDirective,
-    AccueilComponent
+    AccueilComponent,
+    CarteComponent
 
 
 
