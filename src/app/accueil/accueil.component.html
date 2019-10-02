@@ -1,0 +1,29 @@
+<div class="row min-vh-100 min-vw-100" style="border-style: solid">
+
+  <div class="col-3" style="border-style: solid">
+
+    <div class="row" style="height: 20%;border-style: solid">
+      Composant Recherche
+    </div>
+    <div class="row" style="height: 80%;border-style: solid">
+      Composant Liste De Favoris
+      Composé de :
+      Composant Afficher Favori,
+      Composant Modifier Favori,
+      Composant Creer Favori
+    </div>
+  </div>
+
+  <div class="col-9">
+
+      <div class="row"  style='border-style: solid' [style.height]= "clickSurCarte? '80%':'100%'" (click)="methodeClickSurCarte()">
+
+        Composant Carte
+      </div>
+
+
+      <div *ngIf=clickSurCarte class="row" style="border-style: solid" [ngStyle]="{'height': clickSurCarte? '20%':'0%'}">Composant Sous La Carte</div>
+
+  </div>
+
+</div>

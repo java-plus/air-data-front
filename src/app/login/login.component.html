@@ -1,0 +1,16 @@
+<form>
+  <div class="formulaire">
+    <div class="form-group">
+      <label for="inputEmail1">Email address</label>
+      <input [(ngModel)]="email"  value="admin" class="form-control" id="inputEmail1" aria-describedby="emailHelp"
+         name="email" required appEmailValidator  #etatEmail="ngModel">
+    </div>
+    <div class="form-group">
+      <label for="inputPassword">Password</label>
+      <input [(ngModel)]="password" value="Admin44000;" type="password" class="form-control" id="inputPassword"
+          name="password" required #etatPassword="ngModel" >
+    </div>
+
+    <button type="submit" [disabled]="etatEmail.invalid || etatPassword.invalid" class="btn btn-primary" (click)=authentification(email,password)>Submit</button>
+  </div>
+</form>
