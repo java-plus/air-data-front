@@ -21,7 +21,17 @@ export class FavorisService {
 
 
 
-  constructor() { }
+  constructor(private authService: AuthServiceService) { }
 
+
+  enregistrerFavori() {
+
+  }
+
+  supprimerFavori() {
+
+  }
+
+  modifierFavori() { }
 
 }
