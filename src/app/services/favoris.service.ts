@@ -53,7 +53,7 @@ export class FavorisService {
   /**
    * Méthode qui supprime un favori de l'utilisateur qui est connecté
    *
-   * @memberof FavorisService
+   *
    */
   enregistrerFavori() {
 

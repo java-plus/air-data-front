@@ -18,6 +18,8 @@ import { CompteComponent } from './compte/compte.component';
 
 
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,9 +30,7 @@ import { CompteComponent } from './compte/compte.component';
     EmailValidatorDirective,
     AccueilComponent,
     AnalyseComponent,
-    CompteComponent
-
-
+    CompteComponent,
 
   ],
   imports: [
