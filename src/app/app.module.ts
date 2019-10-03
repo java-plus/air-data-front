@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
 import { ROUTES } from './app.routes';
 import { IconsModule } from './icons/icons.module';
 
+
 @NgModule({
   declarations: [
     AppComponent,

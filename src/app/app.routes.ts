@@ -6,11 +6,14 @@ import { AccueilComponent } from './accueil/accueil.component';
 
 
 export const ROUTES: Routes = [
-  {path: 'login', component: LoginComponent },
-  { path: '',
-  canActivate: [ConnexionGuardService],
-  children: [
+  { path: 'login', component: LoginComponent },
+  {
+    path: '',
+    canActivate: [ConnexionGuardService],
+    children: [
 
-    { path: 'accueil', component: AccueilComponent },
+      { path: 'accueil', component: AccueilComponent },
 
-  ]}];
+
+    ]
+  }];

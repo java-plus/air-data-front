@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { FavorisService } from '../services/favoris.service';
 @Component({
   selector: 'app-liste-favoris',
   templateUrl: './liste-favoris.component.html',
@@ -8,12 +8,15 @@ import { Component, OnInit } from '@angular/core';
 export class ListeFavorisComponent implements OnInit {
 
 
-  // listeFavoris: Favori[] = [];
+  listeFavoris = [];
 
 
-  constructor() { }
+  constructor(private favoriService: FavorisService) { }
+
+
 
   ngOnInit() {
+    this.listeFavoris = this.favoriService.listeFavoris;
   }
 
 }

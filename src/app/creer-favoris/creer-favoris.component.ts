@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-creer-favoris',
   templateUrl: './creer-favoris.component.html',
@@ -10,7 +11,7 @@ export class CreerFavorisComponent implements OnInit {
   constructor() { }
 
 
-  
+
 
 
   creerFavori() {
