@@ -1,0 +1,34 @@
+
+
+.favList > div:nth-child(2n) {
+  background-color: rgba(0, 0, 0, 0.050);
+}
+
+.favList > div {
+  cursor: pointer;
+}
+
+.favList > div:hover {
+  color:white;
+  background-color: rgba(33, 69, 187, 0.753);
+}
+
+
+.dark-modal .modal-content {
+  background-color: #292b2c;
+  color: white;
+}
+.dark-modal .close {
+  color: white;
+}
+.light-blue-backdrop {
+  background-color: #5cb3fd;
+}
+
+// .btnDelete {
+
+// }
+
+.btnDelete:hover {
+  color:$danger;
+}
