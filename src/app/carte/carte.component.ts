@@ -3,6 +3,8 @@ import { CarteService } from '../services/carte.service';
 import { MesurePollution } from '../models/MesurePollution';
 import { HttpErrorResponse } from '@angular/common/http';
 
+
+
 declare var ol: any;
 
 @Component({
@@ -17,9 +19,13 @@ export class CarteComponent implements OnInit {
   codeCommune: number = 44001;
   map: any;
   listeDeMesurePollution: MesurePollution[];
+
+
+
   constructor(private carteService: CarteService) { }
 
   ngOnInit() {
+
     this.map = new ol.Map({
       target: 'map',
       layers: [
@@ -53,12 +59,13 @@ export class CarteComponent implements OnInit {
     })
   }
 
+
+
   add_map_point(lat, lng) {
     var vectorLayer = new ol.layer.Vector({
       source: new ol.source.Vector({
         features: [new ol.Feature({
           geometry: new ol.geom.Point(ol.proj.transform([parseFloat(lng), parseFloat(lat)], 'EPSG:4326', 'EPSG:3857')),
-
         })]
       }),
       style: new ol.style.Style({
@@ -66,16 +73,17 @@ export class CarteComponent implements OnInit {
           anchor: [0.5, 0.5],
           anchorXUnits: 'fraction',
           anchorYUnits: 'fraction',
-          src: 'https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg'
-        }),
-        description: new ol.style.Text(
-        'This is the value of<br>the description attribute'
-      )
-      })
-    });
+          src: '//raw.githubusercontent.com/jonataswalker/map-utils/master/images/marker.png'
+        })
+      }),
+  });
     this.map.addLayer(vectorLayer);
 
 
-  }
+}
+
+
+
+
 
 }
