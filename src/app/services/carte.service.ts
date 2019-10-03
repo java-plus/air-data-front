@@ -14,7 +14,7 @@ export class CarteService {
 
   constructor(private http: HttpClient) { }
 
-  recupererMesures(codeCommune:number):Observable<MesurePollution[]>{
+  recupererMesures(codeCommune:string):Observable<MesurePollution[]>{
 
     return this.http
         .get<MesurePollution[]>(`${URL_BACKEND}/mesures/pollution?codeCommune=${codeCommune}`, { withCredentials: true})
