@@ -49,36 +49,10 @@
 @import "node_modules/bootstrap/scss/utilities";
 @import "node_modules/bootstrap/scss/print";
 
-
-
-/*.text-couleur-light{
-  color: #F8F8F8;
+.btn-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 1;
 }
-
-.text-couleur-light-blue{
-color: #9CCCE8;
-}
-
-.text-couleur-blue{
-color: #0095FF;
-}
-
-.text-couleur-dark{
-color: #363F49;
-}
-
-.bg-couleur-light{
-background-color: #F8F8F8;
-}
-
-.bg-couleur-light-blue{
-background-color: #9CCCE8;
-}
-
-.bg-couleur-blue{
-background-color: #0095FF;
-}
-
-.bg-couleur-dark{
-background-color: #363F49;
-}*/

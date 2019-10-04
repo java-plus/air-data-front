@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {HttpHeaders} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {environment} from 'src/environments/environment';
+import Utilisateur from '../model/Utilisateur';
+import {catchError, flatMap, tap} from 'rxjs/operators';
 
 
 const URL_BACKEND = environment.backendUrl;
@@ -19,36 +21,53 @@ const httpOptions = {
 })
 export class AuthServiceService {
 
-  constructor(private http: HttpClient, private router: Router) { }
-
-  private subConnecte = new BehaviorSubject(false);
-
-  authentification(_nomUtilisateur, _motDePasse) {
-    this.http
-      .post(
-        // url d'accès au service
-        URL_BACKEND + "/auth",
-
-        // corps de la réquête
-        {
-          identifiant: _nomUtilisateur,
-          mdp: _motDePasse
-        },
-
-        // options de la requête HTTP
-        httpOptions
-      )
-      .subscribe((data: any) => {
-        console.log(HttpResponse);
-        this.subConnecte.next(true);
-        this.router.navigate(["accueil"])
-      }, (error: HttpErrorResponse) => {
-        console.log("error", error);
-        this.subConnecte.next(false);
-      });
+  constructor(private http: HttpClient, private router: Router) {
   }
 
-  isLoggedIn():Observable<any>{
-    return this.http.get(`${URL_BACKEND}/compte`,{withCredentials: true})
+  /**
+   * subject indiquant le dernier utilisateur connecté
+   */
+  private _subConnecte: BehaviorSubject<Utilisateur> = new BehaviorSubject(undefined);
+
+  get subConnecte(): Observable<Utilisateur> {
+    return this._subConnecte.asObservable();
+  }
+
+  /**
+   * requete d’authentification qui recupere l’utilisateur et le transmet via le subject
+   * @param nomUtilisateur identifiant de l’utilisateur
+   * @param motDePasse mot de passe de l’utilisateur
+   */
+  authentification(nomUtilisateur, motDePasse): Observable<Utilisateur> {
+    return this.http
+      .post(URL_BACKEND + '/auth',
+        {
+          identifiant: nomUtilisateur,
+          mdp: motDePasse
+        },
+        httpOptions
+      )
+      .pipe(flatMap(() => {
+        return this.http.get<Utilisateur>(`${URL_BACKEND}/auth/user`, {withCredentials: true});
+      }), tap((utilisateur) => {
+          this._subConnecte.next(utilisateur);
+          this.router.navigate(['accueil']);
+        })
+      );
+  }
+
+  /**
+   * permet de verifier si un utilisateur est connecté et de recuperer ses informations
+   */
+  isLoggedIn(): Observable<Utilisateur> {
+    return this.http.get<Utilisateur>(`${URL_BACKEND}/auth/user`, {withCredentials: true})
+      .pipe(tap((utilisateur) => this._subConnecte.next(utilisateur)));
+  }
+
+  /**
+   * permet de deconnecter l’utilisateur
+   */
+  deconnexion(): Observable<void> {
+    return this.http.post<void>(environment.backendUrl + '/logout', {}, httpOptions).pipe(tap(() => this._subConnecte.next(undefined)));
   }
 }
