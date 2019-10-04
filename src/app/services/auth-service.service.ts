@@ -33,6 +33,10 @@ export class AuthServiceService {
     return this._subConnecte.asObservable();
   }
 
+  subConnecteNext(utilisateur: Utilisateur) {
+    this._subConnecte.next(utilisateur);
+  }
+
   /**
    * requete d’authentification qui recupere l’utilisateur et le transmet via le subject
    * @param nomUtilisateur identifiant de l’utilisateur

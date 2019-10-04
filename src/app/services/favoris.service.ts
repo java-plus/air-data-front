@@ -83,8 +83,8 @@ export class FavorisService {
   /**
    * Méthode qui supprime le favori en fonction de son id
    *
-   * @param id l'id du favori a supprimer
-  */
+   * @param idFav l'id du favori a supprimer
+   */
   supprimerFavori(idFav: number) {
     return this.http.delete<Favori>(`${environment.backendUrl}/favoris/${idFav}`, this.httpOptions);
   }

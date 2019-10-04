@@ -56,7 +56,7 @@
         <p>Confirmer la suppression?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="supprimerFavori()">Confirmer</button>
+        <button type="button" class="btn btn-danger" (click)="supprimerFavori(); modal.close()">Confirmer</button>
         <button type="button" ngbAutofocus class="btn btn-outline-secondary"
           (click)="modal.close('Close click')">Annuler</button>
       </div>

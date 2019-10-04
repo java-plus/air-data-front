@@ -4,6 +4,7 @@ import { AuthServiceService } from '../../services/auth-service.service';
 import Favori from 'src/app/model/Favori';
 import { Subscription } from 'rxjs';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import Utilisateur from 'src/app/model/Utilisateur';
 
 
 
@@ -22,6 +23,7 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
   userConnectSub: Subscription;
   favoriSelectSub: Subscription;
   favoriAEffacerSub: Subscription;
+  userConnecte: Utilisateur = undefined;
   listeFavoris: Favori[] = [];
   favoriSelection: Favori = undefined;
   favoriAEffacer: Favori = undefined;
@@ -64,15 +66,35 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
   afficherConfSupp(content, fav: Favori) {
     this.afficherConfirmationSuppression = !this.afficherConfirmationSuppression;
     this.favoriService.subFavoriAEffacertNext(fav);
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true });
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    });
   }
 
   /**
-   * Méthode appelée lors de la suppression d'un favori, appelle le service FavoriService afin de supprimer le favori du 'back'
+   * Méthode appelée lors de la suppression d'un favori, appelle le service FavoriService afin de supprimer le favori du 'back'.
+   * Lorsque le favori est bien supprimé par le service, l'utilisateur est mis à jour et ajouté dans le subject
+   * afin de l'updater et de l'avoir à jour
    *
    */
   supprimerFavori() {
-    this.favoriService.supprimerFavori(this.favoriAEffacer.id).subscribe(() => console.log('fin suppression :'));
+
+    const liste = this.userConnecte.listeFavori;
+    console.log(this.userConnecte.listeFavori)
+
+    for (let i = 0; i < liste.length; i++) {
+      if (liste[i].id === this.favoriAEffacer.id) {
+        liste.splice(i, 1);
+      }
+    }
+
+    this.favoriService.supprimerFavori(this.favoriAEffacer.id).subscribe(
+      () => [
+        this.userConnecte.listeFavori = liste,
+        this.authService.subConnecteNext(this.userConnecte)
+      ]
+    );
+
   }
 
 
@@ -100,6 +122,7 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userConnectSub = this.authService.subConnecte.subscribe(
       (userConnecte) => [
+        this.userConnecte = userConnecte,
         this.listeFavoris = userConnecte.listeFavori,
         this.setModeAffichage()
       ]
