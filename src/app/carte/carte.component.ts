@@ -19,7 +19,7 @@ type MesuresPollutionParStationDeMesure = Array<{
 })
 export class CarteComponent implements OnInit {
 
-  listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
+
   codeCommune: string;
   listeDeMesurePollution: MesurePollution[];
   listeDeStationDeMesure: StationDeMesurePollution[];
@@ -102,8 +102,18 @@ export class CarteComponent implements OnInit {
       function resetHighlight(e) { geojson.resetStyle(e.target); info.update(); }
 
       var carteService = this.carteService;
-      var listeObjetsMesuresPollutionParStationDeMesure = this.listeObjetsMesuresPollutionParStationDeMesure;
+
+
       function zoomToFeature(e) {
+        var listeObjetsMesuresPollutionParStationDeMesure  : MesuresPollutionParStationDeMesure = [];
+        myfrugalmap.eachLayer( (layer) =>{
+          if(layer instanceof L.Marker){
+            myfrugalmap.removeLayer(layer);
+            console.log('yoooooooooooooo')
+          }
+
+
+      });
 
         myfrugalmap.fitBounds(e.target.getBounds());
         //this.afficherInfoCommunes(e.target.feature.properties.code);
@@ -146,6 +156,8 @@ export class CarteComponent implements OnInit {
 
 
           }
+
+
 
           for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
 
