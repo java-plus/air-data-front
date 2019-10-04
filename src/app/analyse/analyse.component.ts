@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-analyse',
   templateUrl: './analyse.component.html',
-  styleUrls: []
+  styleUrls: ['./analyse.component.scss']
 })
 export class AnalyseComponent implements OnInit {
 

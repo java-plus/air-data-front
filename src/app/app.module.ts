@@ -13,7 +13,14 @@ import { ROUTES } from './app.routes';
 import {IconsModule} from './icons/icons.module';
 import { AnalyseComponent } from './analyse/analyse.component';
 import { CompteComponent } from './compte/compte.component';
-
+import { FormulaireAnalyseComponent } from './analyse/formulaire-analyse/formulaire-analyse.component';
+import {
+  NgbDateAdapter,
+  NgbDateNativeAdapter,
+  NgbDatepickerModule,
+  NgbTypeaheadModule
+} from '@ng-bootstrap/ng-bootstrap';
+import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +29,9 @@ import { CompteComponent } from './compte/compte.component';
     EmailValidatorDirective,
     AccueilComponent,
     AnalyseComponent,
-    CompteComponent
+    CompteComponent,
+    FormulaireAnalyseComponent,
+    CourbeAnalyseComponent
 
 
 
@@ -34,9 +43,11 @@ import { CompteComponent } from './compte/compte.component';
     HttpClientModule,
     RouterModule.forRoot(ROUTES),
     IconsModule,
+    NgbDatepickerModule,
+    NgbTypeaheadModule,
 
   ],
-  providers: [],
+  providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
