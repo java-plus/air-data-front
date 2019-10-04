@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FavorisService } from 'src/app/services/favoris.service';
 
 
 @Component({
@@ -8,12 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreerFavorisComponent implements OnInit {
 
-  constructor() { }
+  constructor(private favoriService: FavorisService) { }
 
 
-  
 
 
+
+  /**
+   *
+   * Methode qui creer un nouveau favori
+   *
+   */
   creerFavori() {
 
   }
@@ -21,6 +27,7 @@ export class CreerFavorisComponent implements OnInit {
 
 
   ngOnInit() {
+
   }
 
 }

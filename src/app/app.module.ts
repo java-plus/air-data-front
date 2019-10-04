@@ -15,6 +15,8 @@ import { ROUTES } from './app.routes';
 import { IconsModule } from './icons/icons.module';
 import { AnalyseComponent } from './analyse/analyse.component';
 import { CompteComponent } from './compte/compte.component';
+import { ModifierFavorisComponent } from './favoris/modifier-favoris/modifier-favoris.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -31,6 +33,7 @@ import { CompteComponent } from './compte/compte.component';
     AccueilComponent,
     AnalyseComponent,
     CompteComponent,
+    ModifierFavorisComponent
 
   ],
   imports: [
@@ -40,6 +43,7 @@ import { CompteComponent } from './compte/compte.component';
     HttpClientModule,
     RouterModule.forRoot(ROUTES),
     IconsModule,
+    NgbModule
 
   ],
   providers: [],

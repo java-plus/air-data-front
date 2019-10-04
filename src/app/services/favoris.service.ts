@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { AuthServiceService } from './auth-service.service';
 import Favori from '../model/Favori';
-import { Observable, Subject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import Utilisateur from '../model/Utilisateur';
 
@@ -16,12 +16,6 @@ import Utilisateur from '../model/Utilisateur';
 
 
 export class FavorisService {
-
-  /**
-   * BehaviorSubjet dans lequel "passe" le favori selectionné
-   */
-  private subFavoriSelect = new Subject<Favori[]>();
-
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -29,8 +23,32 @@ export class FavorisService {
     withCredentials: true
   };
 
+  /**
+   * BehaviorSubjet dans lequel "passe" le favori selectionné
+   */
+  private _subFavoriSelect = new BehaviorSubject<Favori>(undefined);
+
+  /**
+   * Subject dans lequel passe le favori à effacer
+   *
+   */
+  private _subFavoriAEffacer = new Subject<Favori>();
+
+  get subFavoriSelect(): Observable<Favori> {
+    return this._subFavoriSelect.asObservable();
+  }
+
+  subFavoriSelectNext(fav: Favori) {
+    this._subFavoriSelect.next(fav);
+  }
 
 
+  subFavoriAEffacertNext(fav: Favori) {
+    this._subFavoriAEffacer.next(fav);
+  }
+  get subFavoriAEffacer(): Observable<Favori> {
+    return this._subFavoriAEffacer.asObservable();
+  }
 
   // this.userConnecte.listeFavori
 
@@ -50,17 +68,25 @@ export class FavorisService {
 
   }
 
+
+
   /**
    * Méthode qui supprime un favori de l'utilisateur qui est connecté
    *
-   *
+   * @param favori le favori a enregistrer
    */
-  enregistrerFavori() {
+  enregistrerFavori(favori: Favori) {
 
   }
 
-  supprimerFavori() {
 
+  /**
+   * Méthode qui supprime le favori en fonction de son id
+   *
+   * @param id l'id du favori a supprimer
+  */
+  supprimerFavori(idFav: number) {
+    return this.http.delete<Favori>(`${environment.backendUrl}/favoris/${idFav}`, this.httpOptions);
   }
 
   modifierFavori() { }

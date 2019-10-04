@@ -1,3 +1,6 @@
+@import '../../../styles.scss';
+
+
 .favList > div:nth-child(2n) {
   background-color: rgba(0, 0, 0, 0.050);
 }
@@ -8,7 +11,7 @@
 
 .favList > div:hover {
   color:white;
-  background-color: rgba(0, 60, 255, 0.753);
+  background-color: rgba(43, 43, 43, 0.753);
 }
 
 .dark-modal .modal-content {
@@ -20,19 +23,29 @@
   color: white;
 }
 
-.light-blue-backdrop {
-  background-color: #5cb3fd;
-}
 
 // .btnDelete {
 
 // }
 
 .btnDelete:hover {
-  color:red;
-  // color:$danger;
+  color:$danger;
 }
 
 .btnMod:hover {
-  color: greenyellow;
+  color:$primary;
 }
+
+
+// styles pour la modal
+.dark-modal .modal-content {
+  background-color: #292b2c;
+  color: white;
+}
+.dark-modal .close {
+  color: white;
+}
+.light-blue-backdrop {
+  background-color: #5cb3fd;
+}
+

@@ -3,6 +3,9 @@ import { FavorisService } from '../../services/favoris.service';
 import { AuthServiceService } from '../../services/auth-service.service';
 import Favori from 'src/app/model/Favori';
 import { Subscription } from 'rxjs';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+
+
 
 
 
@@ -14,43 +17,105 @@ import { Subscription } from 'rxjs';
 })
 
 export class ListeFavorisComponent implements OnInit, OnDestroy {
+
   closeResult: string;
   userConnectSub: Subscription;
+  favoriSelectSub: Subscription;
+  favoriAEffacerSub: Subscription;
   listeFavoris: Favori[] = [];
+  favoriSelection: Favori = undefined;
+  favoriAEffacer: Favori = undefined;
+  modeAffichage = false;
   modeCreation = false;
   modeModification = false;
+  afficherConfirmationSuppression = false;
 
 
   constructor(
     private favoriService: FavorisService,
-    private authService: AuthServiceService
+    private authService: AuthServiceService,
+    private modalService: NgbModal
   ) { }
+
 
 
   afficherModeCreation() {
     this.modeCreation = true;
+
   }
 
-  afficherModeModification() {
+  afficherModeModification(fav: Favori) {
     this.modeModification = true;
+    this.favoriService.subFavoriSelectNext(fav);
   }
 
   afficherResultatFavori() {
 
   }
-  supprimer() {
 
+
+  /**
+   * Méthode qui declenche l'affichage de la modal de confirmation de suppression du favor
+   *
+   * @param  content le
+   * @param  fav le favori
+   *
+   */
+  afficherConfSupp(content, fav: Favori) {
+    this.afficherConfirmationSuppression = !this.afficherConfirmationSuppression;
+    this.favoriService.subFavoriAEffacertNext(fav);
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true });
+  }
+
+  /**
+   * Méthode appelée lors de la suppression d'un favori, appelle le service FavoriService afin de supprimer le favori du 'back'
+   *
+   */
+  supprimerFavori() {
+    this.favoriService.supprimerFavori(this.favoriAEffacer.id).subscribe(() => console.log('fin suppression :'));
   }
 
 
-  ngOnInit() {
 
-    this.userConnectSub = this.authService.subConnecte.subscribe((userConnecte) => this.listeFavoris = userConnecte.listeFavori);
+
+
+  setModeAffichage() {
+    this.modeAffichage = true;
+    this.modeCreation = false;
+    this.modeModification = false;
+  }
+  setModeCreation() {
+    this.modeAffichage = false;
+    this.modeCreation = true;
+    this.modeModification = false;
+  }
+  setModeModification() {
+    this.modeAffichage = false;
+    this.modeCreation = false;
+    this.modeModification = true;
+  }
+
+
+
+  ngOnInit() {
+    this.userConnectSub = this.authService.subConnecte.subscribe(
+      (userConnecte) => [
+        this.listeFavoris = userConnecte.listeFavori,
+        this.setModeAffichage()
+      ]
+    );
+    this.favoriSelectSub = this.favoriService.subFavoriSelect.subscribe(
+      (favori) => this.favoriSelection = favori
+    );
+    this.favoriAEffacerSub = this.favoriService.subFavoriAEffacer.subscribe(
+      (favAeff) => this.favoriAEffacer = favAeff
+    );
+
   }
 
   ngOnDestroy() {
     this.userConnectSub.unsubscribe();
-
+    this.favoriSelectSub.unsubscribe();
   }
 
 }

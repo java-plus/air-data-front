@@ -1,0 +1,197 @@
+<div class="d-flex py-3">
+
+  <div class="mr-auto mr-3 ml-2 mb-3">
+    <span class="mr-2">
+      <i-feather name="map-pin"></i-feather>
+    </span>
+    <span>{{favoriSelection.commune.nom}}</span>
+
+  </div>
+
+</div>
+
+<div>
+
+  <div class="mt-2 indicateurGroup">
+    <h4>Météo</h4>
+    <div>
+      <div>Temperature</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.temperature; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+    <div>
+      <div>Temperature max.</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.tempMax; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+    <div>
+      <div>Temperature min.</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.tempMin; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+    <div>
+      <div>Humidité</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.humidity; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+
+    <div>
+      <div>Vent (direction)</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.windDegrees; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+
+    <div>
+      <div>Vent (vitesse)</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.windSpeed; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+
+    <div>
+      <div>Pression</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.pressure; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+
+    <div>
+      <div>Etat météo</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.weatherDescription; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mt-2 indicateurGroup">
+    <h4>Qualité de l'air</h4>
+    <div>
+      <div>Dioxyde de souffre (SO2)</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.mesureSO2; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+    <div>
+      <div>Particules en suspension (PM2.5)</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.mesurePM25; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+    <div>
+      <div>Particules en suspension (PM10)</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.mesurePM10; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+    <div>
+      <div>Ozone (03)</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.mesureO3; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+    <div>
+      <div>Dioxyde d'Azote (NO2)</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.mesureNO2; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+    <div>
+      <div>Monoxyde de carbone (CO)</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.mesureCO; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-2 indicateurGroup">
+    <h4>Population</h4>
+    <div>
+      <div>Nombre d'habitants</div>
+      <div>
+        <ng-container *ngIf="!favoriSelection.commune.population; else elseTemplate">
+          <i-feather name="toggle-left"></i-feather>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <i-feather name="toggle-right"></i-feather>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+</div>
