@@ -19,9 +19,8 @@ import {
   NgbDateNativeAdapter,
   NgbDatepickerModule,
   NgbTypeaheadModule
-} from "@ng-bootstrap/ng-bootstrap";
+} from '@ng-bootstrap/ng-bootstrap';
 import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.component';
-
 
 @NgModule({
   declarations: [

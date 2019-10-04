@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import CommunesService from '../../services/communes.service';
+import {CommunesService} from '../../services/communes.service';
 import Commune from '../../model/Commune';
 import {Observable} from 'rxjs';
 import {flatMap, map} from 'rxjs/operators';
 import {MesuresService} from '../../services/mesures.service';
-import Analyse from '../../model/Analyse';
-import {NgbCalendar, NgbCalendarGregorian, NgbCalendarHebrew, NgbDate, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {NgbCalendar, NgbCalendarGregorian, NgbCalendarHebrew, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-formulaire-analyse',
@@ -73,7 +72,14 @@ export class FormulaireAnalyseComponent implements OnInit {
    */
   rechercher() {
    this.mesuresService.recupererAnalyses(this.communeRecupere.codeCommune, this.indicateur, this.dateDebut, this.dateFin)
-     .subscribe(() => {}, (err) => this.messageError = 'Recherche impossible.');
+     .subscribe(() => {},
+       (err) => {
+       if (err.status === 500) {
+       this.messageError = 'Pas de données disponible pour cette recherche.';
+     } else {
+         this.messageError = 'Impossible de récuperer les données de votre recherche';
+       }
+     });
 }
 
   /**
