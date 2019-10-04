@@ -1,0 +1,35 @@
+<form class="mx-auto text-dark mt-3">
+  <h1 class="text-primary text-center">Analyse</h1>
+  <div class="form-group">
+    <label for="communeInput">Commune: </label>
+    <input id="communeInput" placeholder="Commune" type="text" class="form-control" [(ngModel)]="communeRecupere" #etatCommune="ngModel"
+           [inputFormatter]="recupererNomCommune" [resultFormatter]="recupererNomCommune" [ngbTypeahead]="search" name="recuperationCommune" required/>
+    <p *ngIf="etatCommune.invalid && etatCommune.touched" class="text-danger">Champ obligatoire</p>
+  </div>
+  <div class="form-group">
+    <label for="indicateurSelect">Indicateur: </label>
+    <select class="form-control" id="indicateurSelect" [(ngModel)]="indicateur" #etatindicateur="ngModel" name="indicateur" required>
+      <option *ngFor="let i of listeIndicateur" [ngValue]="i.valeur">{{i.nom}}</option>
+    </select>
+    <p *ngIf="etatindicateur.invalid && etatindicateur.touched" class="text-danger">Champ obligatoire</p>
+  </div>
+
+  <div class="row">
+    <div class="col"><input type="text" (click)="dd.toggle()" ngbDatepicker #dd="ngbDatepicker"
+                            [minDate]="{year: 1950, month: 1,day:1}" [maxDate]="today()" class="form-control "
+                            [(ngModel)]="dateDebut" #etatDateDebut="ngModel"
+                            placeholder="Date de debut" readonly required name="dateDebut">
+      <p *ngIf="etatDateDebut.invalid && etatDateDebut.touched" class="text-danger">Champ obligatoire</p>
+    </div>
+
+
+    <div class="col"><input type="text" (click)="df.toggle()" ngbDatepicker #df="ngbDatepicker"
+                            [minDate]="{year: 1950, month: 1,day:1}" [maxDate]="today()" class="form-control "
+                            [(ngModel)]="dateFin" #etatDateFin="ngModel"
+                            placeholder="Date de fin" readonly required name="dateFin">
+      <p *ngIf="etatDateFin.invalid && etatDateFin.touched" class="text-danger">Champ obligatoire</p>
+    </div>
+  </div>
+  <button class="btn btn-block btn-primary text-light my-3" (click)="rechercher()" [disabled]="etatCommune.invalid || etatindicateur.invalid || etatDateFin.invalid || etatDateDebut.invalid">Rechercher</button>
+  <p *ngIf="messageError" class="text-danger">{{messageError}}</p>
+</form>
