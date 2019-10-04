@@ -7,14 +7,15 @@ import {MesuresService} from '../../services/mesures.service';
 import Analyse from '../../model/Analyse';
 import {NgbCalendar, NgbCalendarGregorian, NgbCalendarHebrew, NgbDate, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
+
+/**
+ * composant gerant le formulaire de recherche d’analyse
+ */
 @Component({
   selector: 'app-formulaire-analyse',
   templateUrl: './formulaire-analyse.component.html',
   styleUrls: []
 })
-/**
- * composant gerant le formulaire de recherche d’analyse
- */
 export class FormulaireAnalyseComponent implements OnInit {
   /**
    * parametre de recherche indicateur

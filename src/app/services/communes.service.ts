@@ -4,6 +4,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import Commune from '../model/Commune';
 import {Observable, of, Subject} from 'rxjs';
 import {filter, flatMap, map, tap} from 'rxjs/operators';
+import { StationDeMesurePollution } from '../models/StationDeMesurePollution';
+import { MesurePollution } from '../model/MesurePollution';
 
 
 const URL_BACKEND = environment.backendUrl;
@@ -14,6 +16,8 @@ const httpOptions = {
   withCredentials: true
 };
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,6 +25,9 @@ const httpOptions = {
  * Service lié à la manipulation de commune
  */
 export default class CommunesService {
+
+
+
 
   /**
    * tableau stockant la liste des communes, servant de cache

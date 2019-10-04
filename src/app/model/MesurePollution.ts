@@ -1,4 +1,4 @@
-import {StationDeMesurePollution} from './StationDeMesurePollution'
+import StationDeMesurePollution from './StationDeMesurePollution'
 
 export class MesurePollution {
 

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
-import { CarteService } from '../services/carte.service';
-import { MesurePollution } from '../models/MesurePollution';
-import { StationDeMesurePollution } from '../models/StationDeMesurePollution';
+import { CarteService } from '../../services/carte.service';
+import { MesurePollution } from '../../model/MesurePollution';
+import { StationDeMesurePollution } from '../../models/StationDeMesurePollution';
 import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 
 
@@ -105,28 +105,25 @@ export class CarteComponent implements OnInit {
 
 
       function zoomToFeature(e) {
-        var listeObjetsMesuresPollutionParStationDeMesure  : MesuresPollutionParStationDeMesure = [];
-        myfrugalmap.eachLayer( (layer) =>{
-          if(layer instanceof L.Marker){
+        var listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
+        myfrugalmap.eachLayer((layer) => {
+          if (layer instanceof L.Marker) {
             myfrugalmap.removeLayer(layer);
-            console.log('yoooooooooooooo')
           }
 
 
-      });
+        });
 
         myfrugalmap.fitBounds(e.target.getBounds());
-        //this.afficherInfoCommunes(e.target.feature.properties.code);
 
         this.codeCommune = e.target.feature.properties.code;
 
         console.log(this.codeCommune);
 
         carteService.recupererMesures(this.codeCommune).subscribe((data: any) => {
-          console.log(data);
-          //this.subConnecte.next(true);
+
           this.listeDeMesurePollution = data;
-          //console.log(this.listeDeMesurePollution);
+
 
           for (const mesurePollution of this.listeDeMesurePollution) {
 
@@ -140,7 +137,7 @@ export class CarteComponent implements OnInit {
                 objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure.push(mesurePollution)
 
               }
-              console.log(listeObjetsMesuresPollutionParStationDeMesure)
+
             }
 
             if (!laStationDeMesureEstDejaEnregistre) {
@@ -182,7 +179,10 @@ export class CarteComponent implements OnInit {
 
 
           }
-
+          carteService.recupererMesuresMeteo(this.codeCommune).subscribe((data:any) => {console.log(data)}, (error: HttpErrorResponse) => {
+            console.log("error", error);
+            //this.subConnecte.next(false);
+          });
         }
 
           , (error: HttpErrorResponse) => {
