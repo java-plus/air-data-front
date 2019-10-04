@@ -21,6 +21,7 @@ import {
   NgbTypeaheadModule
 } from '@ng-bootstrap/ng-bootstrap';
 import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.component';
+import {ChartsModule} from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.
     IconsModule,
     NgbDatepickerModule,
     NgbTypeaheadModule,
+    ChartsModule
 
   ],
   providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}],
