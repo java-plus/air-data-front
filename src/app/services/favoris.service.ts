@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { AuthServiceService } from './auth-service.service';
 import Favori from '../model/Favori';
+import FavoriDto from '../model/dto/FavoriDto';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import Utilisateur from '../model/Utilisateur';
@@ -10,8 +11,6 @@ import Utilisateur from '../model/Utilisateur';
 @Injectable({
   providedIn: 'root'
 })
-
-
 
 
 
@@ -71,11 +70,12 @@ export class FavorisService {
 
 
   /**
-   * Méthode qui supprime un favori de l'utilisateur qui est connecté
+   *  Méthode qui enregistre dans le back le favori
    *
    * @param favori le favori a enregistrer
    */
-  enregistrerFavori(favori: Favori) {
+  enregistrerFavori(favori: FavoriDto) {
+    return this.http.post<Favori>(`${environment.backendUrl}/favoris`, favori, this.httpOptions);
 
   }
 

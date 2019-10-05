@@ -1,0 +1,33 @@
+@import '../../../styles.scss';
+
+i-feather[name="toggle-left"]{
+  color: $light;
+  fill:gray
+}
+i-feather[name="toggle-right"]{
+  fill: green;
+  color: $light;
+
+}
+i-feather[name="toggle-left"],
+i-feather[name="toggle-right"]{
+  width: 30px;
+}
+
+.indicateurGroup {
+  margin: 40px 0;
+}
+
+.indicateurGroup > div{
+  display : flex;
+  padding: 20px 0;
+  border-bottom: 1px solid $light;
+}
+
+.indicateurGroup:hover {
+  cursor:pointer
+}
+
+.indicateurGroup > div > div:first-child{
+  margin-right: auto;
+}

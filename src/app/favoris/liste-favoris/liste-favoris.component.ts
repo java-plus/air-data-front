@@ -59,8 +59,8 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
   /**
    * Méthode qui declenche l'affichage de la modal de confirmation de suppression du favor
    *
-   * @param  content le
-   * @param  fav le favori
+   * @param  content la modal à ouvrir
+   * @param  fav le favori pour lequel la demande de confirmation de suppression est exprimée
    *
    */
   afficherConfSupp(content, fav: Favori) {

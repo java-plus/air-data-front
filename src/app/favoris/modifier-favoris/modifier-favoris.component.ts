@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './modifier-favoris.component.html',
   styleUrls: ['./modifier-favoris.component.scss']
 })
+
 export class ModifierFavorisComponent implements OnInit {
 
   favoriSelection: Favori;

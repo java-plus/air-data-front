@@ -1,68 +1,219 @@
-<div class="d-flex py-3">
+<div class="d-flex flex-column py-3">
 
-  <div class="mr-auto mr-3 ml-2" (clic)="afficherResultatFavori()">
-    <span class="mr-2">
-      <i-feather name="map-pin"></i-feather>
-    </span>
-    <span>favori.commune.nom</span>
+  <div class="mr-auto  w-100" (clic)="afficherResultatFavori()">
+
+    <div class="form-group">
+      <label class="sr-only" for="inlineFormInputGroup">Commune</label>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i-feather name="map-pin"></i-feather>
+          </div>
+        </div>
+        <!-- <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Commune"> -->
+        <input type="text" class="" #commune [(ngModel)]="nouveauFavori.codeCommune" id="inputcodeCommune" required
+          name=" inputCodeCommune">
+      </div>
+    </div>
+
+
+
   </div>
 
+  <div>
 
+    <div class="mt-2 indicateurGroup">
+      <h4>Météo</h4>
+      <div (click)="nouveauFavori.temperature = !nouveauFavori.temperature">
+        <div>Temperature</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.temperature; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
+      <div (click)="nouveauFavori.tempMax = !nouveauFavori.tempMax">
+        <div>Temperature max.</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.tempMax; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
+      <div (click)="nouveauFavori.tempMin = !nouveauFavori.tempMin">
+        <div>Temperature min.</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.tempMin; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
+      <div (click)="nouveauFavori.humidity = !nouveauFavori.humidity">
+        <div>Humidité</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.humidity; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
 
-</div>
+      <div (click)="nouveauFavori.windDegrees = !nouveauFavori.windDegrees">
+        <div>Vent (direction)</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.windDegrees; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
 
-<div>
+      <div (click)="nouveauFavori.windSpeed = !nouveauFavori.windSpeed">
+        <div>Vent (vitesse)</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.windSpeed; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
 
-  <div class="mt-2">
-    <h4>Météo</h4>
-    <div><span>Temperature</span><span>
-        <i-feather name="toggle-left"></i-feather>
-      </span>
+      <div (click)="nouveauFavori.pressure = !nouveauFavori.pressure">
+        <div>Pression</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.pressure; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
+
+      <div (click)="nouveauFavori.weatherDescription = !nouveauFavori.weatherDescription">
+        <div>Etat météo</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.weatherDescription; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
+
     </div>
-    <div><span>Temperature max.</span>
-      <ng-container *ngIf="expression; else elseTemplate">
-        <i-feather name="toggle-left"></i-feather>
-      </ng-container>
-      <ng-template #elseTemplate>
-        <i-feather name="toggle-right"></i-feather>
-      </ng-template>
 
+    <div class="mt-2 indicateurGroup">
+      <h4>Qualité de l'air</h4>
+      <div (click)="nouveauFavori.mesureSO2 = !nouveauFavori.mesureSO2">
+        <div>Dioxyde de souffre (SO2)</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.mesureSO2; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
+      <div (click)="nouveauFavori.mesurePM25 = !nouveauFavori.mesurePM25">
+        <div>Particules en suspension (PM2.5)</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.mesurePM25; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
+      <div (click)="nouveauFavori.mesurePM10 = !nouveauFavori.mesurePM10">
+        <div>Particules en suspension (PM10)</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.mesurePM10; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
+      <div (click)="nouveauFavori.mesureO3 = !nouveauFavori.mesureO3">
+        <div>Ozone (03)</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.mesureO3; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
+      <div (click)="nouveauFavori.mesureNO2 = !nouveauFavori.mesureNO2">
+        <div>Dioxyde d'Azote (NO2)</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.mesureNO2; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
+      <div (click)="nouveauFavori.mesureCO = !nouveauFavori.mesureCO">
+        <div>Monoxyde de carbone (CO)</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.mesureCO; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <!--
+    <div class="mt-2 indicateurGroup">
+      <h4>Population</h4>
+      <div (click)="nouveauFavori.temperature = !nouveauFavori.temperature">
+        <div>Nombre d'habitants</div>
+        <div>
+          <ng-container *ngIf="!nouveauFavori.commune.population; else elseTemplate">
+            <i-feather name="toggle-left"></i-feather>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <i-feather name="toggle-right"></i-feather>
+          </ng-template>
+        </div>
+      </div>
+    </div> -->
 
-      <span></span>
-    </div>
-    <div><span>Temperature min.</span>
-      <i-feather name="toggle-left"></i-feather><span></span>
-    </div>
-    <div><span>Humidité</span><span>
-        <i-feather name="toggle-left"></i-feather>
-      </span></div>
-    <div><span>Vent (direction)</span>
-      <i-feather name="toggle-left"></i-feather><span></span>
-    </div>
-    <div><span>Vent (vitesste)</span>
-      <i-feather name="toggle-left"></i-feather><span></span>
-    </div>
-    <div><span>Pression</span><span>
-        <i-feather name="toggle-left"></i-feather>
-      </span></div>
-    <div><span>Etat météo</span><span>
-        <i-feather name="toggle-left"></i-feather>
-      </span></div>
   </div>
 
   <div class="mt-2">
-    <h4>Qualité de l'air</h4>
-    <div><span>Dioxyde de souffre (SO2)</span><span></span></div>
-    <div><span>Particules en suspension (PM2.5)</span><span></span></div>
-    <div><span>Particules en suspension (PM10)</span><span></span></div>
-    <div><span>Ozone (03)</span><span></span></div>
-    <div><span>Dioxyde d'Azote (NO2)</span><span></span></div>
-    <div><span>Monoxyde de carbone (CO)</span><span></span></div>
-  </div>
-
-  <div class="mt-2">
-    <h4>Population</h4>
-    <div><span></span><span></span>Nombre d'habitants</div>
+    <div class="py-3">
+      <button (click)="validerCreationFavori()" class="btn btn-block btn-outline-primary py-2 px-3">
+        <span class="mr-2">
+          <i-feather name="check"></i-feather>
+        </span><span>Valider</span>
+      </button>
+    </div>
   </div>
 
 </div>
