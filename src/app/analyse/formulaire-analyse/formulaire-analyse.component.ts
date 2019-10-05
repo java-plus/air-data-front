@@ -71,7 +71,7 @@ export class FormulaireAnalyseComponent implements OnInit {
    * fonction permettant de faire la recherche de données pour l’analyse
    */
   rechercher() {
-   this.mesuresService.recupererAnalyses(this.communeRecupere.codeCommune, this.indicateur, this.dateDebut, this.dateFin)
+   this.mesuresService.recupererAnalyses(this.communeRecupere.codeCommune, this.indicateur, new Date(this.dateDebut.setHours( 0, 0, 0, 0)), new Date(this.dateFin.setHours(23, 59, 59, 999)))
      .subscribe(() => {},
        (err) => {
        if (err.status === 500) {
