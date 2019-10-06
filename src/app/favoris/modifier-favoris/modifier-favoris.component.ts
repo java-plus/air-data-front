@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import Favori from 'src/app/model/Favori';
 import { FavorisService } from 'src/app/services/favoris.service';
 import { Subscription } from 'rxjs';
+import { ListeFavorisComponent } from "../liste-favoris/liste-favoris.component";
 
 @Component({
   selector: 'app-modifier-favoris',
@@ -9,28 +10,41 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./modifier-favoris.component.scss']
 })
 
-export class ModifierFavorisComponent implements OnInit {
+export class ModifierFavorisComponent implements OnInit, OnDestroy {
 
   favoriSelection: Favori;
+  favoriSelectionTemp: Favori;
   favoriSelectionSub: Subscription;
 
-  constructor(private _favoriService: FavorisService) { }
 
 
-  /**
-   * Méthode qui modifier la valeur fasle->true ou true->false d'un indicateur dans le favori
-   *
-   * @param indicateur l'indicateur a modifier
-   */
-  toggleIndicateur(indicateur: string) {
-    // this.favoriSelection.indicateur
+  constructor(private _favoriService: FavorisService, private listeFavorisComponent: ListeFavorisComponent) { }
+
+
+  creerFavoriTempCopie(fav) {
+    this.favoriSelectionTemp = { ...fav };
   }
 
+  validerModificationFavori() {
+
+  }
+
+  annulerModification() {
+    this.favoriSelectionTemp = this.favoriSelection;
+    this._favoriService.subFavoriSelectNext(this.favoriSelection);
+
+    this.listeFavorisComponent.setModeAffichageListe();
+  }
 
   ngOnInit() {
     this.favoriSelectionSub = this._favoriService.subFavoriSelect.subscribe(
-      (favori) => [this.favoriSelection = favori, console.log(favori)]
+      (favori) => [this.favoriSelection = favori,
+      this.creerFavoriTempCopie(favori)]
+
     );
   }
+  ngOnDestroy() {
+    this.favoriSelectionSub.unsubscribe();
 
+  }
 }

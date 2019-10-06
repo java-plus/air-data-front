@@ -24,7 +24,7 @@ i-feather[name="toggle-right"]{
   border-bottom: 1px solid $light;
 }
 
-.indicateurGroup:hover {
+.indicateurGroup:hover, .btnAnnuler:hover {
   cursor:pointer
 }
 

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FavorisService } from 'src/app/services/favoris.service';
 import { AuthServiceService } from 'src/app/services/auth-service.service';
 import Favori from 'src/app/model/Favori';
 import FavoriDto from '../../model/dto/FavoriDto';
 import Utilisateur from 'src/app/model/Utilisateur';
 import { Subscription } from 'rxjs';
+import { ListeFavorisComponent } from "../liste-favoris/liste-favoris.component";
 
 
 @Component({
@@ -13,9 +14,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./creer-favoris.component.scss']
 })
 
-export class CreerFavorisComponent implements OnInit {
+export class CreerFavorisComponent implements OnInit, OnDestroy {
 
-  constructor(private favoriService: FavorisService, private authService: AuthServiceService) { }
+  constructor(private favoriService: FavorisService, private authService: AuthServiceService, private listeFavorisComponent: ListeFavorisComponent) { }
 
   userConnecte: Utilisateur = undefined;
   userConnectSub: Subscription;
@@ -57,7 +58,9 @@ export class CreerFavorisComponent implements OnInit {
 
   }
 
-
+  annulerCreation() {
+    this.listeFavorisComponent.setModeAffichageListe();
+  }
 
   ngOnInit() {
     this.userConnectSub = this.authService.subConnecte.subscribe(

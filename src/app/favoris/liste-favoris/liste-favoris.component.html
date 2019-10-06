@@ -1,9 +1,9 @@
-<div class="d-flex flex-column justify-content-center py-4 px-3">
+<div class="d-flex flex-column justify-content-center ">
 
 
-  <ng-container *ngIf="modeAffichage">
+  <ng-container *ngIf="modeAffichageListe">
 
-    <app-afficher-favoris></app-afficher-favoris>
+
 
     <div class="favList">
 
@@ -33,15 +33,15 @@
 
     </div>
 
-    <div class="mt-2">
-      <div class="py-3">
-        <button (click)="afficherModeCreation()" class="btn btn-block btn-outline-primary py-2 px-3">
-          <span class="mr-2">
-            <i-feather name="plus-circle"></i-feather>
-          </span><span>Ajouter un favori</span>
-        </button>
-      </div>
+
+    <div class="p-3">
+      <button (click)="afficherModeCreation()" class="btn btn-block btn-outline-primary py-2 px-3">
+        <span class="mr-2">
+          <i-feather name="plus-circle"></i-feather>
+        </span><span>Ajouter un favori</span>
+      </button>
     </div>
+
 
 
     <!-- modal contenant la demande de confirmation post-suppression du favori -->

@@ -1,23 +1,29 @@
 <div class="d-flex py-3">
 
-  <div class="mr-auto mr-3 ml-2 mb-3">
+  <div class="mr-auto ml-2">
     <span class="mr-2">
       <i-feather name="map-pin"></i-feather>
     </span>
-    <span>{{favoriSelection.commune.nom}}</span>
+    <span>{{favoriSelectionTemp.commune.nom}}</span>
+  </div>
 
+  <div (click)="annulerModification()" class="btnAnnuler">
+    <i-feather name="x-square">annuler</i-feather>
   </div>
 
 </div>
 
+
+
+
 <div>
 
-  <div class="mt-2 indicateurGroup">
+  <div class="m-2 indicateurGroup">
     <h4>Météo</h4>
-    <div>
+    <div (click)="favoriSelectionTemp.temperature = !favoriSelectionTemp.temperature">
       <div>Temperature</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.temperature; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.temperature; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -25,10 +31,10 @@
         </ng-template>
       </div>
     </div>
-    <div>
+    <div (click)="favoriSelectionTemp.tempMax = !favoriSelectionTemp.tempMax">
       <div>Temperature max.</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.tempMax; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.tempMax; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -36,10 +42,10 @@
         </ng-template>
       </div>
     </div>
-    <div>
+    <div (click)="favoriSelectionTemp.tempMin = !favoriSelectionTemp.tempMin">
       <div>Temperature min.</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.tempMin; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.tempMin; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -47,10 +53,10 @@
         </ng-template>
       </div>
     </div>
-    <div>
+    <div (click)="favoriSelectionTemp.humidity = !favoriSelectionTemp.humidity">
       <div>Humidité</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.humidity; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.humidity; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -59,10 +65,10 @@
       </div>
     </div>
 
-    <div>
+    <div (click)="favoriSelectionTemp.windDegrees = !favoriSelectionTemp.windDegrees">
       <div>Vent (direction)</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.windDegrees; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.windDegrees; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -71,10 +77,10 @@
       </div>
     </div>
 
-    <div>
+    <div (click)="favoriSelectionTemp.windSpeed=!favoriSelectionTemp.windSpeed">
       <div>Vent (vitesse)</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.windSpeed; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.windSpeed; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -83,10 +89,10 @@
       </div>
     </div>
 
-    <div>
+    <div (click)="favoriSelectionTemp.pressure = !favoriSelectionTemp.pressure">
       <div>Pression</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.pressure; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.pressure; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -95,10 +101,10 @@
       </div>
     </div>
 
-    <div>
+    <div (click)="favoriSelectionTemp.weatherDescription = !favoriSelectionTemp.weatherDescription">
       <div>Etat météo</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.weatherDescription; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.weatherDescription; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -109,12 +115,12 @@
 
   </div>
 
-  <div class="mt-2 indicateurGroup">
+  <div class="m-2 indicateurGroup">
     <h4>Qualité de l'air</h4>
-    <div>
+    <div (click)="favoriSelectionTemp.mesureSO2 = !favoriSelectionTemp.mesureSO2">
       <div>Dioxyde de souffre (SO2)</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.mesureSO2; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.mesureSO2; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -122,10 +128,10 @@
         </ng-template>
       </div>
     </div>
-    <div>
+    <div (click)="favoriSelectionTemp.mesurePM25 = !favoriSelectionTemp.mesurePM25">
       <div>Particules en suspension (PM2.5)</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.mesurePM25; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.mesurePM25; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -133,10 +139,10 @@
         </ng-template>
       </div>
     </div>
-    <div>
+    <div (click)="favoriSelectionTemp.mesurePM10 = !favoriSelectionTemp.mesurePM10">
       <div>Particules en suspension (PM10)</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.mesurePM10; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.mesurePM10; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -144,10 +150,10 @@
         </ng-template>
       </div>
     </div>
-    <div>
+    <div (click)="favoriSelectionTemp.mesureO3 = !favoriSelectionTemp.mesureO3">
       <div>Ozone (03)</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.mesureO3; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.mesureO3; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -155,10 +161,10 @@
         </ng-template>
       </div>
     </div>
-    <div>
+    <div (click)="favoriSelectionTemp.mesureNO2 = !favoriSelectionTemp.mesureNO2">
       <div>Dioxyde d'Azote (NO2)</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.mesureNO2; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.mesureNO2; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -166,10 +172,10 @@
         </ng-template>
       </div>
     </div>
-    <div>
+    <div (click)="favoriSelectionTemp.mesureCO = !favoriSelectionTemp.mesureCO">
       <div>Monoxyde de carbone (CO)</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.mesureCO; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.mesureCO; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
@@ -179,18 +185,30 @@
     </div>
   </div>
 
-  <div class="mt-2 indicateurGroup">
+  <div class="m-2 indicateurGroup">
     <h4>Population</h4>
-    <div>
+    <div (click)="favoriSelectionTemp.commune.population = !favoriSelectionTemp.commune.population">
       <div>Nombre d'habitants</div>
       <div>
-        <ng-container *ngIf="!favoriSelection.commune.population; else elseTemplate">
+        <ng-container *ngIf="!favoriSelectionTemp.commune.population; else elseTemplate">
           <i-feather name="toggle-left"></i-feather>
         </ng-container>
         <ng-template #elseTemplate>
           <i-feather name="toggle-right"></i-feather>
         </ng-template>
       </div>
+    </div>
+  </div>
+
+
+
+  <div class="mt-2">
+    <div class="py-3">
+      <button (click)="validerModificationFavori()" class="btn btn-block btn-outline-primary py-2 px-3">
+        <span class="mr-2">
+          <i-feather name="check"></i-feather>
+        </span><span>Valider</span>
+      </button>
     </div>
   </div>
 

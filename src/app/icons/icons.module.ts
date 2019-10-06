@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Sliders, Eye, Trash2, PlusCircle, User, Power, Star, ToggleLeft, ToggleRight, MapPin, Check } from 'angular-feather/icons';
+import { Sliders, Eye, Trash2, PlusCircle, User, Power, Star, ToggleLeft, ToggleRight, MapPin, Check, XSquare } from 'angular-feather/icons';
 import { FeatherModule } from 'angular-feather';
 
 const icons = {
@@ -14,7 +14,8 @@ const icons = {
   ToggleRight,
   ToggleLeft,
   MapPin,
-  Check
+  Check,
+  XSquare
 }
 
 @NgModule({

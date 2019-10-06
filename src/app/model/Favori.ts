@@ -4,6 +4,7 @@ import Commune from './Commune';
  * represente un favori
  */
 export default interface Favori {
+
   /**
    * id du favori
    */

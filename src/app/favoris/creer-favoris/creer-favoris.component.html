@@ -1,8 +1,8 @@
-<div class="d-flex flex-column py-3">
+<div class="d-flex flex-column p-3">
 
-  <div class="mr-auto  w-100" (clic)="afficherResultatFavori()">
+  <div class="d-flex w-100">
 
-    <div class="form-group">
+    <div class="form-group mr-auto">
       <label class="sr-only" for="inlineFormInputGroup">Commune</label>
       <div class="input-group mb-2">
         <div class="input-group-prepend">
@@ -10,10 +10,13 @@
             <i-feather name="map-pin"></i-feather>
           </div>
         </div>
-        <!-- <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Commune"> -->
+
         <input type="text" class="" #commune [(ngModel)]="nouveauFavori.codeCommune" id="inputcodeCommune" required
           name=" inputCodeCommune">
       </div>
+    </div>
+    <div (click)="annulerCreation()" class="mr-4 btnAnnuler">
+      <i-feather name="x-square">annuler</i-feather>
     </div>
 
 

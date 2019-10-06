@@ -27,7 +27,7 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
   listeFavoris: Favori[] = [];
   favoriSelection: Favori = undefined;
   favoriAEffacer: Favori = undefined;
-  modeAffichage = false;
+  modeAffichageListe = false;
   modeCreation = false;
   modeModification = false;
   afficherConfirmationSuppression = false;
@@ -41,13 +41,31 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
 
 
 
-  afficherModeCreation() {
+  setModeAffichageListe() {
+    this.modeAffichageListe = true;
+    this.modeCreation = false;
+    this.modeModification = false;
+  }
+  setModeCreation() {
+    this.modeAffichageListe = false;
     this.modeCreation = true;
+    this.modeModification = false;
+  }
+  setModeModification() {
+    this.modeAffichageListe = false;
+    this.modeCreation = false;
+    this.modeModification = true;
+  }
 
+
+
+
+  afficherModeCreation() {
+    this.setModeCreation();
   }
 
   afficherModeModification(fav: Favori) {
-    this.modeModification = true;
+    this.setModeModification();
     this.favoriService.subFavoriSelectNext(fav);
   }
 
@@ -79,18 +97,17 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
    */
   supprimerFavori() {
 
-    const liste = this.userConnecte.listeFavori;
-    console.log(this.userConnecte.listeFavori)
 
-    for (let i = 0; i < liste.length; i++) {
-      if (liste[i].id === this.favoriAEffacer.id) {
-        liste.splice(i, 1);
+
+    for (let i = 0; i < this.listeFavoris.length; i++) {
+      if (this.listeFavoris[i].id === this.favoriAEffacer.id) {
+        this.listeFavoris.splice(i, 1);
       }
     }
 
     this.favoriService.supprimerFavori(this.favoriAEffacer.id).subscribe(
       () => [
-        this.userConnecte.listeFavori = liste,
+        this.userConnecte.listeFavori = this.listeFavoris,
         this.authService.subConnecteNext(this.userConnecte)
       ]
     );
@@ -101,21 +118,6 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
 
 
 
-  setModeAffichage() {
-    this.modeAffichage = true;
-    this.modeCreation = false;
-    this.modeModification = false;
-  }
-  setModeCreation() {
-    this.modeAffichage = false;
-    this.modeCreation = true;
-    this.modeModification = false;
-  }
-  setModeModification() {
-    this.modeAffichage = false;
-    this.modeCreation = false;
-    this.modeModification = true;
-  }
 
 
 
@@ -124,7 +126,7 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
       (userConnecte) => [
         this.userConnecte = userConnecte,
         this.listeFavoris = userConnecte.listeFavori,
-        this.setModeAffichage()
+        this.setModeAffichageListe()
       ]
     );
     this.favoriSelectSub = this.favoriService.subFavoriSelect.subscribe(

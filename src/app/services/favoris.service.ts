@@ -29,9 +29,10 @@ export class FavorisService {
 
   /**
    * Subject dans lequel passe le favori à effacer
-   *
    */
   private _subFavoriAEffacer = new Subject<Favori>();
+
+
 
   get subFavoriSelect(): Observable<Favori> {
     return this._subFavoriSelect.asObservable();
@@ -51,7 +52,9 @@ export class FavorisService {
 
   // this.userConnecte.listeFavori
 
-  constructor(private authService: AuthServiceService, private http: HttpClient) { }
+  constructor(private authService: AuthServiceService, private http: HttpClient) {
+
+  }
 
 
 
