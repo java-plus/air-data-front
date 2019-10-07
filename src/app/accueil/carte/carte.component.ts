@@ -23,6 +23,7 @@ export class CarteComponent implements OnInit {
 
 
   codeCommune: string;
+  nomCommune:string;
   listeDeMesurePollution: MesurePollution[];
   listeDeStationDeMesure: StationDeMesurePollution[];
   latitude: number;
@@ -112,8 +113,12 @@ export class CarteComponent implements OnInit {
 
 
       var carteService = this.carteService;
-      //fonction activée à la sortie de la sourie d'une commune
+      //fonction activée au clic de la sourie sur une commune
       function zoomToFeature(e) {
+
+        this.nomCommune=e.target.feature.properties.nom;
+        carteService.informerCommuneCourante(this.nomCommune);
+
         var listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
         myfrugalmap.eachLayer((layer) => {
           if (layer instanceof L.Marker) {
