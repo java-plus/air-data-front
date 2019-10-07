@@ -20,8 +20,14 @@ export class CarteService {
    * subject permettant de transmettre les mesures de pollution au composant "sous-la-carte-coponent"
    */
   _subMesuresPollutionCommuneConcerne: Subject<MesurePollution[]> = new Subject<MesurePollution[]>();
+  /**
+   * subject permettant de transmettre les mesures de meteo au composant "sous-la-carte-coponent"
+   */
   _subMesuresMeteoCommuneConcerne: Subject<MesureMeteo> = new Subject<MesureMeteo>();
-
+/**
+   * subject permettant de transmettre le nom d ela commune concernée au composant "sous-la-carte-coponent"
+   */
+  _subNomCommuneConcerne: Subject<string> = new Subject<string>();
 
   /**
    * getter permettant de fournir le subject sans permettre de pouvoir écrire dedans
@@ -30,12 +36,26 @@ export class CarteService {
     return this._subMesuresPollutionCommuneConcerne.asObservable();
   }
 
+   /**
+   * getter permettant de fournir le subject sans permettre de pouvoir écrire dedans
+   */
   get subMesuresMeteoCommuneConcerne(): Observable<MesureMeteo> {
     return this._subMesuresMeteoCommuneConcerne.asObservable();
   }
 
+  /**
+   * getter permettant de fournir le subject sans permettre de pouvoir écrire dedans
+   */
+  get subNomCommuneConcerne(): Observable<string> {
+    return this._subNomCommuneConcerne.asObservable();
+  }
+
   constructor(private http: HttpClient) { }
 
+  /**
+   * Cet fonction fait une requete dans le back pour obtenir les mesures météo relative à une commune
+   * Elle les insère ensuite dans un subject (ici _subMesuresPollutionCommuneConcerne) afin de passer l'information de composants en comosants
+   */
   recupererMesuresMeteo(codeCommune:string):Observable<MesureMeteo>{
 
     return this.http
@@ -44,11 +64,14 @@ export class CarteService {
         .pipe(
           tap(mesureMeteo => {
             this._subMesuresMeteoCommuneConcerne.next(mesureMeteo);
-            console.log(mesureMeteo);
         }));
 
   }
 
+  /**
+   * Cet fonction fait une requete dans le back pour obtenir les mesures pollution relative à une commune
+   * Elle les insère ensuite dans un subject (ici _subMesuresPollutionCommuneConcerne) afin de passer l'information de composants en comosants
+   */
   recupererMesures(codeCommune:string):Observable<MesurePollution[]>{
 
     return this.http
@@ -58,8 +81,11 @@ export class CarteService {
           tap(mesurePollution => {
             mesurePollution;
             this._subMesuresPollutionCommuneConcerne.next(mesurePollution);
-            console.log(mesurePollution)
         }));
 
+  }
+
+  informerCommuneCourante(nom:string){
+    this._subNomCommuneConcerne.next(nom);
   }
 }

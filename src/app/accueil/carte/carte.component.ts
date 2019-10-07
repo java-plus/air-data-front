@@ -23,6 +23,7 @@ export class CarteComponent implements OnInit {
 
 
   codeCommune: string;
+  nomCommune: string;
   listeDeMesurePollution: MesurePollution[];
   listeDeStationDeMesure: StationDeMesurePollution[];
   latitude: number;
@@ -47,7 +48,7 @@ export class CarteComponent implements OnInit {
     // chargement du fichiers communes.json pour créer le périmètre des communes
     this.http.get('assets/communes.json').subscribe((json: any) => {
       this.json = json;
-      var geojson;
+      let geojson;
       let info;
 
       // création de la variable info qui permettra de créer une fenetre informant l'utilisateur sur la commune qu'il survole avec sa sourie
@@ -111,10 +112,16 @@ export class CarteComponent implements OnInit {
 
 
 
-      var carteService = this.carteService;
-      //fonction activée à la sortie de la sourie d'une commune
+      let carteService = this.carteService;
+      let obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure= this.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure;
+
+      //fonction activée au clic de la sourie sur une commune
       function zoomToFeature(e) {
-        var listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
+
+        this.nomCommune = e.target.feature.properties.nom;
+        carteService.informerCommuneCourante(this.nomCommune);
+
+        let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
         myfrugalmap.eachLayer((layer) => {
           if (layer instanceof L.Marker) {
             myfrugalmap.removeLayer(layer);
@@ -125,26 +132,11 @@ export class CarteComponent implements OnInit {
 
         this.codeCommune = e.target.feature.properties.code;
 
-        carteService.recupererMesures(this.codeCommune).subscribe((data: any) => {
+        carteService.recupererMesures(this.codeCommune).subscribe((data: MesurePollution[]) => {
 
-          this.listeDeMesurePollution = data;
-          for (const mesurePollution of this.listeDeMesurePollution) {
-            let laStationDeMesureEstDejaEnregistre = false;
-            for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
-              if (objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.id == mesurePollution.stationDeMesure.id) {
-                laStationDeMesureEstDejaEnregistre = true;
-                objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure.push(mesurePollution)
-              }
-            }
-            if (!laStationDeMesureEstDejaEnregistre) {
-              listeObjetsMesuresPollutionParStationDeMesure.push(
-                {
-                  stationDeMesurePollution: mesurePollution.stationDeMesure,
-                  listeDeMesurePollutionParStationDeMesure: [mesurePollution]
-                }
-              )
-            }
-          }
+          listeObjetsMesuresPollutionParStationDeMesure=obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(data);
+
+          console.log(listeObjetsMesuresPollutionParStationDeMesure)
           for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
             const myIcon = L.icon({
               iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
@@ -159,17 +151,39 @@ export class CarteComponent implements OnInit {
             objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.longitude],
               { icon: myIcon }).bindPopup(textePopUp).addTo(myfrugalmap);
           }
-          carteService.recupererMesuresMeteo(this.codeCommune).subscribe((data:any) => {
-            },
+          carteService.recupererMesuresMeteo(this.codeCommune).subscribe((data: any) => {
+          },
             (error: HttpErrorResponse) => {
-            console.log("error", error);
-          });
+              console.log("error", error);
+            });
         }
           , (error: HttpErrorResponse) => {
             console.log("error", error);
           })
       }
     })
+  }
+
+  obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(listeDeMesurePollution: MesurePollution[]): MesuresPollutionParStationDeMesure {
+    let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure=[];
+    for (const mesurePollution of listeDeMesurePollution) {
+      let laStationDeMesureEstDejaEnregistre = false;
+      for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
+        if (objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.id == mesurePollution.stationDeMesure.id) {
+          laStationDeMesureEstDejaEnregistre = true;
+          objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure.push(mesurePollution)
+        }
+      }
+      if (!laStationDeMesureEstDejaEnregistre) {
+        listeObjetsMesuresPollutionParStationDeMesure.push(
+          {
+            stationDeMesurePollution: mesurePollution.stationDeMesure,
+            listeDeMesurePollutionParStationDeMesure: [mesurePollution]
+          }
+        );
+      }
+    }
+    return listeObjetsMesuresPollutionParStationDeMesure;
   }
 
 }

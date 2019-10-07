@@ -26,7 +26,13 @@ const httpOptions = {
 /**
  * Service lié à la manipulation de commune
  */
+@Injectable({
+  providedIn: 'root'
+})
 export class CommunesService {
+
+
+
 
   /**
    * tableau stockant la liste des communes, servant de cache

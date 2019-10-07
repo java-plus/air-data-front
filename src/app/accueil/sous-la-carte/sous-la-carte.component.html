@@ -1,35 +1,34 @@
 
-<table class="table table-sm">
+<div class="row text-center">
+  <h1 class="col-12 text-center">{{nomCommuneConcerne}}</h1>
+</div>
+<div class="row">
+
+  <div class="col-6" >
+<table class="table">
   <thead class="thead-dark">
+      <th>
+          Données pollution
+        </th>
     <tr>
       <th scope="col" class="text-center" *ngFor="let mesure of mesuresPollution | async">{{mesure.typeDeDonnee}}</th>
     </tr>
-    <tr>
-      <th scope="col" class="text-center">Description</th>
-      <th scope="col" class="text-center">temperature</th>
-      <th scope="col" class="text-center">pressure</th>
-      <th scope="col" class="text-center">humidity</th>
-      <th scope="col" class="text-center">tempMin</th>
-      <th scope="col" class="text-center">tempMax</th>
-    </tr>
+
   </thead>
   <tbody>
+
     <tr>
-      <td class="text-center" *ngFor="let mesure of mesuresPollution | async"> {{mesure.valeur}}</td>
-    </tr>
-    <tr *ngIf="mesuresMeteo!=undefined">
-      <td class="text-center"> {{mesuresMeteo.weatherDescription}}</td>
-      <td class="text-center"> {{mesuresMeteo.temperature}}</td>
-      <td class="text-center"> {{mesuresMeteo.pressure}}</td>
-      <td class="text-center"> {{mesuresMeteo.humidity}}</td>
-      <td class="text-center"> {{mesuresMeteo.tempMin}}</td>
-      <td class="text-center"> {{mesuresMeteo.tempMax}}</td>
+      <td class="text-center" *ngFor="let mesure of mesuresPollution | async">{{mesure.valeur}}</td>
     </tr>
   </tbody>
 </table>
-
+</div>
+<div class="col-6" >
 <table class="table">
   <thead class="thead-dark">
+      <tr>
+          Données météo
+        </tr>
     <tr>
       <th scope="col" class="text-center">Description</th>
       <th scope="col" class="text-center">temperature</th>
@@ -50,24 +49,6 @@
     </tr>
   </tbody>
 </table>
-
-<div class="row" *ngIf="mesuresMeteo!=undefined">
-  <div class="col-2" >
-    <p>Description : {{mesuresMeteo.weatherDescription}}</p>
-  </div>
-  <div class="col-2">
-    <p>temperature : {{this.mesuresMeteo.temperature  }}</p>
-  </div>
-  <div class="col-2">
-    <p>pressure : {{this.mesuresMeteo.pressure }}</p>
-  </div>
-  <div class="col-2">
-    <p>humidity : {{this.mesuresMeteo.humidity }}</p>
-  </div>
-  <div class="col-2">
-    <p>tempMin : {{this.mesuresMeteo.tempMin }}</p>
-  </div>
-  <div class="col-2">
-    <p>tempMax : {{this.mesuresMeteo.tempMax  }}</p>
-  </div>
 </div>
+</div>
+
