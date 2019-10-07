@@ -2,14 +2,11 @@
 <div class="row text-center">
   <h1 class="col-12 text-center">{{nomCommuneConcerne}}</h1>
 </div>
-<div class="row">
+<div class="row" >
 
   <div class="col-6" >
-<table class="table">
+<table class="table table-sm">
   <thead class="thead-dark">
-      <th>
-          Données pollution
-        </th>
     <tr>
       <th scope="col" class="text-center" *ngFor="let mesure of mesuresPollution | async">{{mesure.typeDeDonnee}}</th>
     </tr>
@@ -24,11 +21,8 @@
 </table>
 </div>
 <div class="col-6" >
-<table class="table">
+<table class="table table-sm">
   <thead class="thead-dark">
-      <tr>
-          Données météo
-        </tr>
     <tr>
       <th scope="col" class="text-center">Description</th>
       <th scope="col" class="text-center">temperature</th>
