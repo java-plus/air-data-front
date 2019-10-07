@@ -15,7 +15,20 @@ export class CourbeAnalyseComponent implements OnInit {
   /**
    * contient le resultat de la recherche pour l’analyse et appelle la methode pour generer le graphique
    */
-  resultatRecherche = this._mesureService.subAnalyse.subscribe((analyse) => {this.creerGraphique(analyse); this.donneesRecu = true; });
+  resultatRecherche = this._mesureService.subAnalyse.subscribe((analyse) => {
+    analyse.donnees.sort((a, b) => {
+      if (new Date(a.date).getTime()  - new Date(b.date).getTime() < 0) {
+        return -1;
+      } else if (new Date(a.date).getTime() - new Date(b.date).getTime() > 0) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    this.creerGraphique(analyse);
+
+    this.donneesRecu = true;
+  });
 
   constructor(private _mesureService: MesuresService) { }
 
@@ -55,8 +68,7 @@ export class CourbeAnalyseComponent implements OnInit {
       this.chartLabels.push(new Date(donnee.date)
         .toLocaleDateString('fr-Fr', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
     }
-    tableauValeur.reverse();
-    this.chartLabels.reverse();
+
     this.chartData.push({data: tableauValeur, label: analyse.indicateur});
 
   }
