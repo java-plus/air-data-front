@@ -49,11 +49,11 @@ export class CommunesService {
    */
   chercherCommunes(model: string): Observable<Commune[]> {
     if (this.listeCommunes) {
-      return of(this.listeCommunes.filter((commune) => commune.nom.search(model) >= 0));
+      return of(this.listeCommunes.filter((commune) => commune.nom.toLowerCase().search(model.toLowerCase()) >= 0));
     } else {
       return this.http.get<Commune[]>(environment.backendUrl + '/communes', httpOptions)
         .pipe(tap((listCom) => this.listeCommunes = listCom),
-          map((listCom) => listCom.filter((commune) => commune.nom.search(model) >= 0)));
+          map((listCom) => listCom.filter((commune) => commune.nom.toLowerCase().search(model.toLowerCase()) >= 0)));
     }
   }
 

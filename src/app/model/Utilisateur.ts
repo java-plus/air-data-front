@@ -29,7 +29,7 @@ export default interface Utilisateur {
   /**
    * liste des favoris de l’utilisateur
    */
-  listeFavori: Favori;
+  listeFavori: Favori[];
   /**
    * commune de l’utilisateur
    */

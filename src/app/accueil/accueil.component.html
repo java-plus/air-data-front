@@ -1,30 +1,23 @@
-<div class="row min-vh-100 min-vw-100" style="border-style: solid">
+<div class="d-flex flex-wrap min-vh-100" style="background-color:  rgb(211, 210, 210)">
 
-  <div class="col-3" style="border-style: solid">
+  <div class="col-12 col-md-3 px-0">
 
-    <div class="row" style="height: 20%;border-style: solid">
-      Composant Recherche
+    <div class="" style="height: 20%; background-color: #c5c3c3">Composant Recherche</div>
+
+    <div class="d-none d-md-block" style="max-height: 80%;">
+      <app-liste-favoris></app-liste-favoris>
+
     </div>
-    <div class="row" style="height: 80%;border-style: solid">
-      Composant Liste De Favoris
-      Composé de :
-      Composant Afficher Favori,
-      Composant Modifier Favori,
-      Composant Creer Favori
-    </div>
+
   </div>
 
-  <div class="col-9">
+  <div class="col-12 col-md-9 px-0">
 
-      <div class="row"  style='border-style: solid;height: 80%' (click)="methodeClickSurCarte()">
-<app-carte style='height: 100%;width: 100%'></app-carte>
+    <div class="d-none d-md-block" style="background-color: #969696; height: 80%">Composant Carte</div>
 
-      </div>
+    <div class="col" style="background-color: #4e4e4e; height: 20%">
 
-
-      <div  class="row" style="border-style: solid;height: 20%" >
-        <app-sous-la-carte  style='height: 100%;width: 100%'></app-sous-la-carte>
-      </div>
+    </div>
 
   </div>
 
