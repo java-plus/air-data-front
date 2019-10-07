@@ -4,8 +4,11 @@ import { AuthServiceService } from 'src/app/services/auth-service.service';
 import Favori from 'src/app/model/Favori';
 import FavoriDto from '../../model/dto/FavoriDto';
 import Utilisateur from 'src/app/model/Utilisateur';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { ListeFavorisComponent } from "../liste-favoris/liste-favoris.component";
+import { flatMap, map } from 'rxjs/operators';
+import { CommunesService } from 'src/app/services/communes.service';
+import Commune from 'src/app/model/Commune';
 
 
 @Component({
@@ -16,12 +19,20 @@ import { ListeFavorisComponent } from "../liste-favoris/liste-favoris.component"
 
 export class CreerFavorisComponent implements OnInit, OnDestroy {
 
-  constructor(private favoriService: FavorisService, private authService: AuthServiceService, private listeFavorisComponent: ListeFavorisComponent) { }
+  constructor(
+    private favoriService: FavorisService,
+    private authService: AuthServiceService,
+    private listeFavorisComponent: ListeFavorisComponent,
+    private communeService: CommunesService) { }
 
   /** l'utilisateur connecté */
   userConnecte: Utilisateur = undefined;
   /** abonnement au subject conntenant l'utilisateur connecté */
   userConnectSub: Subscription;
+  /**
+   * Commune selectionné par l’utilisateur
+   */
+  communeRecupere: Commune;
 
   /** favori que l'utilisateur va créer */
   nouveauFavori: FavoriDto = {
@@ -46,12 +57,26 @@ export class CreerFavorisComponent implements OnInit, OnDestroy {
   };
 
 
+  /**
+   * fonction recuperant la liste des communes pour l’auto completion
+   * @param text$ observable pour l’autocompletion
+   */
+  search = (text$: Observable<string>) => text$.pipe(flatMap((term) => this.communeService.chercherCommunes(term)
+    .pipe(map((listCommune) => listCommune.slice(0, 5)))));
 
+  /**
+   * fonction permettant d’afficher uniquement le nom de la commune dans l’autocompletion et l’input
+   * @param commune la commune dont on doit recuperer le nom
+   */
+  recupererNomCommune(commune: Commune) {
+    return commune.nom;
+  }
 
   /**
    * Methode qui permet d'appeler le service afin d'enregistrer le nouveau favori
    */
   validerCreationFavori() {
+    this.nouveauFavori.codeCommune = this.communeRecupere.codeCommune;
     this.favoriService.enregistrerFavori(this.nouveauFavori).subscribe(
       (fav) => {
         this.userConnecte.listeFavori.push(fav);
