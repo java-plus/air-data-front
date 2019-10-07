@@ -2,10 +2,9 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import Commune from '../model/Commune';
-import {Observable, of, Subject} from 'rxjs';
-import {filter, flatMap, map, tap} from 'rxjs/operators';
-import { StationDeMesurePollution } from '../models/StationDeMesurePollution';
-import { MesurePollution } from '../model/MesurePollution';
+import {Observable, of} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
+
 
 
 const URL_BACKEND = environment.backendUrl;
