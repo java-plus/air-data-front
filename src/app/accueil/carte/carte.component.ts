@@ -40,7 +40,7 @@ export class CarteComponent implements OnInit {
     // Déclaration de la carte avec les coordonnées du centre et le niveau de zoom.
     const myfrugalmap = L.map('frugalmap').setView([47.4712, -0.3], 8);
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
       attribution: 'Frugal Map'
     }).addTo(myfrugalmap);
 
