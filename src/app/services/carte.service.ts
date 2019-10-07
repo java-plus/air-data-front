@@ -56,11 +56,10 @@ export class CarteService {
    * Cet fonction fait une requete dans le back pour obtenir les mesures météo relative à une commune
    * Elle les insère ensuite dans un subject (ici _subMesuresPollutionCommuneConcerne) afin de passer l'information de composants en comosants
    */
-  recupererMesuresMeteo(codeCommune:string):Observable<MesureMeteo>{
+  publierDansSubjectMesuresMeteoCourante(codeCommune:string):Observable<MesureMeteo>{
 
     return this.http
         .get<MesureMeteo>(`${URL_BACKEND}/mesures/meteo?codeCommune=${codeCommune}`, { withCredentials: true})
-        //.pipe(tap(list => (this.listeDeMatricules = list)));
         .pipe(
           tap(mesureMeteo => {
             this._subMesuresMeteoCommuneConcerne.next(mesureMeteo);
@@ -76,7 +75,6 @@ export class CarteService {
 
     return this.http
         .get<MesurePollution[]>(`${URL_BACKEND}/mesures/pollution?codeCommune=${codeCommune}`, { withCredentials: true})
-        //.pipe(tap(list => (this.listeDeMatricules = list)));
         .pipe(
           tap(mesurePollution => {
             mesurePollution;
@@ -85,7 +83,7 @@ export class CarteService {
 
   }
 
-  informerCommuneCourante(nom:string){
+  publierDansSubjectCommuneCourante(nom:string){
     this._subNomCommuneConcerne.next(nom);
   }
 }

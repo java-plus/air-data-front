@@ -12,6 +12,13 @@ type MesuresPollutionParStationDeMesure = Array<{
   listeDeMesurePollutionParStationDeMesure: MesurePollution[]
 }>;
 
+type BoondZoom = {
+  southWest: _southWest,
+  northEast: _northEast
+};
+type _southWest = { southLat: number, westLng: number };
+type _northEast = {northLat: number, eastLng: number };
+
 
 //Class CarteComponent représentant le composant "Carte" du front
 @Component({
@@ -23,6 +30,7 @@ export class CarteComponent implements OnInit {
 
 
   codeCommune: string;
+  targetPrecedent:any;
   nomCommune: string;
   listeDeMesurePollution: MesurePollution[];
   listeDeStationDeMesure: StationDeMesurePollution[];
@@ -49,7 +57,7 @@ export class CarteComponent implements OnInit {
     this.http.get('assets/communes.json').subscribe((json: any) => {
       this.json = json;
       let geojson;
-      let info;
+    let info;
 
       // création de la variable info qui permettra de créer une fenetre informant l'utilisateur sur la commune qu'il survole avec sa sourie
       info = new L.Control();
@@ -60,8 +68,7 @@ export class CarteComponent implements OnInit {
       };
 
       info.update = function (props) {
-        this._div.innerHTML = '<h4>Pays de la Loire </h4>' + (props ? '<b>' + props.nom + '<b>' + props.code + '</b><br />'
-          : '--');
+        this._div.innerHTML = '<h4>' + (props ? 'rhh':  '--' ) + '</h4>';
       };
 
       info.addTo(myfrugalmap);
@@ -107,83 +114,127 @@ export class CarteComponent implements OnInit {
 
       //fonction activée à la sortie de la sourie d'une commune
       function resetHighlight(e) {
-        geojson.resetStyle(e.target); info.update();
+
+            geojson.resetStyle(e.target); info.update();
+
+
+
       }
 
 
 
       let carteService = this.carteService;
-      let obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure= this.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure;
+      let obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure = this.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure;
+      let placerLesMarqueurs = this.placerLesMarqueurs;
+      let obtenirBoondPourZoom = this.obtenirBoondPourZoom;
 
       //fonction activée au clic de la sourie sur une commune
       function zoomToFeature(e) {
 
+
         this.nomCommune = e.target.feature.properties.nom;
-        carteService.informerCommuneCourante(this.nomCommune);
+
+        carteService.publierDansSubjectCommuneCourante(this.nomCommune);
 
         let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
+
         myfrugalmap.eachLayer((layer) => {
           if (layer instanceof L.Marker) {
             myfrugalmap.removeLayer(layer);
           }
         });
 
-        myfrugalmap.fitBounds(e.target.getBounds());
+
+
 
         this.codeCommune = e.target.feature.properties.code;
 
         carteService.recupererMesures(this.codeCommune).subscribe((data: MesurePollution[]) => {
 
-          listeObjetsMesuresPollutionParStationDeMesure=obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(data);
+          listeObjetsMesuresPollutionParStationDeMesure = obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(data);
 
-          console.log(listeObjetsMesuresPollutionParStationDeMesure)
-          for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
-            const myIcon = L.icon({
-              iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
-              iconAnchor: [10, 30],
-              iconSize: [20, 30]
-            });
-            let textePopUp: string = '';
-            for (const mesurePollution of objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure) {
-              textePopUp = textePopUp + ` ${mesurePollution.typeDeDonnee} : ${mesurePollution.valeur} --`
-            }
-            L.marker([objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.latitude,
-            objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.longitude],
-              { icon: myIcon }).bindPopup(textePopUp).addTo(myfrugalmap);
-          }
-          carteService.recupererMesuresMeteo(this.codeCommune).subscribe((data: any) => {
+          placerLesMarqueurs(listeObjetsMesuresPollutionParStationDeMesure, myfrugalmap);
+
+          const boondPourZomm: number[] = obtenirBoondPourZoom(data)
+          myfrugalmap.fitBounds([[boondPourZomm[0], boondPourZomm[1]],[boondPourZomm[2], boondPourZomm[3]]]);
+
+          carteService.publierDansSubjectMesuresMeteoCourante(this.codeCommune).subscribe(() => {
           },
             (error: HttpErrorResponse) => {
-              console.log("error", error);
+              console.log('error', error);
             });
         }
           , (error: HttpErrorResponse) => {
-            console.log("error", error);
-          })
+            console.log('error', error);
+          });
+
       }
-    })
+    });
   }
 
-  obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(listeDeMesurePollution: MesurePollution[]): MesuresPollutionParStationDeMesure {
-    let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure=[];
+  obtenirBoondPourZoom(listeDeMesurePollution: MesurePollution[]): number[] {
+    let latMin: number = Number.MAX_VALUE;
+    let latMax: number = Number.MIN_VALUE;
+    let lngMin: number = Number.MAX_VALUE;
+    let lngMax: number = Number.MIN_VALUE;
     for (const mesurePollution of listeDeMesurePollution) {
-      let laStationDeMesureEstDejaEnregistre = false;
-      for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
-        if (objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.id == mesurePollution.stationDeMesure.id) {
-          laStationDeMesureEstDejaEnregistre = true;
-          objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure.push(mesurePollution)
-        }
+      if (mesurePollution.stationDeMesure.latitude < latMin) {
+        latMin = mesurePollution.stationDeMesure.latitude;
       }
-      if (!laStationDeMesureEstDejaEnregistre) {
-        listeObjetsMesuresPollutionParStationDeMesure.push(
-          {
-            stationDeMesurePollution: mesurePollution.stationDeMesure,
-            listeDeMesurePollutionParStationDeMesure: [mesurePollution]
-          }
-        );
+      if (mesurePollution.stationDeMesure.latitude > latMax) {
+        latMax = mesurePollution.stationDeMesure.latitude;
+      }
+      if (mesurePollution.stationDeMesure.longitude < lngMin) {
+        lngMin = mesurePollution.stationDeMesure.longitude;
+      }
+      if (mesurePollution.stationDeMesure.longitude > lngMax) {
+        lngMax = mesurePollution.stationDeMesure.longitude;
       }
     }
-    return listeObjetsMesuresPollutionParStationDeMesure;
+    let reponse:number[]=[latMin,lngMax,latMax,lngMin];
+
+
+    return reponse;
+  };
+
+
+obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(listeDeMesurePollution: MesurePollution[]): MesuresPollutionParStationDeMesure {
+  let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
+  for (const mesurePollution of listeDeMesurePollution) {
+    let laStationDeMesureEstDejaEnregistre = false;
+    for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
+      if (objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.id == mesurePollution.stationDeMesure.id) {
+        laStationDeMesureEstDejaEnregistre = true;
+        objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure.push(mesurePollution)
+      }
+    }
+    if (!laStationDeMesureEstDejaEnregistre) {
+      listeObjetsMesuresPollutionParStationDeMesure.push(
+        {
+          stationDeMesurePollution: mesurePollution.stationDeMesure,
+          listeDeMesurePollutionParStationDeMesure: [mesurePollution]
+        }
+      );
+    }
   }
+  return listeObjetsMesuresPollutionParStationDeMesure;
+}
+
+placerLesMarqueurs(listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure, myfrugalmap: L.Map) {
+  for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
+    const myIcon = L.icon({
+      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
+      iconAnchor: [10, 30],
+      iconSize: [20, 30]
+    });
+    let textePopUp: string = '';
+    for (const mesurePollution of objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure) {
+      textePopUp = textePopUp + ` ${mesurePollution.typeDeDonnee} : ${mesurePollution.valeur} --`
+    }
+    L.marker([objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.latitude,
+    objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.longitude],
+      { icon: myIcon }).bindPopup(textePopUp).addTo(myfrugalmap);
+  }
+}
 
 }
