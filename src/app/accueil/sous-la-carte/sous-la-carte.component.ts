@@ -18,9 +18,9 @@ export class SousLaCarteComponent implements OnInit {
   mesuresPollution = this.carteService.subMesuresPollutionCommuneConcerne;
   // variable représentant la liste des mesures météo d'une commune
   // Cette valeur est chargée grâce à une promesse et est donc asynchrone
-  mesuresMeteo:MesureMeteo;
+  mesuresMeteo: MesureMeteo;
 
-  constructor(private carteService:CarteService) { }
+  constructor(private carteService: CarteService) { }
 
   // à l'initialisation du composant la liste des mesures météo est chargée
   ngOnInit() {

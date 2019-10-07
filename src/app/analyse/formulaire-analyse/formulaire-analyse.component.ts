@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import CommunesService from '../../services/communes.service';
+import {CommunesService} from '../../services/communes.service';
 import Commune from '../../model/Commune';
 import {Observable} from 'rxjs';
 import {flatMap, map} from 'rxjs/operators';

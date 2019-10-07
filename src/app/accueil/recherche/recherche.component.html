@@ -1,0 +1,5 @@
+<input id="communeInput" placeholder="Commune" type="text" class="form-control" [(ngModel)]="communeRecupere" #etatCommune="ngModel"
+       [inputFormatter]="recupererNomCommune" [resultFormatter]="recupererNomCommune" [ngbTypeahead]="search" name="recuperationCommune" required/>
+
+<button class="btn btn-block btn-primary text-light my-3" (click)="rechercher()" [disabled]="etatCommune.invalid">Rechercher</button>
+

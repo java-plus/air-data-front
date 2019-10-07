@@ -20,9 +20,10 @@ import {
   NgbDateNativeAdapter,
   NgbDatepickerModule,
   NgbTypeaheadModule
-} from "@ng-bootstrap/ng-bootstrap";
+} from '@ng-bootstrap/ng-bootstrap';
 import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.component';
 import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.component';
+import {RechercheComponent} from './accueil/recherche/recherche.component';
 
 
 @NgModule({
@@ -36,8 +37,9 @@ import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.comp
     CompteComponent,
     FormulaireAnalyseComponent,
     CourbeAnalyseComponent,
-    SousLaCarteComponent
-
+    SousLaCarteComponent,
+    RechercheComponent,
+    RechercheComponent
 
 
   ],
