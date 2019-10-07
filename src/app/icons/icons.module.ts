@@ -1,13 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Sliders, Eye, Trash2, PlusCircle, User, Power, Star, ToggleLeft, ToggleRight, MapPin, Check, XSquare } from 'angular-feather/icons';
 import { FeatherModule } from 'angular-feather';
-import { User, Power } from 'angular-feather/icons';
 
-// Select some icons (use an object, not an array)
 const icons = {
+  Sliders,
+  Eye,
+  Trash2,
+  PlusCircle,
   User,
-  Power
-};
+  Power,
+  Star,
+  ToggleRight,
+  ToggleLeft,
+  MapPin,
+  Check,
+  XSquare
+}
 
 @NgModule({
   declarations: [],

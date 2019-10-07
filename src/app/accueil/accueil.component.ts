@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccueilComponent implements OnInit {
 
+  clickSurCarte = false;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  methodeClickSurCarte() {
+    this.clickSurCarte = true;
   }
 
 }

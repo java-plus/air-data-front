@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import {AuthServiceService} from './services/auth-service.service';
-import {IconsModule} from './icons/icons.module';
-import {Observable} from 'rxjs';
+import { AuthServiceService } from './services/auth-service.service';
+import { IconsModule } from './icons/icons.module';
+import { Observable } from 'rxjs';
 import Utilisateur from './model/Utilisateur';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +25,7 @@ export class AppComponent {
    * deconnecte l’utilisateur et redirige vers la page de login
    */
   deconnexion() {
-    this._authService.deconnexion().subscribe(() => {this._router.navigate(['/login']); });
+    this._authService.deconnexion().subscribe(() => { this._router.navigate(['/login']); });
   }
 
 }

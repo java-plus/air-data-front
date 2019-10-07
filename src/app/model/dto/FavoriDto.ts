@@ -1,18 +1,14 @@
-import Commune from './Commune';
 
 /**
- * represente un favori
+ * represente un dto de favori
  */
-export default interface Favori {
+export default interface Favoridto {
 
-  /**
-   * id du favori
-   */
   id: number;
   /**
    * commune du favori
    */
-  commune: Commune;
+  codeCommune: string;
   /**
    * choix d’afficher la description du temps
    */
@@ -74,8 +70,7 @@ export default interface Favori {
    */
   mesureCO: boolean;
   /**
-     * choix d’afficher la population
-     */
+   * choix d’afficher la population
+   */
   population: boolean;
-
 }

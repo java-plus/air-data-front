@@ -1,0 +1,81 @@
+<div class="d-flex flex-column justify-content-center ">
+
+
+  <ng-container *ngIf="modeAffichageListe">
+
+
+
+    <div class="favList">
+
+      <ng-container *ngFor="let favori of listeFavoris">
+
+        <div class="d-flex py-3">
+
+          <div class="mr-auto mr-3 ml-2" (clic)="afficherResultatFavori()">
+            <span class="mr-2">
+              <i-feather name="eye">voir</i-feather>
+            </span>
+            <span>{{favori.commune.nom}}</span>
+          </div>
+
+          <div>
+            <span (click)="afficherModeModification(favori)" class="mr-4 btnMod">
+              <i-feather name="sliders">parametrer</i-feather>
+            </span>
+            <span class="mx-2 btnDelete" (click)="afficherConfSupp(content, favori)">
+              <i-feather name="trash-2">supprimer</i-feather>
+            </span>
+          </div>
+
+        </div>
+
+      </ng-container>
+
+    </div>
+
+
+    <div class="p-3">
+      <button (click)="afficherModeCreation()" class="btn btn-block btn-outline-primary py-2 px-3">
+        <span class="mr-2">
+          <i-feather name="plus-circle"></i-feather>
+        </span><span>Ajouter un favori</span>
+      </button>
+    </div>
+
+
+
+    <!-- modal contenant la demande de confirmation post-suppression du favori -->
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Favori</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Confirmer la suppression?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="supprimerFavori(); modal.close()">Confirmer</button>
+        <button type="button" ngbAutofocus class="btn btn-outline-secondary"
+          (click)="modal.close('Close click')">Annuler</button>
+      </div>
+    </ng-template>
+    <!-- fin de la modal -->
+
+
+
+  </ng-container>
+
+  <ng-container *ngIf="modeCreation">
+    <app-creer-favoris></app-creer-favoris>
+  </ng-container>
+
+  <ng-container *ngIf="modeModification">
+    <app-modifier-favoris></app-modifier-favoris>
+  </ng-container>
+
+
+
+
+</div>
