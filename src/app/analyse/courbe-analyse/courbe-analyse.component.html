@@ -1,1 +1,12 @@
-<p>{{resultatRecherche|async|json}}</p>
+<div *ngIf="donneesRecu" class="chart mx-auto my-5">
+  <canvas
+    baseChart
+    [chartType]="'line'"
+    [datasets]="chartData"
+    [labels]="chartLabels"
+    [options]="chartOptions"
+    [colors]="couleur"
+    [legend]="true">
+
+  </canvas>
+</div>

@@ -10,7 +10,6 @@ import { AccueilComponent } from './accueil/accueil.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ROUTES } from './app.routes';
-import { CarteComponent } from './accueil/carte/carte.component';
 import {IconsModule} from './icons/icons.module';
 import { AnalyseComponent } from './analyse/analyse.component';
 import { CompteComponent } from './compte/compte.component';
@@ -20,10 +19,12 @@ import {
   NgbDateNativeAdapter,
   NgbDatepickerModule,
   NgbTypeaheadModule
-} from "@ng-bootstrap/ng-bootstrap";
+} from '@ng-bootstrap/ng-bootstrap';
 import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.component';
 import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.component';
 
+import {ChartsModule} from 'ng2-charts';
+import {CarteComponent} from "./accueil/carte/carte.component";
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.comp
     IconsModule,
     NgbDatepickerModule,
     NgbTypeaheadModule,
+    ChartsModule
 
   ],
   providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}],
