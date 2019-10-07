@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import CommunesService from '../../services/communes.service';
+import {CommunesService} from '../../services/communes.service';
 import Commune from '../../model/Commune';
 import {Observable} from 'rxjs';
 import {flatMap, map} from 'rxjs/operators';
 import {MesuresService} from '../../services/mesures.service';
-import Analyse from '../../model/Analyse';
-import {NgbCalendar, NgbCalendarGregorian, NgbCalendarHebrew, NgbDate, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {NgbCalendar, NgbCalendarGregorian, NgbCalendarHebrew, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 
 /**
@@ -73,8 +72,15 @@ export class FormulaireAnalyseComponent implements OnInit {
    * fonction permettant de faire la recherche de données pour l’analyse
    */
   rechercher() {
-   this.mesuresService.recupererAnalyses(this.communeRecupere.codeCommune, this.indicateur, this.dateDebut, this.dateFin)
-     .subscribe(() => {}, (err) => this.messageError = 'Recherche impossible.');
+   this.mesuresService.recupererAnalyses(this.communeRecupere.codeCommune, this.indicateur, new Date(this.dateDebut.setHours( 0, 0, 0, 0)), new Date(this.dateFin.setHours(23, 59, 59, 999)))
+     .subscribe(() => {},
+       (err) => {
+       if (err.status === 500) {
+       this.messageError = 'Pas de données disponible pour cette recherche.';
+     } else {
+         this.messageError = 'Impossible de récuperer les données de votre recherche';
+       }
+     });
 }
 
   /**
