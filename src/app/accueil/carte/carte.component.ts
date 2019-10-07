@@ -41,14 +41,14 @@ export class CarteComponent implements OnInit {
     // Déclaration de la carte avec les coordonnées du centre et le niveau de zoom.
     const myfrugalmap = L.map('frugalmap').setView([47.4712, -0.3], 8);
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
       attribution: 'Frugal Map'
     }).addTo(myfrugalmap);
 
     // chargement du fichiers communes.json pour créer le périmètre des communes
     this.http.get('assets/communes.json').subscribe((json: any) => {
       this.json = json;
-      var geojson;
+      let geojson;
       let info;
 
       // création de la variable info qui permettra de créer une fenetre informant l'utilisateur sur la commune qu'il survole avec sa sourie
@@ -112,14 +112,14 @@ export class CarteComponent implements OnInit {
 
 
 
-      var carteService = this.carteService;
+      let carteService = this.carteService;
       //fonction activée au clic de la sourie sur une commune
       function zoomToFeature(e) {
 
         this.nomCommune=e.target.feature.properties.nom;
         carteService.informerCommuneCourante(this.nomCommune);
 
-        var listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
+        let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
         myfrugalmap.eachLayer((layer) => {
           if (layer instanceof L.Marker) {
             myfrugalmap.removeLayer(layer);
@@ -176,5 +176,25 @@ export class CarteComponent implements OnInit {
       }
     })
   }
+
+  obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(){
+  for (const mesurePollution of this.listeDeMesurePollution) {
+    let laStationDeMesureEstDejaEnregistre = false;
+    for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
+      if (objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.id == mesurePollution.stationDeMesure.id) {
+        laStationDeMesureEstDejaEnregistre = true;
+        objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure.push(mesurePollution)
+      }
+    }
+    if (!laStationDeMesureEstDejaEnregistre) {
+      listeObjetsMesuresPollutionParStationDeMesure.push(
+        {
+          stationDeMesurePollution: mesurePollution.stationDeMesure,
+          listeDeMesurePollutionParStationDeMesure: [mesurePollution]
+        }
+      )
+    }
+  }
+}
 
 }

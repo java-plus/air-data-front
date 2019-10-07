@@ -1,0 +1,34 @@
+<form class="form-signin w-25 mx-auto text-center my-5">
+
+  <div class="form-group ">
+    <h1 class="h3 mb-3 font-weight-normal text-dark ">Inscription</h1>
+
+    <input [(ngModel)]="identifiant" class="form-control" name="identifiant" required #etatIdentifiant="ngModel"
+      placeholder="Identifiant">
+  </div>
+  <div class="form-group">
+    <input [(ngModel)]="email" type="email" class="form-control" name="email" required #etatEmail="ngModel"
+      placeholder="E-mail">
+  </div>
+  <div class="form-group">
+    <input [(ngModel)]="age" type="age" class="form-control" name="age" required #etatAge="ngModel"
+      placeholder="Age">
+  </div>
+  <div class="form-group">
+    <input [(ngModel)]="commune" type="commune" class="form-control" name="commune" required #etatCommune="ngModel"
+      placeholder="Commune">
+  </div>
+  <div class="form-group">
+    <input [(ngModel)]="password" type="password" class="form-control" name="password" required #etatPassword="ngModel"
+      placeholder="Mot de passe">
+  </div>
+  <div class="form-group">
+      <input [(ngModel)]="passwordConfirmation" type="password" class="form-control" name="passwordConfirmation" required #etatConfirmation="ngModel"
+        placeholder="Confirmation du mot de passe">
+    </div>
+
+  <button type="submit" [disabled]="etatIdentifiant.invalid || etatPassword.invalid" class="btn btn-block btn-primary"
+    (click)=inscription(identifiant,email,age,commune,password)>Se connecter</button>
+  <p *ngIf="messageError" class="text-danger my-2">{{messageError}}</p>
+
+</form>
