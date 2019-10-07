@@ -11,7 +11,8 @@ import { AccueilComponent } from './accueil/accueil.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ROUTES } from './app.routes';
-import { IconsModule } from './icons/icons.module';
+import { CarteComponent } from './accueil/carte/carte.component';
+import {IconsModule} from './icons/icons.module';
 import { AnalyseComponent } from './analyse/analyse.component';
 import { CompteComponent } from './compte/compte.component';
 import { ModifierFavorisComponent } from './favoris/modifier-favoris/modifier-favoris.component';
@@ -24,7 +25,8 @@ import {
   NgbTypeaheadModule
 } from '@ng-bootstrap/ng-bootstrap';
 import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.component';
-import { ChartsModule } from 'ng2-charts';
+import {ChartsModule} from 'ng2-charts';
+import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.component';
 
 @NgModule({
   declarations: [
@@ -34,11 +36,13 @@ import { ChartsModule } from 'ng2-charts';
     LoginComponent,
     EmailValidatorDirective,
     AccueilComponent,
+    CarteComponent,
     AnalyseComponent,
     CompteComponent,
     ModifierFavorisComponent,
     FormulaireAnalyseComponent,
-    CourbeAnalyseComponent
+    CourbeAnalyseComponent,
+    SousLaCarteComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +56,7 @@ import { ChartsModule } from 'ng2-charts';
     NgbTypeaheadModule,
     ChartsModule
   ],
-  providers: [{ provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }],
+  providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

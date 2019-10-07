@@ -1,0 +1,48 @@
+
+<div class="row text-center">
+  <h1 class="col-12 text-center">{{nomCommuneConcerne}}</h1>
+</div>
+<div class="row" >
+
+  <div class="col-6" >
+<table class="table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col" class="text-center" *ngFor="let mesure of mesuresPollution | async">{{mesure.typeDeDonnee}}</th>
+    </tr>
+
+  </thead>
+  <tbody>
+
+    <tr>
+      <td class="text-center" *ngFor="let mesure of mesuresPollution | async">{{mesure.valeur}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="col-6" >
+<table class="table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col" class="text-center">Description</th>
+      <th scope="col" class="text-center">temperature</th>
+      <th scope="col" class="text-center">pressure</th>
+      <th scope="col" class="text-center">humidity</th>
+      <th scope="col" class="text-center">tempMin</th>
+      <th scope="col" class="text-center">tempMax</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="mesuresMeteo!=undefined">
+      <td class="text-center"> {{mesuresMeteo.weatherDescription}}</td>
+      <td class="text-center"> {{mesuresMeteo.temperature}}</td>
+      <td class="text-center"> {{mesuresMeteo.pressure}}</td>
+      <td class="text-center"> {{mesuresMeteo.humidity}}</td>
+      <td class="text-center"> {{mesuresMeteo.tempMin}}</td>
+      <td class="text-center"> {{mesuresMeteo.tempMax}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+

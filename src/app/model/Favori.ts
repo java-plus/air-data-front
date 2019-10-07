@@ -74,8 +74,8 @@ export default interface Favori {
    */
   mesureCO: boolean;
   /**
-     * choix d’afficher la population
-     */
+   * choix d’afficher la population
+   */
   population: boolean;
 
 }
