@@ -24,7 +24,7 @@ import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.
 import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.component';
 
 import {ChartsModule} from 'ng2-charts';
-import {CarteComponent} from "./accueil/carte/carte.component";
+import {CarteComponent} from './accueil/carte/carte.component';
 
 @NgModule({
   declarations: [
