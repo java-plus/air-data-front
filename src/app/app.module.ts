@@ -40,7 +40,6 @@ import {ChartsModule} from 'ng2-charts';
     CourbeAnalyseComponent,
     SousLaCarteComponent,
     RechercheComponent,
-    RechercheComponent
 
 
   ],

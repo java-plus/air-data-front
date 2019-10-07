@@ -29,8 +29,9 @@ export class RechercheComponent implements OnInit {
    * fonction permettant de faire la recherche de données pour l’analyse
    */
   rechercher() {
+    this.carteService.publierDansSubjectCommuneCourante(this.communeRecupere.nom);
     this.carteService.recupererMesures(this.communeRecupere.codeCommune).subscribe(() => {}, () => {});
-    this.carteService.recupererMesuresMeteo(this.communeRecupere.codeCommune).subscribe(() => {}, () => {});
+    this.carteService.publierDansSubjectMesuresMeteoCourante(this.communeRecupere.codeCommune).subscribe(() => {}, () => {});
   }
 
   /**
