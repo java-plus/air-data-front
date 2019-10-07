@@ -20,16 +20,42 @@ import Utilisateur from 'src/app/model/Utilisateur';
 export class ListeFavorisComponent implements OnInit, OnDestroy {
 
   closeResult: string;
+  /**
+   * abonnement au subject contenant l'utilisateur connecté
+   */
   userConnectSub: Subscription;
+  /**
+   * abonnement au subject contenant le favori selectionné
+   */
   favoriSelectSub: Subscription;
-  favoriAEffacerSub: Subscription;
+  /**
+   * l'utilisateur connecté
+   */
   userConnecte: Utilisateur = undefined;
+
+  /**
+   * la liste de favori de l'utilisateur connecté
+   */
   listeFavoris: Favori[] = [];
+  /**
+   * le favori selectionné
+   */
   favoriSelection: Favori = undefined;
-  favoriAEffacer: Favori = undefined;
+  /**
+   * boolean definissant l'affichage du mode liste
+   */
   modeAffichageListe = false;
+  /**
+   * boolean definissant l'affichage du mode création
+   */
   modeCreation = false;
+  /**
+   * boolean definissant l'affichage du modification
+   */
   modeModification = false;
+  /**
+   * boolean definissant l'affichage de la modal de confirmation de suppression pur un favori
+   */
   afficherConfirmationSuppression = false;
 
 
@@ -41,16 +67,28 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
 
 
 
+  /**
+   * methode permettant de modifier l'ensemble des boolean des modes d 'affichage,
+   * afin de passer en true uniquement le mode concerné, ici : affichage du composant 'liste"
+   */
   setModeAffichageListe() {
     this.modeAffichageListe = true;
     this.modeCreation = false;
     this.modeModification = false;
   }
+  /**
+   * methode permettant de modifier l'ensemble des boolean des modes d 'affichage,
+   * afin de passer en true uniquement le mode concerné, ici : affichage du composant 'creation'
+   */
   setModeCreation() {
     this.modeAffichageListe = false;
     this.modeCreation = true;
     this.modeModification = false;
   }
+  /**
+   * methode permettant de modifier l'ensemble des boolean des modes d 'affichage,
+   * afin de passer en true uniquement le mode concerné, ici : affichage du composant 'modification'
+   */
   setModeModification() {
     this.modeAffichageListe = false;
     this.modeCreation = false;
@@ -58,21 +96,26 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
   }
 
 
-
-
+  /**
+   * Méthode permettant de passer en mode 'creation'
+   */
   afficherModeCreation() {
     this.setModeCreation();
   }
 
+  /**
+   * Méthode qui permet d'afficher le composant de modification de favori
+   * @param fav le favori a modifier
+   */
   afficherModeModification(fav: Favori) {
     this.setModeModification();
     this.favoriService.subFavoriSelectNext(fav);
   }
 
+  /** Méthode permettant d'afficher les informations en focntion du favori selectionné */
   afficherResultatFavori() {
 
   }
-
 
   /**
    * Méthode qui declenche l'affichage de la modal de confirmation de suppression du favor
@@ -83,7 +126,8 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
    */
   afficherConfSupp(content, fav: Favori) {
     this.afficherConfirmationSuppression = !this.afficherConfirmationSuppression;
-    this.favoriService.subFavoriAEffacertNext(fav);
+
+    this.favoriService.subFavoriSelectNext(fav);
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     });
@@ -96,45 +140,31 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
    *
    */
   supprimerFavori() {
-
-
-
     for (let i = 0; i < this.listeFavoris.length; i++) {
-      if (this.listeFavoris[i].id === this.favoriAEffacer.id) {
+      if (this.listeFavoris[i].id === this.favoriSelection.id) {
         this.listeFavoris.splice(i, 1);
       }
     }
-
-    this.favoriService.supprimerFavori(this.favoriAEffacer.id).subscribe(
-      () => [
-        this.userConnecte.listeFavori = this.listeFavoris,
-        this.authService.subConnecteNext(this.userConnecte)
-      ]
+    this.favoriService.supprimerFavori(this.favoriSelection.id).subscribe(
+      () => {
+        this.userConnecte.listeFavori = this.listeFavoris;
+        this.authService.subConnecteNext(this.userConnecte);
+      }
     );
-
   }
-
-
-
-
-
-
-
 
   ngOnInit() {
     this.userConnectSub = this.authService.subConnecte.subscribe(
-      (userConnecte) => [
-        this.userConnecte = userConnecte,
-        this.listeFavoris = userConnecte.listeFavori,
-        this.setModeAffichageListe()
-      ]
+      (userConnecte) => {
+        this.userConnecte = userConnecte;
+        this.listeFavoris = userConnecte.listeFavori;
+        this.setModeAffichageListe();
+      }
     );
     this.favoriSelectSub = this.favoriService.subFavoriSelect.subscribe(
       (favori) => this.favoriSelection = favori
     );
-    this.favoriAEffacerSub = this.favoriService.subFavoriAEffacer.subscribe(
-      (favAeff) => this.favoriAEffacer = favAeff
-    );
+
 
   }
 

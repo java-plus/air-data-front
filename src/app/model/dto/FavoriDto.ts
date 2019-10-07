@@ -4,10 +4,11 @@
  */
 export default interface Favoridto {
 
+  id: number;
   /**
    * commune du favori
    */
-  codeCommune: number;
+  codeCommune: string;
   /**
    * choix d’afficher la description du temps
    */
@@ -69,7 +70,7 @@ export default interface Favoridto {
    */
   mesureCO: boolean;
   /**
-     * choix d’afficher la population
-     */
+   * choix d’afficher la population
+   */
   population: boolean;
 }

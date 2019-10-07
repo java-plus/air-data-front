@@ -18,10 +18,14 @@ export class CreerFavorisComponent implements OnInit, OnDestroy {
 
   constructor(private favoriService: FavorisService, private authService: AuthServiceService, private listeFavorisComponent: ListeFavorisComponent) { }
 
+  /** l'utilisateur connecté */
   userConnecte: Utilisateur = undefined;
+  /** abonnement au subject conntenant l'utilisateur connecté */
   userConnectSub: Subscription;
 
+  /** favori que l'utilisateur va créer */
   nouveauFavori: FavoriDto = {
+    id: undefined,
     codeCommune: undefined,
     weatherDescription: false,
     weatherIcon: false,
@@ -41,32 +45,30 @@ export class CreerFavorisComponent implements OnInit, OnDestroy {
     population: false
   };
 
-  favoriSelection: Favori;
 
 
 
   /**
-   * Methode qui creer un nouveau favori
+   * Methode qui permet d'appeler le service afin d'enregistrer le nouveau favori
    */
   validerCreationFavori() {
     this.favoriService.enregistrerFavori(this.nouveauFavori).subscribe(
-      (fav) => [
-        this.userConnecte.listeFavori.push(fav),
-        this.authService.subConnecteNext(this.userConnecte)
-      ]
+      (fav) => {
+        this.userConnecte.listeFavori.push(fav);
+        this.authService.subConnecteNext(this.userConnecte);
+      }
     );
-
   }
-
+  /** méthode qui annule la création du favori et qui permet de repasser à l'affichage de la liste de favoris */
   annulerCreation() {
     this.listeFavorisComponent.setModeAffichageListe();
   }
 
   ngOnInit() {
     this.userConnectSub = this.authService.subConnecte.subscribe(
-      (userConnecte) => [
-        this.userConnecte = userConnecte
-      ]
+      (userConnecte) => {
+        this.userConnecte = userConnecte;
+      }
     );
   }
 
