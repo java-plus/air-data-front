@@ -55,7 +55,8 @@ export class FormulaireAnalyseComponent implements OnInit {
    * fonction recuperant la liste des communes pour l’auto completion
    * @param text$ observable pour l’autocompletion
    */
-  search = (text$: Observable<string>) => text$.pipe(flatMap((term) => this.communeService.chercherCommunes(term).pipe(map((listCommune) => listCommune.slice(0, 5)))));
+  search = (text$: Observable<string>) => text$.pipe(flatMap((term) => this.communeService.chercherCommunes(term)
+    .pipe(map((listCommune) => listCommune.slice(0, 5)))));
 
   constructor(private communeService: CommunesService, private mesuresService: MesuresService) { }
 
@@ -72,7 +73,7 @@ export class FormulaireAnalyseComponent implements OnInit {
    */
   rechercher() {
    this.mesuresService.recupererAnalyses(this.communeRecupere.codeCommune, this.indicateur, new Date(this.dateDebut.setHours( 0, 0, 0, 0)), new Date(this.dateFin.setHours(23, 59, 59, 999)))
-     .subscribe(() => {},
+     .subscribe(() => {this.messageError = undefined; },
        (err) => {
        if (err.status === 500) {
        this.messageError = 'Pas de données disponible pour cette recherche.';
