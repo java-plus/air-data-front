@@ -6,7 +6,6 @@ import {Observable, of, Subject} from 'rxjs';
 import {filter, flatMap, map, tap} from 'rxjs/operators';
 
 
-
 const URL_BACKEND = environment.backendUrl;
 const httpOptions = {
   headers: new HttpHeaders({
@@ -16,7 +15,9 @@ const httpOptions = {
 };
 
 
-
+/**
+ * Service lié à la manipulation de commune
+ */
 @Injectable({
   providedIn: 'root'
 })

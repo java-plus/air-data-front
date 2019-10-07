@@ -31,5 +31,5 @@
     </div>
   </div>
   <button class="btn btn-block btn-primary text-light my-3" (click)="rechercher()" [disabled]="etatCommune.invalid || etatindicateur.invalid || etatDateFin.invalid || etatDateDebut.invalid">Rechercher</button>
-  <p *ngIf="messageError" class="text-danger">{{messageError}}</p>
+  <p *ngIf="messageError" class="text-danger text-center">{{messageError}}</p>
 </form>

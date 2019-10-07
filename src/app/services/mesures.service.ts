@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders, HttpRequest} from '@angular/common/http';
-import Commune from '../model/Commune';
 import Analyse from '../model/Analyse';
 import {Observable, Subject} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({

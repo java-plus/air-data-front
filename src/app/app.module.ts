@@ -25,6 +25,7 @@ import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.
 import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.component';
 import {RechercheComponent} from './accueil/recherche/recherche.component';
 
+import {ChartsModule} from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {RechercheComponent} from './accueil/recherche/recherche.component';
     IconsModule,
     NgbDatepickerModule,
     NgbTypeaheadModule,
+    ChartsModule
 
   ],
   providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}],
