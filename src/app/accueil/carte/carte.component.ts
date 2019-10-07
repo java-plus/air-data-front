@@ -23,7 +23,7 @@ export class CarteComponent implements OnInit {
 
 
   codeCommune: string;
-  nomCommune:string;
+  nomCommune: string;
   listeDeMesurePollution: MesurePollution[];
   listeDeStationDeMesure: StationDeMesurePollution[];
   latitude: number;
@@ -113,10 +113,12 @@ export class CarteComponent implements OnInit {
 
 
       let carteService = this.carteService;
+      let obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure= this.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure;
+
       //fonction activée au clic de la sourie sur une commune
       function zoomToFeature(e) {
 
-        this.nomCommune=e.target.feature.properties.nom;
+        this.nomCommune = e.target.feature.properties.nom;
         carteService.informerCommuneCourante(this.nomCommune);
 
         let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
@@ -130,26 +132,11 @@ export class CarteComponent implements OnInit {
 
         this.codeCommune = e.target.feature.properties.code;
 
-        carteService.recupererMesures(this.codeCommune).subscribe((data: any) => {
+        carteService.recupererMesures(this.codeCommune).subscribe((data: MesurePollution[]) => {
 
-          this.listeDeMesurePollution = data;
-          for (const mesurePollution of this.listeDeMesurePollution) {
-            let laStationDeMesureEstDejaEnregistre = false;
-            for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
-              if (objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.id == mesurePollution.stationDeMesure.id) {
-                laStationDeMesureEstDejaEnregistre = true;
-                objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure.push(mesurePollution)
-              }
-            }
-            if (!laStationDeMesureEstDejaEnregistre) {
-              listeObjetsMesuresPollutionParStationDeMesure.push(
-                {
-                  stationDeMesurePollution: mesurePollution.stationDeMesure,
-                  listeDeMesurePollutionParStationDeMesure: [mesurePollution]
-                }
-              )
-            }
-          }
+          listeObjetsMesuresPollutionParStationDeMesure=obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(data);
+
+          console.log(listeObjetsMesuresPollutionParStationDeMesure)
           for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
             const myIcon = L.icon({
               iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
@@ -164,11 +151,11 @@ export class CarteComponent implements OnInit {
             objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.longitude],
               { icon: myIcon }).bindPopup(textePopUp).addTo(myfrugalmap);
           }
-          carteService.recupererMesuresMeteo(this.codeCommune).subscribe((data:any) => {
-            },
+          carteService.recupererMesuresMeteo(this.codeCommune).subscribe((data: any) => {
+          },
             (error: HttpErrorResponse) => {
-            console.log("error", error);
-          });
+              console.log("error", error);
+            });
         }
           , (error: HttpErrorResponse) => {
             console.log("error", error);
@@ -177,24 +164,26 @@ export class CarteComponent implements OnInit {
     })
   }
 
-  obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(){
-  for (const mesurePollution of this.listeDeMesurePollution) {
-    let laStationDeMesureEstDejaEnregistre = false;
-    for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
-      if (objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.id == mesurePollution.stationDeMesure.id) {
-        laStationDeMesureEstDejaEnregistre = true;
-        objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure.push(mesurePollution)
+  obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(listeDeMesurePollution: MesurePollution[]): MesuresPollutionParStationDeMesure {
+    let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure=[];
+    for (const mesurePollution of listeDeMesurePollution) {
+      let laStationDeMesureEstDejaEnregistre = false;
+      for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
+        if (objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.id == mesurePollution.stationDeMesure.id) {
+          laStationDeMesureEstDejaEnregistre = true;
+          objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure.push(mesurePollution)
+        }
+      }
+      if (!laStationDeMesureEstDejaEnregistre) {
+        listeObjetsMesuresPollutionParStationDeMesure.push(
+          {
+            stationDeMesurePollution: mesurePollution.stationDeMesure,
+            listeDeMesurePollutionParStationDeMesure: [mesurePollution]
+          }
+        );
       }
     }
-    if (!laStationDeMesureEstDejaEnregistre) {
-      listeObjetsMesuresPollutionParStationDeMesure.push(
-        {
-          stationDeMesurePollution: mesurePollution.stationDeMesure,
-          listeDeMesurePollutionParStationDeMesure: [mesurePollution]
-        }
-      )
-    }
+    return listeObjetsMesuresPollutionParStationDeMesure;
   }
-}
 
 }

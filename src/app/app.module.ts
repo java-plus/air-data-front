@@ -25,7 +25,6 @@ import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.
 import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.component';
 
 import {ChartsModule} from 'ng2-charts';
-import { CreerCompteComponent } from './creer-compte/creer-compte.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +38,6 @@ import { CreerCompteComponent } from './creer-compte/creer-compte.component';
     FormulaireAnalyseComponent,
     CourbeAnalyseComponent,
     SousLaCarteComponent,
-    CreerCompteComponent
 
 
 
