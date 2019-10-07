@@ -68,11 +68,7 @@ export class ModifierFavorisComponent implements OnInit, OnDestroy {
   /**
    * Méthode qui permet de valider et d'appeler le service afin d'enregistrer dans le back les modifications effectuées sur le favori
    */
-
-
   validerModificationFavori() {
-
-
     this._favoriService.modifierFavori(this.favoriSelectionTemp).subscribe(
       () => {
         this.modifierliste();
