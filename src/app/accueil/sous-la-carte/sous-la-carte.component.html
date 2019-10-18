@@ -8,14 +8,15 @@
 <table class="table table-sm">
   <thead class="thead-dark">
     <tr>
-      <th scope="col" class="text-center" *ngFor="let mesure of mesuresPollution | async">{{mesure.typeDeDonnee}}</th>
+      <th scope="col" class="text-center" *ngFor="let mesure of mesuresPollution | async">{{mesure.typeDeDonnee}}<i-feather name="frown" class="text-light "></i-feather></th>
     </tr>
 
   </thead>
   <tbody>
 
     <tr>
-      <td class="text-center" *ngFor="let mesure of mesuresPollution | async">{{mesure.valeur}}</td>
+      <td class="text-center" *ngFor="let mesure of mesuresPollution | async">{{mesure.valeur}} &#xb5;g/m&#179;
+      <p></p></td>
     </tr>
   </tbody>
 </table>
@@ -25,7 +26,7 @@
   <thead class="thead-dark">
     <tr>
       <th scope="col" class="text-center">Description</th>
-      <th scope="col" class="text-center">temperature</th>
+      <th scope="col" class="text-center">temperature </th>
       <th scope="col" class="text-center">pressure</th>
       <th scope="col" class="text-center">humidity</th>
       <th scope="col" class="text-center">tempMin</th>
@@ -34,12 +35,12 @@
   </thead>
   <tbody>
     <tr *ngIf="mesuresMeteo!=undefined">
-      <td class="text-center"> {{mesuresMeteo.weatherDescription}}</td>
-      <td class="text-center"> {{mesuresMeteo.temperature}}</td>
-      <td class="text-center"> {{mesuresMeteo.pressure}}</td>
-      <td class="text-center"> {{mesuresMeteo.humidity}}</td>
-      <td class="text-center"> {{mesuresMeteo.tempMin}}</td>
-      <td class="text-center"> {{mesuresMeteo.tempMax}}</td>
+      <td class="text-center"><img  src="https://openweathermap.org/img/wn/{{mesuresMeteo.weatherIcon}}@2x.png" alt=""></td>
+      <td class="text-center"> {{mesuresMeteo.temperature}} °C</td>
+      <td class="text-center"> {{mesuresMeteo.pressure}}  hPa</td>
+      <td class="text-center"> {{mesuresMeteo.humidity}}  %</td>
+      <td class="text-center"> {{mesuresMeteo.tempMin}}  °C</td>
+      <td class="text-center"> {{mesuresMeteo.tempMax}}  °C</td>
     </tr>
   </tbody>
 </table>

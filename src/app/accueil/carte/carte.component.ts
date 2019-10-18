@@ -42,6 +42,7 @@ export class CarteComponent implements OnInit {
   json: any;
 
 
+
   constructor(private carteService: CarteService, private http: HttpClient) { }
 
   // Lors de l'initialisation du composant la carte ainsi que tous ce qui la compose est créé:
@@ -50,9 +51,10 @@ export class CarteComponent implements OnInit {
   //  périmètres de communes: chargés à partir du fichier "communes.json" présents dans le dossier ./air-data-front/src/assets
   ngOnInit() {
 
-    console.log("ngOnInit");
+
     // Déclaration de la carte avec les coordonnées du centre et le niveau de zoom.
     const myfrugalmap = L.map('frugalmap').setView([47.4712, -0.3], 8);
+    const group = L.featureGroup().addTo(myfrugalmap);
 
     L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
       attribution: 'Frugal Map'
@@ -122,7 +124,6 @@ export class CarteComponent implements OnInit {
       function resetHighlight(e) {
 
 
-        console.log(e.target._leaflet_id)
         if (e.target.feature.properties.nom == nomCommune) {
 
         } else {
@@ -144,7 +145,9 @@ export class CarteComponent implements OnInit {
       let obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure = this.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure;
       let placerLesMarqueurs = this.placerLesMarqueurs;
       let obtenirBoondPourZoom = this.obtenirBoondPourZoom;
-      let idLayerEnregistre=this.idLayerEnregistre
+
+
+
       //fonction activée au clic de la sourie sur une commune
       function zoomToFeature(e) {
 
@@ -156,26 +159,20 @@ export class CarteComponent implements OnInit {
           dashArray: '',
           fillOpacity: 0.9
         });
-        console.log("idLayerEnregistre")
-        console.log(this.idLayerEnregistre)
-        console.log("-------------------")
+
         myfrugalmap.eachLayer((layer) => {
-          //console.log(layer._leaflet_id)
           if (layer instanceof L.Marker) {
             myfrugalmap.removeLayer(layer);
           }
-          if (layer._leaflet_id == this.idLayerEnregistre) {
-            console.log("ok")
+          if (group.getLayerId(layer) == carteService.getIdLayerEnregistre()) {
+
             geojson.resetStyle(layer)
           }
 
 
         });
+        carteService.setIdLayerEnregistre(e.target._leaflet_id)
 
-        this.idLayerEnregistre=e.target._leaflet_id;
-        console.log("this.idLayerEnregistre")
-        console.log(this.idLayerEnregistre)
-        console.log("-------------------")
 
         nomCommune = e.target.feature.properties.nom;
 
@@ -284,7 +281,7 @@ export class CarteComponent implements OnInit {
       });
       let textePopUp: string = '';
       for (const mesurePollution of objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure) {
-        textePopUp = textePopUp + ` ${mesurePollution.typeDeDonnee} : ${mesurePollution.valeur} --`
+        textePopUp = textePopUp + ` ${mesurePollution.typeDeDonnee} : ${mesurePollution.valeur} &#xb5;g/m&#179;--`
       }
       L.marker([objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.latitude,
       objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.longitude],
