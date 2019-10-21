@@ -14,4 +14,10 @@
     <button type="submit" [disabled]="etatIdentifiant.invalid || etatPassword.invalid" class="btn btn-block btn-primary" (click)=authentification(identifiant,password)>Se connecter</button>
     <p *ngIf="messageError" class="text-danger my-2">{{messageError}}</p>
 
+
+    <p>Pas encore de compte ? <br></p>
+                <a [routerLink]="['/creation-de-compte']">
+                <p>Creer Un Compte En quelques secondes</p>
+              </a>
+
 </form>

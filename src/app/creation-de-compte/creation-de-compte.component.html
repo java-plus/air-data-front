@@ -1,0 +1,79 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+
+
+
+
+
+<div class="container">
+<div class="card bg-light">
+<article class="card-body mx-auto" style="max-width: 400px;">
+	<h4 class="card-title mt-3 text-center">Créer mon compte</h4>
+
+
+	<form #form="ngForm" (ngSubmit)="register(form)" [ngFormOptions]="{ updateOn: 'blur'}">
+	<div class="form-group input-group col">
+    <div class="row">
+        <input name="identifiant" class="form-control" placeholder="Mon nom" type="text" [(ngModel)]="infoCreationDeCompte.identifiant" #etatNom="ngModel" ngModel required minlength="7">
+      </div><div class="row">
+        <small class="text-danger" *ngIf="etatNom.invalid  && etatNom.dirty">Le nom/pseudo choisi doit contenir au minimum 7 caractères</small>
+      </div>
+    </div> <!-- form-group// -->
+    <div class="form-group input-group col">
+     <div class="row">
+        <input name="email" class="form-control" placeholder="Mon email" type="email" [(ngModel)]="infoCreationDeCompte.email" #etatEmail="ngModel" ngModel pattern="^[a-zA-Z0–9.]+@[a-zA-Z0–9]+\.[a-z]{2,4}$" required>
+      </div>
+        <div class="row">
+        <small class="text-danger" *ngIf="etatEmail.invalid && etatEmail.dirty">L'email doit être au format jean@yahoo.fr</small>
+      </div>
+    </div>
+
+<!-- form-group// -->
+<div class="form-group input-group col">
+  <div class="row">
+    <input name="age" type="text" placeholder="Age" #etatAge="ngModel"  ngModel appAgeValidator required>
+  </div><div class="row">
+    <small class="text-danger" *ngIf="etatAge.invalid && etatAge.dirty">Vous ne pouvez pas créer de compte si vous avez moins de 18 ans</small>
+  </div>
+</div>
+
+
+    <!-- form-group// -->
+    <div class="form-group input-group col">
+    	<div class="row">
+        <input autocomplete="new-password"  class="form-control" placeholder="Ma ville" type="text" [(ngModel)]="communeRecupere"  #etatVille="ngModel"
+        [inputFormatter]="recupererNomCommune" [resultFormatter]="recupererNomCommune" [ngbTypeahead]="search" name="recuperationCommune" required (blur)="rechercheCorrespondanceCommune(communeRecupere)"/>
+      </div><div class="row">
+        <small class="text-danger" *ngIf="messageErreurVille">{{messageErreurVille}}</small>
+      </div>
+    </div>
+     <!-- form-group // -->
+    <div class="form-group input-group">
+    	<div class="row">
+        <input class="form-control" placeholder="Mon mot de passe" type="password" name="password" [(ngModel)]="infoCreationDeCompte.motDePasse"  #etatPassword="ngModel" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^A-Za-z0-9])(?!.*\s).{8,}$"  ngModel required>
+      </div><div class="row">
+        <small class="text-danger" *ngIf="etatPassword.invalid && etatPassword.dirty">Le mot de passe doit contenir une majuscule, un caractère spécial, un chiffre et au minimum 8 caractères</small>
+      </div>
+    </div> <!-- form-group// -->
+    <div class="form-group input-group">
+    	<div class="row">
+        <input class="form-control" placeholder="Confirmer mon mot de passe" type="password" name="confirmationMotDePasse" [(ngModel)]=confirmationMotDePasse #etatConfirmationMotDePasse="ngModel" ngModel required>
+      </div><div class="row">
+        <small class="text-danger" *ngIf="(etatConfirmationMotDePasse.invalid && etatConfirmationMotDePasse.dirty) || (confirmationMotDePasse !== infoCreationDeCompte.motDePasse && etatPassword.dirty && etatConfirmationMotDePasse.dirty)">les deux mots de passes ne correspondent pas</small>
+      </div>
+      </div> <!-- form-group// -->
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block" [disabled]="form.invalid"> Créer mon compte  </button>
+    </div> <!-- form-group// -->
+    <p *ngIf="messageErreurGlobal"> {{messageErreurGlobal}}</p>
+    <p class="text-center">Déjà un compte ? <a [routerLink]="['/login']" href="">M'identifier</a> </p>
+</form>
+</article>
+</div> <!-- card.// -->
+
+</div>
+<!--container end.//-->
+

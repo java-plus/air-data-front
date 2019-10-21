@@ -6,7 +6,6 @@ import { CreerFavorisComponent } from './favoris/creer-favoris/creer-favoris.com
 import { ListeFavorisComponent } from './favoris/liste-favoris/liste-favoris.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EmailValidatorDirective } from './validators/email-validator.directive';
 import { AccueilComponent } from './accueil/accueil.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -27,6 +26,8 @@ import {
 import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.component';
 import {ChartsModule} from 'ng2-charts';
 import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.component';
+import { CreationDeCompteComponent } from './creation-de-compte/creation-de-compte.component';
+import { AgeValidatorDirective } from './validators/age-validator.directive';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,6 @@ import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.comp
     CreerFavorisComponent,
     ListeFavorisComponent,
     LoginComponent,
-    EmailValidatorDirective,
     AccueilComponent,
     CarteComponent,
     AnalyseComponent,
@@ -42,7 +42,9 @@ import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.comp
     ModifierFavorisComponent,
     FormulaireAnalyseComponent,
     CourbeAnalyseComponent,
-    SousLaCarteComponent
+    SousLaCarteComponent,
+    CreationDeCompteComponent,
+    AgeValidatorDirective
   ],
   imports: [
     BrowserModule,
