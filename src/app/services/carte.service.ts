@@ -80,6 +80,18 @@ export class CarteService {
    * Cet fonction fait une requete dans le back pour obtenir les mesures pollution relative à une commune
    * Elle les insère ensuite dans un subject (ici _subMesuresPollutionCommuneConcerne) afin de passer l'information de composants en comosants
    */
+  getGeoJsonBack():Observable<any>{
+
+    return this.http
+        .get<any>(`${URL_BACKEND}/communes/pm10`, { withCredentials: true})
+        ;
+
+  }
+
+  /**
+   * Cet fonction fait une requete dans le back pour obtenir les mesures pollution relative à une commune
+   * Elle les insère ensuite dans un subject (ici _subMesuresPollutionCommuneConcerne) afin de passer l'information de composants en comosants
+   */
   recupererMesures(codeCommune:string):Observable<MesurePollution[]>{
 
     return this.http

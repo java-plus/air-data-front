@@ -27,6 +27,7 @@ import {
 import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.component';
 import {ChartsModule} from 'ng2-charts';
 import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.component';
+import { CartePm10Component } from './accueil/carte-pm10/carte-pm10.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.comp
     ModifierFavorisComponent,
     FormulaireAnalyseComponent,
     CourbeAnalyseComponent,
-    SousLaCarteComponent
+    SousLaCarteComponent,
+    CartePm10Component
   ],
   imports: [
     BrowserModule,
