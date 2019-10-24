@@ -4,6 +4,11 @@ import { CarteService } from '../../services/carte.service';
 import { MesurePollution } from '../../model/MesurePollution';
 import StationDeMesurePollution from '../../model/StationDeMesurePollution';
 import { HttpErrorResponse, HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import Utilisateur from 'src/app/model/Utilisateur';
+import Favori from 'src/app/model/Favori';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
+import { FavorisService } from 'src/app/services/favoris.service';
 
 
 
@@ -39,13 +44,46 @@ export class CarteComponent implements OnInit {
   json: any;
 
 
-  constructor(private carteService: CarteService, private http: HttpClient) { }
+  /**
+   * abonnement au subject contenant l'utilisateur connecté
+   */
+  userConnectSub: Subscription;
+  /**
+   * abonnement au subject contenant le favori selectionné
+   */
+  favoriSelectSub: Subscription;
+  /**
+   * l'utilisateur connecté
+   */
+  userConnecte: Utilisateur = undefined;
+
+  /**
+   * le favori selectionné
+   */
+  favoriSelection: Favori = undefined;
+
+  constructor(private favoriService:FavorisService, private authService:AuthServiceService,private carteService: CarteService, private http: HttpClient) { }
 
   // Lors de l'initialisation du composant la carte ainsi que tous ce qui la compose est créé:
   // _ marqueurs : sont créés si l'utilisateur clique sur une commune de la carte. Les marqueurs qui appparaissent sont ceux correspondant aux stations de mesures polutions de la BDD
   //               Leur position est déterminé selon la liste de 6 mesures pollution correspondant à une commune dans la BDD (NO2, SO2, PM10...). La fonction calcule les n stations de mesures corresponndantes.
   //  périmètres de communes: chargés à partir du fichier "communes.json" présents dans le dossier ./air-data-front/src/assets
   ngOnInit() {
+
+    this.userConnectSub = this.authService.subConnecte.subscribe(
+      (userConnecte) => {
+        this.userConnecte = userConnecte;
+
+      }
+    );
+   this.favoriSelectSub = this.favoriService.subFavoriSelect.subscribe(
+      (favori) => {
+        this.favoriSelection = favori;
+        console.log("----- composant carte -- pose du behaviorSubjectFavori ------");
+        console.log(this.favoriSelection);
+      },(error)=>console.log(error)
+      );
+
     // Déclaration de la carte avec les coordonnées du centre et le niveau de zoom.
     const myfrugalmap = L.map('frugalmap').setView([47.4712, -0.3], 8);
 

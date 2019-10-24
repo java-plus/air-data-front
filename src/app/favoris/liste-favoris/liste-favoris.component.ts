@@ -113,7 +113,15 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
   }
 
   /** Méthode permettant d'afficher les informations en focntion du favori selectionné */
-  afficherResultatFavori() {
+  afficherResultatFavori(fav) {
+    this.favoriService.subFavoriSelectNext(fav);
+    console.log("----- composant favori -- pose du behaviorSubjectFavori ------");
+    console.log(fav);
+    this.afficherResultatFavoriSurLaMap();
+  }
+
+  /** Méthode permettant d'afficher les informations du favori selectionné sur la map*/
+  afficherResultatFavoriSurLaMap() {
 
   }
 
@@ -164,6 +172,7 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
     this.favoriSelectSub = this.favoriService.subFavoriSelect.subscribe(
       (favori) => this.favoriSelection = favori
     );
+
 
 
   }

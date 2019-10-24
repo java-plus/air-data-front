@@ -28,6 +28,7 @@ export class SousLaCarteComponent implements OnInit {
   ngOnInit() {
     this.carteService.subNomCommuneConcerne.subscribe((data)=>this.nomCommuneConcerne=data);
     this.carteService.subMesuresMeteoCommuneConcerne.subscribe((data)=>this.mesuresMeteo=data);
+    console.log("----- composant sous-la-carte -- pose du behaviorSubjectFavori ------");
     console.log(this.nomCommuneConcerne)
   }
 
