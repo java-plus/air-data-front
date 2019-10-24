@@ -4,16 +4,16 @@ import * as L from 'leaflet';
 import { CarteService } from 'src/app/services/carte.service';
 
 @Component({
-  selector: 'app-carte-pm10',
-  templateUrl: './carte-pm10.component.html',
-  styleUrls: ['./carte-pm10.component.scss']
+  selector: 'app-carte-no2',
+  templateUrl: './carte-no2.component.html',
+  styleUrls: ['./carte-no2.component.scss']
 })
-export class CartePm10Component implements OnInit {
+export class CarteNo2Component implements OnInit {
 
   constructor(private http : HttpClient, private carteService: CarteService) { }
 
   ngOnInit() {
-    console.log("pm10")
+    console.log("no2")
     // Déclaration de la carte avec les coordonnées du centre et le niveau de zoom.
     const myfrugalmap = L.map('frugalmap').setView([47.4712, -0.3], 8);
     const group = L.featureGroup().addTo(myfrugalmap);
@@ -33,22 +33,22 @@ console.log(json);
       geojson = L.geoJSON(json, {
 
           style: function(feature) {
-            if (Number(feature.properties.pm10) > 180) {
+            if (Number(feature.properties.no2) > 400) {
               return {weight: 1,opacity: 0.1,dashArray: '3',color: "white", fillColor: "purple", fillOpacity: 0.5}
             }
-            if (Number(feature.properties.pm10) > 90) {
+            if (Number(feature.properties.no2) > 200) {
               return {weight: 1,opacity: 0.1,dashArray: '3',color: "white", fillColor: "red", fillOpacity: 0.5}
             }
-            else if (Number(feature.properties.pm10) > 60) {
+            else if (Number(feature.properties.no2) > 100) {
               return {weight: 1,opacity: 0.1,dashArray: '3',color: "white", fillColor: "yellow", fillOpacity: 0.5}
             }
-            else if (Number(feature.properties.pm10) > 35) {
+            else if (Number(feature.properties.no2) > 40) {
               return {weight: 1,opacity: 0.1,dashArray: '3',color: "white", fillColor: "orange", fillOpacity: 0.5}
             }
-            else if (Number(feature.properties.pm10) > 0) {
+            else if (Number(feature.properties.no2) > 0) {
               return {weight: 1,opacity: 0.1,dashArray: '3',color: "white", fillColor: "green", fillOpacity: 0.5}
             }
-            else if (Number(feature.properties.pm10) <= 0) {
+            else if (Number(feature.properties.no2) <= 0) {
               return {weight: 1,opacity: 0.1,dashArray: '3',color: "white", fillColor: "grey", fillOpacity: 0.5}
             }
           },
@@ -72,5 +72,6 @@ console.log(json);
     function resetHighlight(){};
     function zoomToFeature(){};
   }
+
 
 }
