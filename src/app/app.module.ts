@@ -27,12 +27,6 @@ import {
 import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.component';
 import {ChartsModule} from 'ng2-charts';
 import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.component';
-import { CartePm10Component } from './accueil/carte-pm10/carte-pm10.component';
-import { CartePm25Component } from './accueil/carte-pm25/carte-pm25.component';
-import { CarteSo2Component } from './accueil/carte-so2/carte-so2.component';
-import { CarteNo2Component } from './accueil/carte-no2/carte-no2.component';
-import { CarteO3Component } from './accueil/carte-o3/carte-o3.component';
-import { CarteCoComponent } from './accueil/carte-co/carte-co.component';
 import { CartePolluantsComponent } from './accueil/carte-polluants/carte-polluants.component';
 
 @NgModule({
@@ -50,12 +44,6 @@ import { CartePolluantsComponent } from './accueil/carte-polluants/carte-polluan
     FormulaireAnalyseComponent,
     CourbeAnalyseComponent,
     SousLaCarteComponent,
-    CartePm10Component,
-    CartePm25Component,
-    CarteSo2Component,
-    CarteNo2Component,
-    CarteO3Component,
-    CarteCoComponent,
     CartePolluantsComponent
   ],
   imports: [

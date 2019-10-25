@@ -3,6 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import { CarteService } from 'src/app/services/carte.service';
 
+
+interface SeuilPollution {
+  seuil: string,
+  couleur: string
+};
 @Component({
   selector: 'app-carte-polluants',
   templateUrl: './carte-polluants.component.html',
@@ -12,16 +17,21 @@ export class CartePolluantsComponent implements OnInit {
 
   constructor(private http: HttpClient, private carteService: CarteService, ) { }
   myfrugalmap: L.Map;
+  listeDesSeuilsDePollution: SeuilPollution[]= this.determinerTableauDesSeuils("pm10");
 
   ngOnInit() {
-    this.initMap("so2")
+    this.initMap("pm10")
   }
+
+
 
   initMap(polluant: string) {
 
+    this.listeDesSeuilsDePollution = this.determinerTableauDesSeuils(polluant);
+
     if (localStorage.getItem("polluants")) {
       this.initMapAvecCache(polluant);
-    }else{
+    } else {
 
       this.initMapSansCache(polluant);
     }
@@ -31,7 +41,7 @@ export class CartePolluantsComponent implements OnInit {
 
   initMapAvecCache(polluant: string) {
     console.log(polluant);
-    let json=JSON.parse(localStorage.getItem("polluants"));
+    let json = JSON.parse(localStorage.getItem("polluants"));
     if (this.myfrugalmap) {
       this.myfrugalmap.off();
       this.myfrugalmap.remove();
@@ -47,44 +57,44 @@ export class CartePolluantsComponent implements OnInit {
     // chargement du fichiers communes.json pour créer le périmètre des communes
 
 
-      let geojson;
-      geojson = L.geoJSON(json, {
-        style: function (feature) {
-          let seuils: number[] = determinerSeuils(polluant);
-          let verif: number = determinerVerif(feature,polluant);
+    let geojson;
+    geojson = L.geoJSON(json, {
+      style: function (feature) {
+        let seuils: number[] = determinerSeuils(polluant);
+        let verif: number = determinerVerif(feature, polluant);
 
-          if (verif > seuils[3]) {
-            return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "#8A2BE2", fillOpacity: 0.5 }
-          }
-          if (verif > seuils[2]) {
-            return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "red", fillOpacity: 0.5 }
-          }
-          else if (verif > seuils[1]) {
-            return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "yellow", fillOpacity: 0.5 }
-          }
-          else if (verif > seuils[0]) {
-            return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "orange", fillOpacity: 0.5 }
-          }
-          else if (verif > 0) {
-            return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "green", fillOpacity: 0.5 }
-          }
-          else if (verif <= 0) {
-            return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "grey", fillOpacity: 0.5 }
-          }
-        },
-        // Comportement de la carte devant les événements
-        // "survol de la sourie d'une commune" => highlightFeature,
-        // "sortie de la sourie d'une commune"=> resetHighlight
-        // "clic de la sourie sur une commune"=> zoomToFeature
-        onEachFeature: function onEachFeature(feature, layer) {
-          layer.on({
-            mouseover: highlightFeature,
-            mouseout: resetHighlight,
-            click: zoomToFeature
-          });
+        if (verif > seuils[3]) {
+          return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "#8A2BE2", fillOpacity: 0.5 }
         }
+        if (verif > seuils[2]) {
+          return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "red", fillOpacity: 0.5 }
+        }
+        else if (verif > seuils[1]) {
+          return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "yellow", fillOpacity: 0.5 }
+        }
+        else if (verif > seuils[0]) {
+          return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "orange", fillOpacity: 0.5 }
+        }
+        else if (verif > 0) {
+          return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "green", fillOpacity: 0.5 }
+        }
+        else if (verif <= 0) {
+          return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "white", fillOpacity: 0.5 }
+        }
+      },
+      // Comportement de la carte devant les événements
+      // "survol de la sourie d'une commune" => highlightFeature,
+      // "sortie de la sourie d'une commune"=> resetHighlight
+      // "clic de la sourie sur une commune"=> zoomToFeature
+      onEachFeature: function onEachFeature(feature, layer) {
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomToFeature
+        });
+      }
 
-      }).addTo(this.myfrugalmap);
+    }).addTo(this.myfrugalmap);
 
 
 
@@ -114,8 +124,8 @@ export class CartePolluantsComponent implements OnInit {
       geojson = L.geoJSON(json, {
         style: function (feature) {
           let seuils: number[] = determinerSeuils(polluant);
-          let verif: number = determinerVerif(feature,polluant);
-console.log(verif);
+          let verif: number = determinerVerif(feature, polluant);
+          console.log(verif);
           if (verif > seuils[3]) {
             return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "#8A2BE2", fillOpacity: 0.5 }
           }
@@ -156,25 +166,25 @@ console.log(verif);
     function zoomToFeature() { };
   }
 
-  determinerVerif(feature,polluant:string): number {
+  determinerVerif(feature, polluant: string): number {
     switch (polluant) {
       case "so2":
-      return Number(feature.properties.so2);
+        return Number(feature.properties.so2);
         break;
       case "pm10":
-      return Number(feature.properties.pm10);
+        return Number(feature.properties.pm10);
         break;
       case "pm25":
-      return Number(feature.properties.pm25);
+        return Number(feature.properties.pm25);
         break;
       case "co":
-      return Number(feature.properties.co);
+        return Number(feature.properties.co);
         break;
       case "o3":
-      return Number(feature.properties.o3);
+        return Number(feature.properties.o3);
         break;
       case "no2":
-      return Number(feature.properties.no2);
+        return Number(feature.properties.no2);
         break;
       default:
         break;
@@ -206,6 +216,36 @@ console.log(verif);
       default:
         break;
     }
+  }
+
+  determinerTableauDesSeuils(polluant: string): SeuilPollution[] {
+    let tableauDesSeuils: number[] = this.determinerSeuils(polluant);
+    return [
+      {
+        "seuil": `De ${tableauDesSeuils[3]} à l'infini`,
+        "couleur": "#8A2BE2"
+      },
+      {
+        "seuil": `De ${tableauDesSeuils[2]} à ${tableauDesSeuils[3]} μg`,
+        "couleur": "red"
+      },
+      {
+        "seuil": `De ${tableauDesSeuils[1]} à ${tableauDesSeuils[2]} μg`,
+        "couleur": "orange"
+      },
+      {
+        "seuil": `De ${tableauDesSeuils[0]} à ${tableauDesSeuils[1]} μg`,
+        "couleur": "yellow"
+      },
+      {
+        "seuil": `De 0 à ${tableauDesSeuils[0]} μg`,
+        "couleur": "green"
+      },
+      {
+        "seuil": `valeur incorrect ou absente`,
+        "couleur": "white"
+      }
+    ];
   }
 
 }

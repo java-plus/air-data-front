@@ -83,7 +83,7 @@ export class CarteService {
   getGeoJsonBack():Observable<any>{
 
     return this.http
-        .get<any>(`${URL_BACKEND}/communes/pm10`, { withCredentials: true})
+        .get<any>(`${URL_BACKEND}/communes/geojson`, { withCredentials: true})
         ;
 
   }
