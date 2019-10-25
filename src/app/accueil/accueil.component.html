@@ -12,10 +12,9 @@
 
   <div class="col-12 col-md-9 px-0">
 
-    <div class="d-none d-md-block" style="background-color: #969696; height: 80%"><app-carte></app-carte></div>
-
-    <div class="col bg-light" style=" height: 20%">
-    <app-sous-la-carte></app-sous-la-carte>
+    <div class="d-none d-md-block" [ngStyle]="{'backgroud-color':styleCarte[0],'height': styleCarte[1]}" ><app-carte></app-carte></div>
+    <div class="col bg-light" [hidden]="!affichageDonnees" style=" height: 30%">
+    <app-sous-la-carte  (estAffichable)="this.changerAffichageDonnees($event)" ></app-sous-la-carte>
     </div>
 
   </div>
