@@ -17,19 +17,48 @@ export class CartePolluantsComponent implements OnInit {
 
   constructor(private http: HttpClient, private carteService: CarteService, ) { }
   myfrugalmap: L.Map;
-  listeDesSeuilsDePollution: SeuilPollution[]= this.determinerTableauDesSeuils("pm10");
+  listeDesSeuilsDePollution: SeuilPollution[] = this.determinerTableauDesSeuils("pm10");
 
   ngOnInit() {
     this.initMap("pm10")
   }
 
+  /**
+   * Cette methode permet de retrouver les valeurs de pollution par commune mises en cache si elles existent et qu'elle datent de moins d'une heure.
+   * Sinon elle renvoie le string "pas de localStorage"
+   */
+  retrouverLocalStorageDesPolluants(): string {
+    let date: number = Date.now();
 
+    if (localStorage.length > 0) {
+      for (let index = 0; index < localStorage.length; index++) {
+        if (localStorage.key(index).startsWith("polluants")) {
+          let tempsDepuisStorage: number = Date.now() - (+localStorage.key(index).replace("polluants", ""));
+          if (tempsDepuisStorage < 3600000) {
+            let key = localStorage.key(index);
+            let value = localStorage.getItem(key)
+            return value
+          }
+        }
+      }
+      return "pas de localStorage"
 
+    } else {
+      return "pas de localStorage"
+    }
+  }
+
+  /**
+     * Cette methode permet
+     * _d'initialiser la variable this.listeDesSeuilsDePollution qui permet d'afficher correctement la légende.
+     * _de choisir entre l'utilisation des données de pollution par commune en cache ou l'appel du front pour charger les données
+     */
   initMap(polluant: string) {
 
     this.listeDesSeuilsDePollution = this.determinerTableauDesSeuils(polluant);
 
-    if (localStorage.getItem("polluants")) {
+
+    if (this.retrouverLocalStorageDesPolluants() != "pas de localStorage") {
       this.initMapAvecCache(polluant);
     } else {
 
@@ -38,10 +67,13 @@ export class CartePolluantsComponent implements OnInit {
   }
 
 
-
+  /**
+     * Cette methode initialise la map et n'est appelée que si les données de pollution par commune sont présentes en cache
+     *
+     */
   initMapAvecCache(polluant: string) {
-    console.log(polluant);
-    let json = JSON.parse(localStorage.getItem("polluants"));
+
+    let json = JSON.parse(this.retrouverLocalStorageDesPolluants());
     if (this.myfrugalmap) {
       this.myfrugalmap.off();
       this.myfrugalmap.remove();
@@ -51,60 +83,28 @@ export class CartePolluantsComponent implements OnInit {
       attribution: 'Frugal Map'
     }).addTo(this.myfrugalmap);
 
-    const determinerSeuils = this.determinerSeuils;
-    const determinerVerif = this.determinerVerif;
+
+    const determinerStyle = this.determinerStyle;
 
     // chargement du fichiers communes.json pour créer le périmètre des communes
 
 
     let geojson;
+    let determinerSeuils=this.determinerSeuils;
+    let determinerVerif=this.determinerVerif;
     geojson = L.geoJSON(json, {
       style: function (feature) {
         let seuils: number[] = determinerSeuils(polluant);
-        let verif: number = determinerVerif(feature, polluant);
-
-        if (verif > seuils[3]) {
-          return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "#8A2BE2", fillOpacity: 0.5 }
-        }
-        if (verif > seuils[2]) {
-          return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "red", fillOpacity: 0.5 }
-        }
-        else if (verif > seuils[1]) {
-          return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "yellow", fillOpacity: 0.5 }
-        }
-        else if (verif > seuils[0]) {
-          return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "orange", fillOpacity: 0.5 }
-        }
-        else if (verif > 0) {
-          return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "green", fillOpacity: 0.5 }
-        }
-        else if (verif <= 0) {
-          return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "white", fillOpacity: 0.5 }
-        }
-      },
-      // Comportement de la carte devant les événements
-      // "survol de la sourie d'une commune" => highlightFeature,
-      // "sortie de la sourie d'une commune"=> resetHighlight
-      // "clic de la sourie sur une commune"=> zoomToFeature
-      onEachFeature: function onEachFeature(feature, layer) {
-        layer.on({
-          mouseover: highlightFeature,
-          mouseout: resetHighlight,
-          click: zoomToFeature
-        });
+    let verif: number = determinerVerif(feature, polluant);
+          let retour=determinerStyle(seuils, verif);
+        return retour;
       }
-
     }).addTo(this.myfrugalmap);
 
-
-
-    function highlightFeature() { };
-    function resetHighlight() { };
-    function zoomToFeature() { };
   }
 
   initMapSansCache(polluant: string) {
-    console.log(polluant);
+
     if (this.myfrugalmap) {
       this.myfrugalmap.off();
       this.myfrugalmap.remove();
@@ -114,57 +114,55 @@ export class CartePolluantsComponent implements OnInit {
       attribution: 'Frugal Map'
     }).addTo(this.myfrugalmap);
 
-    const determinerSeuils = this.determinerSeuils;
-    const determinerVerif = this.determinerVerif;
+
+    const determinerStyle = this.determinerStyle;
 
     // chargement du fichiers communes.json pour créer le périmètre des communes
     this.carteService.getGeoJsonBack().subscribe((json: any) => {
-      localStorage.setItem("polluants", JSON.stringify(json));
+      let date: number = Date.now();
+      let nomStorage: string = "polluants" + date;
+      localStorage.setItem(nomStorage, JSON.stringify(json));
       let geojson;
+      let determinerSeuils=this.determinerSeuils;
+    let determinerVerif=this.determinerVerif;
       geojson = L.geoJSON(json, {
         style: function (feature) {
           let seuils: number[] = determinerSeuils(polluant);
           let verif: number = determinerVerif(feature, polluant);
-          console.log(verif);
-          if (verif > seuils[3]) {
-            return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "#8A2BE2", fillOpacity: 0.5 }
-          }
-          if (verif > seuils[2]) {
-            return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "red", fillOpacity: 0.5 }
-          }
-          else if (verif > seuils[1]) {
-            return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "yellow", fillOpacity: 0.5 }
-          }
-          else if (verif > seuils[0]) {
-            return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "orange", fillOpacity: 0.5 }
-          }
-          else if (verif > 0) {
-            return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "green", fillOpacity: 0.5 }
-          }
-          else if (verif <= 0) {
-            return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "white", fillOpacity: 0.5 }
-          }
-        },
-        // Comportement de la carte devant les événements
-        // "survol de la sourie d'une commune" => highlightFeature,
-        // "sortie de la sourie d'une commune"=> resetHighlight
-        // "clic de la sourie sur une commune"=> zoomToFeature
-        onEachFeature: function onEachFeature(feature, layer) {
-          layer.on({
-            mouseover: highlightFeature,
-            mouseout: resetHighlight,
-            click: zoomToFeature
-          });
+                let retour=determinerStyle(seuils, verif);
+              return retour;
         }
 
       }).addTo(this.myfrugalmap);
 
     });
 
-    function highlightFeature() { };
-    function resetHighlight() { };
-    function zoomToFeature() { };
   }
+
+  determinerStyle(seuils, verif) {
+
+
+
+    if (verif > seuils[3]) {
+      return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "#8A2BE2", fillOpacity: 0.5 }
+    }
+    if (verif > seuils[2]) {
+      return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "red", fillOpacity: 0.5 }
+    }
+    else if (verif > seuils[1]) {
+      return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "yellow", fillOpacity: 0.5 }
+    }
+    else if (verif > seuils[0]) {
+      return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "orange", fillOpacity: 0.5 }
+    }
+    else if (verif > 0) {
+      return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "green", fillOpacity: 0.5 }
+    }
+    else if (verif <= 0) {
+      return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "white", fillOpacity: 0.5 }
+    }
+  }
+
 
   determinerVerif(feature, polluant: string): number {
     switch (polluant) {
@@ -193,7 +191,7 @@ export class CartePolluantsComponent implements OnInit {
   }
 
   determinerSeuils(polluant): number[] {
-    console.log(polluant);
+
     switch (polluant) {
       case "so2":
         return [100, 200, 350, 500]

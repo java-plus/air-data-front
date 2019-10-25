@@ -20,6 +20,7 @@ export class SousLaCarteComponent implements OnInit {
   // Cette valeur est chargée grâce à une promesse et est donc asynchrone
   mesuresMeteo:MesureMeteo;
 
+  // variable représentant la commune courante sélectionnée par l'utilisateur dans le composant carte ou dans les favoris
   nomCommuneConcerne:string;
 
 
@@ -29,7 +30,7 @@ export class SousLaCarteComponent implements OnInit {
   ngOnInit() {
     this.carteService.subNomCommuneConcerne.subscribe((data)=>this.nomCommuneConcerne=data);
     this.carteService.subMesuresMeteoCommuneConcerne.subscribe((data)=>this.mesuresMeteo=data);
-    console.log(this.nomCommuneConcerne)
+
   }
 
 
