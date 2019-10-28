@@ -104,9 +104,6 @@ export class CartePolluantsComponent implements OnInit {
   clickSurMap(codeCommune: string, nomCommune: string, e) {
     this.myFrugalMapLocal = this.myfrugalmap;
 
-    console.log("----------clickSurMap-----------")
-    console.log("this.carteService.getIdLayerEnregistre()")
-    console.log(this.carteService.getIdLayerEnregistre())
     this.myFrugalMapLocal.eachLayer((layer) => {
       if (layer instanceof L.Marker) {
         this.myfrugalmap.removeLayer(layer);
@@ -121,8 +118,6 @@ export class CartePolluantsComponent implements OnInit {
         if (layer.feature) {
           if (layer.feature.properties.code == codeCommune) {
             this.carteService.setIdLayerEnregistre(this.group.getLayerId(layer));
-            console.log("this.carteService.getIdLayerEnregistre()")
-            console.log(this.carteService.getIdLayerEnregistre())
             layer.setStyle({
               weight: 1,
               color: 'red',
@@ -505,10 +500,6 @@ export class CartePolluantsComponent implements OnInit {
 
         });
         carteService.setIdLayerEnregistre(e.target._leaflet_id)
-        console.log("carteService.setIdLayerEnregistre(e.target._leaflet_id)")
-        console.log(e.target._leaflet_id)
-        console.log(carteService.getIdLayerEnregistre())
-
 
         nomCommune = e.target.feature.properties.nom;
 

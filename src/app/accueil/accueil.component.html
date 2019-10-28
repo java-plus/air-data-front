@@ -26,14 +26,16 @@
 
     <div class="d-none d-md-block carte" [ngStyle]="{'backgroud-color':styleCarte[0],'height': styleCarte[1]}">
       <div class="btn-carte">
-        <button *ngIf="!affichageCarteCouleur" (click)="changerValeurAffichageCarteCouleur()">Afficher carte
-          couleur</button>
+        <button *ngIf="!affichageCarteCouleur" (click)="changerValeurAffichageCarteCouleur()"><i-feather  name="layers" class="big fill-red"></i-feather><br>
 
-        <button *ngIf="affichageCarteCouleur" (click)="changerValeurAffichageCarteCouleur()">Afficher carte
-          normale</button>
+          Carte Couleur</button>
+
+
+        <button *ngIf="affichageCarteCouleur" (click)="changerValeurAffichageCarteCouleur()"><i-feather  name="layers" class="big fill-red"></i-feather><br>Carte Normale</button>
       </div>
 
       <app-carte *ngIf="!affichageCarteCouleur"></app-carte>
+
 
       <app-carte-polluants *ngIf="affichageCarteCouleur"></app-carte-polluants>
     </div>
