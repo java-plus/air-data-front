@@ -3,11 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import { CarteService } from 'src/app/services/carte.service';
 
-
+/**
+   * Cette interface représente l'échelle de pollution présente sur la carte et qui renseigne l'utilisateur sur la signification des couleurs pour chaque polluant
+   */
 interface SeuilPollution {
   seuil: string,
   couleur: string
 };
+
+
+/**
+   * Classe CartePolluantsComponent représentant la carte couleur des polluants et l'url http://localhost:8080/communes/geojson
+   */
 @Component({
   selector: 'app-carte-polluants',
   templateUrl: './carte-polluants.component.html',
@@ -15,10 +22,24 @@ interface SeuilPollution {
 })
 export class CartePolluantsComponent implements OnInit {
 
+
   constructor(private http: HttpClient, private carteService: CarteService, ) { }
+
+  /**
+   * Cette variable rerprésente la map, elle même créé via la commande this.myfrugalmap = L.map('frugalmap').setView([47.4712, -0.3], 8)
+   * On a besoin de créer cette variable pour pouvoir la réinitialiser afin de créer une nouvelle carte avec un nouveau polluant.
+   */
   myfrugalmap: L.Map;
+
+  /**
+   * Cette variable rerprésente l'initialisation de l'echelle de pollution. En effet lors du chargement du composant c'est le polluant PM10 qui est affiché par défaut.
+   * On initialise donc listeDesSeuilsDePollution pour afficher la bonne echelle.
+   */
   listeDesSeuilsDePollution: SeuilPollution[] = this.determinerTableauDesSeuils("pm10");
 
+  /**
+   * Au chargement du composant, on initialise la map (via initMap()) avec le polluant PM10
+   */
   ngOnInit() {
     this.initMap("pm10")
   }
@@ -28,7 +49,7 @@ export class CartePolluantsComponent implements OnInit {
    * Sinon elle renvoie le string "pas de localStorage"
    */
   retrouverLocalStorageDesPolluants(): string {
-    let date: number = Date.now();
+
 
     if (localStorage.length > 0) {
       for (let index = 0; index < localStorage.length; index++) {
@@ -86,9 +107,6 @@ export class CartePolluantsComponent implements OnInit {
 
     const determinerStyle = this.determinerStyle;
 
-    // chargement du fichiers communes.json pour créer le périmètre des communes
-
-
     let geojson;
     let determinerSeuils=this.determinerSeuils;
     let determinerVerif=this.determinerVerif;
@@ -103,6 +121,10 @@ export class CartePolluantsComponent implements OnInit {
 
   }
 
+    /**
+     * Cette methode initialise la map et n'est appelée que si les données de pollution par commune ne sont pas présentes en cache
+     *
+     */
   initMapSansCache(polluant: string) {
 
     if (this.myfrugalmap) {
@@ -139,10 +161,13 @@ export class CartePolluantsComponent implements OnInit {
 
   }
 
+  /**
+     * Cette methode determine la couleur de chaque commune en fonction du taux de pollution du polluant concerné et en fonction des seuils de pollutions concernés
+     * Elle prend en paramètres les "seuils" et les "verif" qui sont determinés via les méthodes de la même classe determinerVerif(feature, polluant: string)
+     * et determinerSeuils(polluant)
+     *
+     */
   determinerStyle(seuils, verif) {
-
-
-
     if (verif > seuils[3]) {
       return { weight: 1, opacity: 0.1, dashArray: '3', color: "white", fillColor: "#8A2BE2", fillOpacity: 0.5 }
     }
@@ -163,7 +188,10 @@ export class CartePolluantsComponent implements OnInit {
     }
   }
 
-
+/**
+     * Cette methode determine le taux de pollution à prendre en compte dans la map. Elle extraie une valeur de pollution du geoJson en fonction du polluant demandé
+     *
+     */
   determinerVerif(feature, polluant: string): number {
     switch (polluant) {
       case "so2":
@@ -190,6 +218,11 @@ export class CartePolluantsComponent implements OnInit {
 
   }
 
+  /**
+     * Cette methode determine les seuils des taux de pollutions à prendre en compte en fonction du polluant. exemple: si le polluant est PM10, une très forte pollution
+     * équivalente à la couleur violette sur la carte correspond à un taux de pollution supérieur à 60 microgramme/m3, une forte pollution équivalente à la couleur rouge sur la carte correspond à un taux de pollution supérieur à 45 microgramme/m3
+     *
+     */
   determinerSeuils(polluant): number[] {
 
     switch (polluant) {
@@ -216,11 +249,15 @@ export class CartePolluantsComponent implements OnInit {
     }
   }
 
+  /**
+     * Cette methode permet de créer la visualisation de l'échelle de pollution sur le front. exemple: si le polluant est PM10, une très forte pollution
+     * équivalente à la couleur violette sur la carte correspond à la phrase "de 60 μg à l'infini"
+     */
   determinerTableauDesSeuils(polluant: string): SeuilPollution[] {
     let tableauDesSeuils: number[] = this.determinerSeuils(polluant);
     return [
       {
-        "seuil": `De ${tableauDesSeuils[3]} à l'infini`,
+        "seuil": `De ${tableauDesSeuils[3]} μg à l'infini`,
         "couleur": "#8A2BE2"
       },
       {
