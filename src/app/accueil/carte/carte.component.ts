@@ -124,7 +124,7 @@ export class CarteComponent implements OnInit {
       };
       info.update = function (props) {
         this._div.innerHTML = '<h4>' + (props ? '<b>' + props.nom + '</b><br />'
-          : 'Hover over a state');
+          : '');
       };
       info.addTo(myfrugalmap);
 
@@ -217,8 +217,8 @@ export class CarteComponent implements OnInit {
             },
               (error: HttpErrorResponse) => {
                 console.log('error', error);
-              })
-          })
+              });
+          });
         }
           , (error: HttpErrorResponse) => {
             console.log('error', error);
