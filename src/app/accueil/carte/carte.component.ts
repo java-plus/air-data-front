@@ -17,12 +17,7 @@ type MesuresPollutionParStationDeMesure = Array<{
   listeDeMesurePollutionParStationDeMesure: MesurePollution[]
 }>;
 
-type BoondZoom = {
-  southWest: _southWest,
-  northEast: _northEast
-};
-type _southWest = { southLat: number, westLng: number };
-type _northEast = { northLat: number, eastLng: number };
+
 
 
 //Class CarteComponent représentant le composant "Carte" du front
@@ -77,28 +72,7 @@ export class CarteComponent implements OnInit {
   //  périmètres de communes: chargés à partir du fichier "communes.json" présents dans le dossier ./air-data-front/src/assets
   ngOnInit() {
 
-    this.userConnectSub = this.authService.subConnecte.subscribe(
-      (userConnecte) => {
-        this.userConnecte = userConnecte;
 
-      }
-    );
-    this.favoriSelectSub = this.favoriService.subFavoriSelect.subscribe(
-      (favori) => {
-        this.favoriSelection = favori;
-        if (this.favoriSelection) {
-          let codeCommune = this.favoriSelection.commune.codeCommune;
-          let latitude = this.favoriSelection.commune.latitude;
-          let longitude = this.favoriSelection.commune.longitude;
-          const nomCommune = this.favoriSelection.commune.nom;
-          this.clickSurMap(codeCommune,nomCommune, {
-            originalEvent: MouseEvent,
-            latlng: { lat: latitude, lng: longitude },
-            type: "click"
-          });
-        }
-      }, (error) => console.log(error)
-    );
 
     // Déclaration de la carte avec les coordonnées du centre et le niveau de zoom.
     const myfrugalmap = L.map('frugalmap').setView([47.4712, -0.3], 8);
@@ -132,7 +106,7 @@ export class CarteComponent implements OnInit {
       // couleur du périmètre et de l'intérieur des communes
       geojson = L.geoJSON(json, {
         style: {
-          fillColor: 'grey',
+          fillColor: '#0095FF',
           weight: 5,
           opacity: 0.1,
           color: 'white',
@@ -183,9 +157,12 @@ export class CarteComponent implements OnInit {
         }
       }
 
-      let obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure = this.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure;
-      let placerLesMarqueurs = this.placerLesMarqueurs;
-      let obtenirBoondPourZoom = this.obtenirBoondPourZoom;
+
+      let obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure = this.carteService.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure;
+      let placerLesMarqueurs = this.carteService.placerLesMarqueurs;
+      let obtenirBoondPourZoom = this.carteService.obtenirBoondPourZoom;
+
+
 
       //fonction activée au clic de la sourie sur une commune
       function zoomToFeature(e) {
@@ -226,6 +203,29 @@ export class CarteComponent implements OnInit {
           });
       }
     });
+
+    this.userConnectSub = this.authService.subConnecte.subscribe(
+      (userConnecte) => {
+        this.userConnecte = userConnecte;
+
+      }
+    );
+    this.favoriSelectSub = this.favoriService.subFavoriSelect.subscribe(
+      (favori) => {
+        this.favoriSelection = favori;
+        if (this.favoriSelection) {
+          let codeCommune = this.favoriSelection.commune.codeCommune;
+          let latitude = this.favoriSelection.commune.latitude;
+          let longitude = this.favoriSelection.commune.longitude;
+          const nomCommune = this.favoriSelection.commune.nom;
+          this.clickSurMap(codeCommune,nomCommune, {
+            originalEvent: MouseEvent,
+            latlng: { lat: latitude, lng: longitude },
+            type: "click"
+          });
+        }
+      }, (error) => console.log(error)
+    );
   }
   //------ fin du ngOnInit ---------//
 
@@ -259,13 +259,13 @@ export class CarteComponent implements OnInit {
 
 
     this.carteService.recupererMesures(codeCommune).subscribe((data: MesurePollution[]) => {
-      listeObjetsMesuresPollutionParStationDeMesure = this.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(data);
+      listeObjetsMesuresPollutionParStationDeMesure = this.carteService.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(data);
         this.carteService.publierDansSubjectCommuneCourante(nomCommune);
-      this.placerLesMarqueurs(listeObjetsMesuresPollutionParStationDeMesure, this.myFrugalMapLocal);
+      this.carteService.placerLesMarqueurs(listeObjetsMesuresPollutionParStationDeMesure, this.myFrugalMapLocal);
       this.carteService.obtenirCoordonneeGpsCommune(codeCommune).subscribe((resp) => {
         let latCommune = resp[0].centre.coordinates[1];
         let lngCommune = resp[0].centre.coordinates[0];
-        const boondPourZomm: number[] = this.obtenirBoondPourZoom(latCommune, lngCommune, data);
+        const boondPourZomm: number[] = this.carteService.obtenirBoondPourZoom(latCommune, lngCommune, data);
         this.myFrugalMapLocal.fitBounds([[boondPourZomm[0], boondPourZomm[1]], [boondPourZomm[2], boondPourZomm[3]]]);
         this.carteService.publierDansSubjectMesuresMeteoCourante(codeCommune).subscribe(() => {
         },
@@ -280,79 +280,5 @@ export class CarteComponent implements OnInit {
 
   }
 
-  //Cette fonction permet de determiner un cadre de "zoom" pour la carte au moment de la selection d'une commune
-  obtenirBoondPourZoom(latCommune: number, lngCommune: number, listeDeMesurePollution: MesurePollution[]): number[] {
-
-    let latMin: number = Number.MAX_VALUE;
-    let latMax: number = -Number.MAX_VALUE;
-    let lngMin: number = Number.MAX_VALUE;
-    let lngMax: number = -Number.MAX_VALUE;
-
-    for (const mesurePollution of listeDeMesurePollution) {
-      if (mesurePollution.stationDeMesure.latitude < latMin) {
-        latMin = mesurePollution.stationDeMesure.latitude;
-      }
-      if (mesurePollution.stationDeMesure.latitude > latMax) {
-        latMax = mesurePollution.stationDeMesure.latitude;
-      }
-      if (mesurePollution.stationDeMesure.longitude < lngMin) {
-        lngMin = mesurePollution.stationDeMesure.longitude;
-      }
-      if (mesurePollution.stationDeMesure.longitude > lngMax) {
-        lngMax = mesurePollution.stationDeMesure.longitude;
-      }
-    }
-    latCommune > latMax ? latMax = latCommune : latMax = latMax;
-    latCommune < latMin ? latMin = latCommune : latMin = latMin;
-
-    lngCommune > lngMax ? lngMax = lngCommune : lngMax = lngMax;
-    lngCommune < lngMin ? lngMin = lngCommune : lngMin = lngMin;
-
-    let reponse: number[] = [latMin, lngMax, latMax, lngMin];
-    return reponse;
-
-  };
-
-
-  // Cette fonction permet retourne la liste des mesures de chaque station de mesure correspondant à une commune
-  obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(listeDeMesurePollution: MesurePollution[]): MesuresPollutionParStationDeMesure {
-    let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
-    for (const mesurePollution of listeDeMesurePollution) {
-      let laStationDeMesureEstDejaEnregistre = false;
-      for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
-        if (objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.id == mesurePollution.stationDeMesure.id) {
-          laStationDeMesureEstDejaEnregistre = true;
-          objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure.push(mesurePollution)
-        }
-      }
-      if (!laStationDeMesureEstDejaEnregistre) {
-        listeObjetsMesuresPollutionParStationDeMesure.push(
-          {
-            stationDeMesurePollution: mesurePollution.stationDeMesure,
-            listeDeMesurePollutionParStationDeMesure: [mesurePollution]
-          }
-        );
-      }
-    }
-    return listeObjetsMesuresPollutionParStationDeMesure;
-  }
-
-  //Cette fonction place les marqueurs représentant les stations de mesures sur la carte
-  placerLesMarqueurs(listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure, myfrugalmap: L.Map) {
-    for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
-      const myIcon = L.icon({
-        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
-        iconAnchor: [10, 30],
-        iconSize: [20, 30]
-      });
-      let textePopUp: string = '';
-      for (const mesurePollution of objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure) {
-        textePopUp = textePopUp + ` ${mesurePollution.typeDeDonnee} : ${mesurePollution.valeur} &#xb5;g/m&#179;--`
-      }
-      L.marker([objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.latitude,
-      objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.longitude],
-        { icon: myIcon }).bindPopup(textePopUp).addTo(myfrugalmap);
-    }
-  }
 
 }

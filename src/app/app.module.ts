@@ -26,6 +26,7 @@ import {
 import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.component';
 import {ChartsModule} from 'ng2-charts';
 import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.component';
+import { CartePolluantsComponent } from './accueil/carte-polluants/carte-polluants.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.comp
     ModifierFavorisComponent,
     FormulaireAnalyseComponent,
     CourbeAnalyseComponent,
-    SousLaCarteComponent
+    SousLaCarteComponent,
+    CartePolluantsComponent
   ],
   imports: [
     BrowserModule,
