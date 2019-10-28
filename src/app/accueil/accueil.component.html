@@ -23,8 +23,11 @@
         <button *ngIf="affichageCarteCouleur" (click)="changerValeurAffichageCarteCouleur()">Afficher carte
           normale</button>
       </div>
+      <div class="d-none d-md-block" [ngStyle]="{'backgroud-color':styleCarte[0],'height': styleCarte[1]}" >
       <app-carte *ngIf="!affichageCarteCouleur"></app-carte>
+
       <app-carte-polluants *ngIf="affichageCarteCouleur"></app-carte-polluants>
+    </div>
       <div class="col bg-light" [hidden]="!affichageDonnees" style=" height: 30%">
         <app-sous-la-carte  (estAffichable)="this.changerAffichageDonnees($event)" ></app-sous-la-carte>
         </div>
