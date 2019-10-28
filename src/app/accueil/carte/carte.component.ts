@@ -141,11 +141,11 @@ export class CarteComponent implements OnInit {
       }
 
 
+      let obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure = this.carteService.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure;
+      let placerLesMarqueurs = this.carteService.placerLesMarqueurs;
+      let obtenirBoondPourZoom = this.carteService.obtenirBoondPourZoom;
 
 
-      let obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure = this.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure;
-      let placerLesMarqueurs = this.placerLesMarqueurs;
-      let obtenirBoondPourZoom = this.obtenirBoondPourZoom;
 
 
 
@@ -217,77 +217,6 @@ export class CarteComponent implements OnInit {
     });
   }
 
-  obtenirBoondPourZoom(latCommune: number, lngCommune: number, listeDeMesurePollution: MesurePollution[]): number[] {
-    let latMin: number = Number.MAX_VALUE;
-    let latMax: number = Number.MIN_VALUE;
-    let lngMin: number = Number.MAX_VALUE;
-    let lngMax: number = Number.MIN_VALUE;
 
-    for (const mesurePollution of listeDeMesurePollution) {
-      if (mesurePollution.stationDeMesure.latitude < latMin) {
-        latMin = mesurePollution.stationDeMesure.latitude;
-      }
-      if (mesurePollution.stationDeMesure.latitude > latMax) {
-        latMax = mesurePollution.stationDeMesure.latitude;
-      }
-      if (mesurePollution.stationDeMesure.longitude < lngMin) {
-        lngMin = mesurePollution.stationDeMesure.longitude;
-      }
-      if (mesurePollution.stationDeMesure.longitude > lngMax) {
-        lngMax = mesurePollution.stationDeMesure.longitude;
-      }
-    }
-    latCommune > latMax ? latMax = latCommune : latMax = latMax;
-    latCommune < latMin ? latMin = latCommune : latMin = latMin;
-
-    lngCommune > lngMax ? lngMax = lngCommune : lngMax = lngMax;
-    lngCommune < lngMin ? lngMin = lngCommune : lngMin = lngMin;
-
-    let reponse: number[] = [latMin, lngMax, latMax, lngMin];
-
-
-    return reponse;
-
-  };
-
-
-  obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(listeDeMesurePollution: MesurePollution[]): MesuresPollutionParStationDeMesure {
-    let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
-    for (const mesurePollution of listeDeMesurePollution) {
-      let laStationDeMesureEstDejaEnregistre = false;
-      for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
-        if (objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.id == mesurePollution.stationDeMesure.id) {
-          laStationDeMesureEstDejaEnregistre = true;
-          objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure.push(mesurePollution)
-        }
-      }
-      if (!laStationDeMesureEstDejaEnregistre) {
-        listeObjetsMesuresPollutionParStationDeMesure.push(
-          {
-            stationDeMesurePollution: mesurePollution.stationDeMesure,
-            listeDeMesurePollutionParStationDeMesure: [mesurePollution]
-          }
-        );
-      }
-    }
-    return listeObjetsMesuresPollutionParStationDeMesure;
-  }
-
-  placerLesMarqueurs(listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure, myfrugalmap: L.Map) {
-    for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
-      const myIcon = L.icon({
-        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
-        iconAnchor: [10, 30],
-        iconSize: [20, 30]
-      });
-      let textePopUp: string = '';
-      for (const mesurePollution of objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure) {
-        textePopUp = textePopUp + ` ${mesurePollution.typeDeDonnee} : ${mesurePollution.valeur} &#xb5;g/m&#179;--`
-      }
-      L.marker([objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.latitude,
-      objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.longitude],
-        { icon: myIcon }).bindPopup(textePopUp).addTo(myfrugalmap);
-    }
-  }
 
 }

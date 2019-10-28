@@ -67,6 +67,7 @@ export class CartePolluantsComponent implements OnInit {
       for (let index = 0; index < localStorage.length; index++) {
         if (localStorage.key(index).startsWith("polluants")) {
           let tempsDepuisStorage: number = Date.now() - (+localStorage.key(index).replace("polluants", ""));
+
           if (tempsDepuisStorage < 3600000) {
             let key = localStorage.key(index);
             let value = localStorage.getItem(key)
@@ -205,7 +206,7 @@ export class CartePolluantsComponent implements OnInit {
 
 
     let obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure = this.carteService.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure;
-    let placerLesMarqueurs = this.placerLesMarqueurs;
+    let placerLesMarqueurs = this.carteService.placerLesMarqueurs;
     let obtenirBoondPourZoom = this.carteService.obtenirBoondPourZoom;
     let myfrugalmap =this.myfrugalmap;
     let group=this.group;
@@ -278,22 +279,7 @@ export class CartePolluantsComponent implements OnInit {
 
   }
 
-  placerLesMarqueurs(listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure, myfrugalmap: L.Map) {
-    for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
-      const myIcon = L.icon({
-        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
-        iconAnchor: [10, 30],
-        iconSize: [20, 30]
-      });
-      let textePopUp: string = '';
-      for (const mesurePollution of objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure) {
-        textePopUp = textePopUp + ` ${mesurePollution.typeDeDonnee} : ${mesurePollution.valeur} &#xb5;g/m&#179;--`
-      }
-      L.marker([objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.latitude,
-      objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.longitude],
-        { icon: myIcon }).bindPopup(textePopUp).addTo(myfrugalmap);
-    }
-  }
+
 
   /**
    * Cette methode initialise la map et n'est appelée que si les données de pollution par commune ne sont pas présentes en cache

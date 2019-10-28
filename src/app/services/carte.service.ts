@@ -174,5 +174,22 @@ export class CarteService {
     return listeObjetsMesuresPollutionParStationDeMesure;
   }
 
+  placerLesMarqueurs(listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure, myfrugalmap: L.Map) {
+    for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
+      const myIcon = L.icon({
+        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
+        iconAnchor: [10, 30],
+        iconSize: [20, 30]
+      });
+      let textePopUp: string = '';
+      for (const mesurePollution of objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure) {
+        textePopUp = textePopUp + ` ${mesurePollution.typeDeDonnee} : ${mesurePollution.valeur} &#xb5;g/m&#179;-- <br>`
+      }
+      L.marker([objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.latitude,
+      objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.longitude],
+        { icon: myIcon }).bindPopup(textePopUp).addTo(myfrugalmap);
+    }
+  }
+
 
 }
