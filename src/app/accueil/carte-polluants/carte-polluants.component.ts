@@ -337,7 +337,7 @@ export class CartePolluantsComponent implements OnInit {
 
       nomCommune = e.target.feature.properties.nom;
 
-      carteService.publierDansSubjectCommuneCourante(this.nomCommune);
+      carteService.publierDansSubjectCommuneCourante(nomCommune);
 
       let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
 
@@ -503,7 +503,7 @@ export class CartePolluantsComponent implements OnInit {
 
         nomCommune = e.target.feature.properties.nom;
 
-        carteService.publierDansSubjectCommuneCourante(this.nomCommune);
+        carteService.publierDansSubjectCommuneCourante(nomCommune);
 
         let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
 
