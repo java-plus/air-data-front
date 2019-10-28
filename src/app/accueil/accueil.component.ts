@@ -14,6 +14,19 @@ export class AccueilComponent implements OnInit {
   styleCarte = [' #969696', ' 100%'];
   constructor() { }
 
+
+
+  changerAffichageDonnees(event: boolean) {
+    this.styleCarte = [' #969696', ' 70%'];
+    this.affichageDonnees = event;
+  }
+
+
+
+  affichageCarteCouleur: boolean = false;
+
+
+
   ngOnInit() {
   }
 
@@ -21,8 +34,11 @@ export class AccueilComponent implements OnInit {
     this.clickSurCarte = true;
   }
 
-  changerAffichageDonnees(event: boolean) {
-    this.styleCarte = [' #969696', ' 70%'];
-    this.affichageDonnees = event;
+  changerValeurAffichageCarteCouleur() {
+    if (this.affichageCarteCouleur) {
+      this.affichageCarteCouleur = false;
+    } else {
+      this.affichageCarteCouleur = true;
+    }
   }
 }
