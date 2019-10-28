@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import * as L from 'leaflet';
 import { CarteService } from 'src/app/services/carte.service';
+import StationDeMesurePollution from 'src/app/model/StationDeMesurePollution';
+import { MesurePollution } from 'src/app/model/MesurePollution';
 
 /**
    * Cette interface représente l'échelle de pollution présente sur la carte et qui renseigne l'utilisateur sur la signification des couleurs pour chaque polluant
@@ -10,6 +12,14 @@ interface SeuilPollution {
   seuil: string,
   couleur: string
 };
+
+type MesuresPollutionParStationDeMesure = Array<{
+  stationDeMesurePollution: StationDeMesurePollution,
+  listeDeMesurePollutionParStationDeMesure: MesurePollution[]
+}>;
+
+
+
 
 
 /**
@@ -25,6 +35,8 @@ export class CartePolluantsComponent implements OnInit {
 
   constructor(private http: HttpClient, private carteService: CarteService, ) { }
 
+  group: L.FeatureGroup<any>;
+  nomCommune: string;
   /**
    * Cette variable rerprésente la map, elle même créé via la commande this.myfrugalmap = L.map('frugalmap').setView([47.4712, -0.3], 8)
    * On a besoin de créer cette variable pour pouvoir la réinitialiser afin de créer une nouvelle carte avec un nouveau polluant.
@@ -100,31 +112,193 @@ export class CartePolluantsComponent implements OnInit {
       this.myfrugalmap.remove();
     }
     this.myfrugalmap = L.map('frugalmap').setView([47.4712, -0.3], 8);
+    if (this.group) {
+      this.group.off;
+      this.group.remove;
+    }
+    this.group = L.featureGroup().addTo(this.myfrugalmap);
     L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
       attribution: 'Frugal Map'
     }).addTo(this.myfrugalmap);
+
+    let info;
+
+    // création de la variable info qui permettra de créer une fenetre informant l'utilisateur sur la commune qu'il survole avec sa sourie
+    info = new L.Control();
+    info.onAdd = function (myfrugalmap) {
+      this._div = L.DomUtil.create('div', 'info');
+      this.update();
+      return this._div;
+    };
+
+    info.update = function (props) {
+      this._div.innerHTML = '<h4>' + (props ? '<b>' + props.nom + '</b><br />'
+        : '');
+    };
+
+    info.addTo(this.myfrugalmap);
 
 
     const determinerStyle = this.determinerStyle;
 
     let geojson;
-    let determinerSeuils=this.determinerSeuils;
-    let determinerVerif=this.determinerVerif;
+    let determinerSeuils = this.determinerSeuils;
+    let determinerVerif = this.determinerVerif;
     geojson = L.geoJSON(json, {
       style: function (feature) {
         let seuils: number[] = determinerSeuils(polluant);
-    let verif: number = determinerVerif(feature, polluant);
-          let retour=determinerStyle(seuils, verif);
+        let verif: number = determinerVerif(feature, polluant);
+        let retour = determinerStyle(seuils, verif);
         return retour;
       }
+      ,
+      // Comportement de la carte devant les événements
+      // "survol de la sourie d'une commune" => highlightFeature,
+      // "sortie de la sourie d'une commune"=> resetHighlight
+      // "clic de la sourie sur une commune"=> zoomToFeature
+      onEachFeature: function onEachFeature(feature, layer) {
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomToFeature
+        });
+      }
+
     }).addTo(this.myfrugalmap);
+
+    //fonction activée au survol de la sourie d'une commune
+    function highlightFeature(e) {
+      var layer = e.target;
+      layer.setStyle({
+        weight: 1,
+        color: 'red',
+        dashArray: '',
+        fillOpacity: 0.9
+      });
+      if (!L.Browser.ie && !L.Browser.edge) {
+        layer.bringToFront();
+      }
+      info.update(layer.feature.properties);
+    }
+    var carteService = this.carteService;
+    let nomCommune = this.nomCommune;
+    //fonction activée à la sortie de la sourie d'une commune
+    function resetHighlight(e) {
+
+
+      if (e.target.feature.properties.nom == nomCommune) {
+
+      } else {
+        geojson.resetStyle(e.target);
+        info.update();
+
+      }
+
+
+
+
+
+
+    }
+
+
+
+
+    let obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure = this.carteService.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure;
+    let placerLesMarqueurs = this.placerLesMarqueurs;
+    let obtenirBoondPourZoom = this.carteService.obtenirBoondPourZoom;
+    let myfrugalmap =this.myfrugalmap;
+    let group=this.group;
+
+    //fonction activée au clic de la sourie sur une commune
+    function zoomToFeature(e) {
+
+
+
+      e.target.setStyle({
+        weight: 1,
+        color: 'red',
+        dashArray: '',
+        fillOpacity: 0.9
+      });
+
+      myfrugalmap.eachLayer((layer) => {
+        if (layer instanceof L.Marker) {
+          myfrugalmap.removeLayer(layer);
+        }
+        if (group.getLayerId(layer) == carteService.getIdLayerEnregistre()) {
+
+          geojson.resetStyle(layer)
+        }
+
+
+      });
+      carteService.setIdLayerEnregistre(e.target._leaflet_id)
+
+
+      nomCommune = e.target.feature.properties.nom;
+
+      carteService.publierDansSubjectCommuneCourante(this.nomCommune);
+
+      let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
+
+
+
+
+
+
+      this.codeCommune = e.target.feature.properties.code;
+
+      carteService.recupererMesures(this.codeCommune).subscribe((data: MesurePollution[]) => {
+
+        listeObjetsMesuresPollutionParStationDeMesure = obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(data);
+
+        placerLesMarqueurs(listeObjetsMesuresPollutionParStationDeMesure, myfrugalmap);
+        carteService.obtenirCoordonneeGpsCommune(this.codeCommune).subscribe((resp) => {
+
+          let latCommune = resp[0].centre.coordinates[1];
+          let lngCommune = resp[0].centre.coordinates[0];
+
+          const boondPourZomm: number[] = obtenirBoondPourZoom(latCommune, lngCommune, data);
+
+          myfrugalmap.fitBounds([[boondPourZomm[0], boondPourZomm[1]], [boondPourZomm[2], boondPourZomm[3]]]);
+
+          carteService.publierDansSubjectMesuresMeteoCourante(this.codeCommune).subscribe(() => {
+          },
+            (error: HttpErrorResponse) => {
+              console.log('error', error);
+            })
+        })
+      }
+        , (error: HttpErrorResponse) => {
+          console.log('error', error);
+        });
+
+    }
 
   }
 
-    /**
-     * Cette methode initialise la map et n'est appelée que si les données de pollution par commune ne sont pas présentes en cache
-     *
-     */
+  placerLesMarqueurs(listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure, myfrugalmap: L.Map) {
+    for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
+      const myIcon = L.icon({
+        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
+        iconAnchor: [10, 30],
+        iconSize: [20, 30]
+      });
+      let textePopUp: string = '';
+      for (const mesurePollution of objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure) {
+        textePopUp = textePopUp + ` ${mesurePollution.typeDeDonnee} : ${mesurePollution.valeur} &#xb5;g/m&#179;--`
+      }
+      L.marker([objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.latitude,
+      objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.longitude],
+        { icon: myIcon }).bindPopup(textePopUp).addTo(myfrugalmap);
+    }
+  }
+
+  /**
+   * Cette methode initialise la map et n'est appelée que si les données de pollution par commune ne sont pas présentes en cache
+   *
+   */
   initMapSansCache(polluant: string) {
 
     if (this.myfrugalmap) {
@@ -145,14 +319,14 @@ export class CartePolluantsComponent implements OnInit {
       let nomStorage: string = "polluants" + date;
       localStorage.setItem(nomStorage, JSON.stringify(json));
       let geojson;
-      let determinerSeuils=this.determinerSeuils;
-    let determinerVerif=this.determinerVerif;
+      let determinerSeuils = this.determinerSeuils;
+      let determinerVerif = this.determinerVerif;
       geojson = L.geoJSON(json, {
         style: function (feature) {
           let seuils: number[] = determinerSeuils(polluant);
           let verif: number = determinerVerif(feature, polluant);
-                let retour=determinerStyle(seuils, verif);
-              return retour;
+          let retour = determinerStyle(seuils, verif);
+          return retour;
         }
 
       }).addTo(this.myfrugalmap);
@@ -188,10 +362,10 @@ export class CartePolluantsComponent implements OnInit {
     }
   }
 
-/**
-     * Cette methode determine le taux de pollution à prendre en compte dans la map. Elle extraie une valeur de pollution du geoJson en fonction du polluant demandé
-     *
-     */
+  /**
+       * Cette methode determine le taux de pollution à prendre en compte dans la map. Elle extraie une valeur de pollution du geoJson en fonction du polluant demandé
+       *
+       */
   determinerVerif(feature, polluant: string): number {
     switch (polluant) {
       case "so2":

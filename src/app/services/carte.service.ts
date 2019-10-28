@@ -3,13 +3,17 @@ import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { MesurePollution } from '../model/MesurePollution';
 import { MesureMeteo } from '../model/MesureMeteo';
-
+import * as L from 'leaflet';
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators';
+import StationDeMesurePollution from '../model/StationDeMesurePollution';
 
 const URL_BACKEND=environment.backendUrl;
 
-
+type MesuresPollutionParStationDeMesure = Array<{
+  stationDeMesurePollution: StationDeMesurePollution,
+  listeDeMesurePollutionParStationDeMesure: MesurePollution[]
+}>;
 
 @Injectable({
   providedIn: 'root'
@@ -112,4 +116,63 @@ export class CarteService {
     return this.http
         .get<any[]>(`https://geo.api.gouv.fr/communes?code=${codeCommune}&fields=centre&format=json&geometry=centre`);
   }
+
+
+  obtenirBoondPourZoom(latCommune: number, lngCommune: number, listeDeMesurePollution: MesurePollution[]): number[] {
+    let latMin: number = Number.MAX_VALUE;
+    let latMax: number = Number.MIN_VALUE;
+    let lngMin: number = Number.MAX_VALUE;
+    let lngMax: number = Number.MIN_VALUE;
+
+    for (const mesurePollution of listeDeMesurePollution) {
+      if (mesurePollution.stationDeMesure.latitude < latMin) {
+        latMin = mesurePollution.stationDeMesure.latitude;
+      }
+      if (mesurePollution.stationDeMesure.latitude > latMax) {
+        latMax = mesurePollution.stationDeMesure.latitude;
+      }
+      if (mesurePollution.stationDeMesure.longitude < lngMin) {
+        lngMin = mesurePollution.stationDeMesure.longitude;
+      }
+      if (mesurePollution.stationDeMesure.longitude > lngMax) {
+        lngMax = mesurePollution.stationDeMesure.longitude;
+      }
+    }
+    latCommune > latMax ? latMax = latCommune : latMax = latMax;
+    latCommune < latMin ? latMin = latCommune : latMin = latMin;
+
+    lngCommune > lngMax ? lngMax = lngCommune : lngMax = lngMax;
+    lngCommune < lngMin ? lngMin = lngCommune : lngMin = lngMin;
+
+    let reponse: number[] = [latMin, lngMax, latMax, lngMin];
+
+
+    return reponse;
+
+  };
+
+
+  obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(listeDeMesurePollution: MesurePollution[]): MesuresPollutionParStationDeMesure {
+    let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
+    for (const mesurePollution of listeDeMesurePollution) {
+      let laStationDeMesureEstDejaEnregistre = false;
+      for (const objetMesuresPollutionParStationDeMesure of listeObjetsMesuresPollutionParStationDeMesure) {
+        if (objetMesuresPollutionParStationDeMesure.stationDeMesurePollution.id == mesurePollution.stationDeMesure.id) {
+          laStationDeMesureEstDejaEnregistre = true;
+          objetMesuresPollutionParStationDeMesure.listeDeMesurePollutionParStationDeMesure.push(mesurePollution)
+        }
+      }
+      if (!laStationDeMesureEstDejaEnregistre) {
+        listeObjetsMesuresPollutionParStationDeMesure.push(
+          {
+            stationDeMesurePollution: mesurePollution.stationDeMesure,
+            listeDeMesurePollutionParStationDeMesure: [mesurePollution]
+          }
+        );
+      }
+    }
+    return listeObjetsMesuresPollutionParStationDeMesure;
+  }
+
+
 }

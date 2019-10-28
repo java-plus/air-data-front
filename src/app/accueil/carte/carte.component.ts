@@ -76,7 +76,7 @@ export class CarteComponent implements OnInit {
 
       info.update = function (props) {
         this._div.innerHTML = '<h4>' + (props ? '<b>' + props.nom + '</b><br />'
-          : 'Hover over a state');
+          : 'la commune survolée n\'est pas en Pays de la Loire');
       };
 
       info.addTo(myfrugalmap);
@@ -84,7 +84,7 @@ export class CarteComponent implements OnInit {
       // couleur du périmètre et de l'intérieur des communes
       geojson = L.geoJSON(this.json, {
         style: {
-          fillColor: 'grey',
+          fillColor: '#0095FF',
           weight: 5,
           opacity: 0.1,
           color: 'white',
