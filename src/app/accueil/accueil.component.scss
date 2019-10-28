@@ -1,7 +1,19 @@
 .container-favoris {
   overflow-y: auto;
 }
+.container-favoris >div:first-child{
+  border-top: 1px solid grey;
+}
+
+.container-favoris > div:first-child p{
+  padding:16px 0 0 16px;
+  font-weight: 700;
+}
 
 .container-accueil {
-  height: 92vh !important;
+min-height: 92vh !important;
+}
+
+.container-sous-carte {
+  z-index: 1000;
 }

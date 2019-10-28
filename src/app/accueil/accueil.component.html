@@ -1,6 +1,13 @@
 <div class="d-flex flex-column-reverse flex-md-row container-accueil justify-content-end">
 
+
+
   <div class="col-12 col-md-3 px-0 container-favoris">
+
+    <div class="d-md-none d-block ">
+      <p>Favoris</p>
+    </div>
+
     <div class="d-md-block">
       <app-liste-favoris></app-liste-favoris>
     </div>
@@ -11,7 +18,7 @@
     <div class="d-none d-md-block" [ngStyle]="{'backgroud-color':styleCarte[0],'height': styleCarte[1]}">
       <app-carte></app-carte>
     </div>
-    <div class="col bg-light" [hidden]="!affichageDonnees" style=" height: 30%">
+    <div class="col bg-light container-sous-carte" [hidden]="!affichageDonnees" style=" height: 30%">
       <app-sous-la-carte (estAffichable)="this.changerAffichageDonnees($event)"></app-sous-la-carte>
     </div>
   </div>
