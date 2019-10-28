@@ -5,13 +5,13 @@ import { CarteComponent } from './carte/carte.component';
 @Component({
   selector: 'app-accueil',
   templateUrl: './accueil.component.html',
-  styleUrls: []
+  styleUrls: ['./accueil.component.scss']
 })
 export class AccueilComponent implements OnInit {
 
   clickSurCarte = false;
 
-  affichageCarteCouleur:boolean=false;
+  affichageCarteCouleur: boolean = false;
 
   constructor() { }
 
@@ -22,11 +22,11 @@ export class AccueilComponent implements OnInit {
     this.clickSurCarte = true;
   }
 
-  changerValeurAffichageCarteCouleur(){
+  changerValeurAffichageCarteCouleur() {
     if (this.affichageCarteCouleur) {
-      this.affichageCarteCouleur=false;
-    }else{
-      this.affichageCarteCouleur=true;
+      this.affichageCarteCouleur = false;
+    } else {
+      this.affichageCarteCouleur = true;
     }
   }
 

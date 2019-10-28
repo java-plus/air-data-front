@@ -12,19 +12,22 @@
 
   <div class="col-12 col-md-9 px-0">
 
-    <div class="d-none d-md-block" style="background-color: #969696; height: 80%">
-        <button mat-button *ngIf="!affichageCarteCouleur" (click)="changerValeurAffichageCarteCouleur()">Afficher carte couleur</button>
+    <div class="d-none d-md-block carte" style="background-color: #969696; height: 80%">
+      <div class="btn-carte">
+        <button *ngIf="!affichageCarteCouleur" (click)="changerValeurAffichageCarteCouleur()">Afficher carte
+          couleur</button>
 
-        <button mat-button *ngIf="affichageCarteCouleur" (click)="changerValeurAffichageCarteCouleur()">Afficher carte normale</button>
-
-        <app-carte *ngIf="!affichageCarteCouleur"></app-carte>
+        <button *ngIf="affichageCarteCouleur" (click)="changerValeurAffichageCarteCouleur()">Afficher carte
+          normale</button>
+      </div>
+      <app-carte *ngIf="!affichageCarteCouleur"></app-carte>
       <app-carte-polluants *ngIf="affichageCarteCouleur"></app-carte-polluants>
 
 
     </div>
 
     <div class="col" style=" height: 20%">
-    <app-sous-la-carte></app-sous-la-carte>
+      <app-sous-la-carte></app-sous-la-carte>
     </div>
 
   </div>
