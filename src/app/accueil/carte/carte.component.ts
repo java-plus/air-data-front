@@ -90,7 +90,8 @@ export class CarteComponent implements OnInit {
           let codeCommune = this.favoriSelection.commune.codeCommune;
           let latitude = this.favoriSelection.commune.latitude;
           let longitude = this.favoriSelection.commune.longitude;
-          this.clickSurMap(codeCommune, {
+          const nomCommune = this.favoriSelection.commune.nom;
+          this.clickSurMap(codeCommune,nomCommune, {
             originalEvent: MouseEvent,
             latlng: { lat: latitude, lng: longitude },
             type: "click"
@@ -199,7 +200,7 @@ export class CarteComponent implements OnInit {
 
         carteService.setIdLayerEnregistre(e.target._leaflet_id)
         nomCommune = e.target.feature.properties.nom;
-        carteService.publierDansSubjectCommuneCourante(this.nomCommune);
+        carteService.publierDansSubjectCommuneCourante(nomCommune);
         let listeObjetsMesuresPollutionParStationDeMesure: MesuresPollutionParStationDeMesure = [];
         this.codeCommune = e.target.feature.properties.code;
 
@@ -230,7 +231,7 @@ export class CarteComponent implements OnInit {
 
 
   //fonction activée au clic de la sourie sur un favori
-  clickSurMap(codeCommune: string, e) {
+  clickSurMap(codeCommune: string, nomCommune: string, e) {
     this.myFrugalMapLocal.eachLayer((layer) => {
       if (layer instanceof L.Marker) {
         this.myFrugalMapLocal.removeLayer(layer);
@@ -259,6 +260,7 @@ export class CarteComponent implements OnInit {
 
     this.carteService.recupererMesures(codeCommune).subscribe((data: MesurePollution[]) => {
       listeObjetsMesuresPollutionParStationDeMesure = this.obtenirLaListeDesObjetsMesuresPollutionParStationDeMesure(data);
+        this.carteService.publierDansSubjectCommuneCourante(nomCommune);
       this.placerLesMarqueurs(listeObjetsMesuresPollutionParStationDeMesure, this.myFrugalMapLocal);
       this.carteService.obtenirCoordonneeGpsCommune(codeCommune).subscribe((resp) => {
         let latCommune = resp[0].centre.coordinates[1];
