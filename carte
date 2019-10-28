@@ -1,0 +1,4 @@
+M	src/app/accueil/carte/carte.component.ts
+M	src/app/accueil/sous-la-carte/sous-la-carte.component.ts
+M	src/app/favoris/liste-favoris/liste-favoris.component.html
+M	src/app/favoris/liste-favoris/liste-favoris.component.ts

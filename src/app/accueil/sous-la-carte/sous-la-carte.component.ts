@@ -1,6 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CarteService} from 'src/app/services/carte.service';
-import {Observable} from 'rxjs';
 import {MesureMeteo} from 'src/app/model/MesureMeteo';
 
 

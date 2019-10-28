@@ -16,6 +16,15 @@ const URL_BACKEND=environment.backendUrl;
 })
 export class CarteService {
 
+  idLayerEnregistre:number;
+
+  getIdLayerEnregistre():number{
+    return this.idLayerEnregistre;
+  }
+  setIdLayerEnregistre(idLayerNouveau:number){
+    this.idLayerEnregistre=idLayerNouveau;
+  }
+
   /**
    * subject permettant de transmettre les mesures de pollution au composant "sous-la-carte-coponent"
    */
@@ -85,5 +94,10 @@ export class CarteService {
 
   publierDansSubjectCommuneCourante(nom:string){
     this._subNomCommuneConcerne.next(nom);
+  }
+
+  obtenirCoordonneeGpsCommune(codeCommune):Observable<any[]>{
+    return this.http
+        .get<any[]>(`https://geo.api.gouv.fr/communes?code=${codeCommune}&fields=centre&format=json&geometry=centre`);
   }
 }
