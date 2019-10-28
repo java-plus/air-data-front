@@ -9,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 export class AccueilComponent implements OnInit {
 
   clickSurCarte = false;
-
+  affichageDonnees = false;
+  styleCarte = [' #969696', ' 100%'];
   constructor() { }
 
   ngOnInit() {
@@ -19,4 +20,8 @@ export class AccueilComponent implements OnInit {
     this.clickSurCarte = true;
   }
 
+  changerAffichageDonnees(event: boolean) {
+    this.styleCarte = [' #969696', ' 70%'];
+    this.affichageDonnees = event;
+  }
 }
