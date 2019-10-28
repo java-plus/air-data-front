@@ -1,18 +1,22 @@
 <div class="row">
-  <div class="col text-center bg-dark text-light"><h3>{{nomCommuneConcerne}}</h3></div>
+  <div class="col text-center bg-dark text-light">
+    <h3>{{nomCommuneConcerne}}</h3>
+  </div>
 </div>
 <div class="row">
   <ng-container *ngIf="mesuresMeteo">
-    <div class="col-2 ">
+    <div class="col-12 col-lg-2">
       <div class="row justify-content-center" *ngIf="mesuresMeteo.weatherIcon">
         <img [src]="'http://openweathermap.org/img/wn/'+mesuresMeteo.weatherIcon+'@2x.png'" alt="Icone météo"></div>
-      <div class="row justify-content-center"
-           *ngIf="mesuresMeteo.weatherDescription">{{mesuresMeteo.weatherDescription}}</div>
+      <div class="row justify-content-center" *ngIf="mesuresMeteo.weatherDescription">
+        {{mesuresMeteo.weatherDescription}}</div>
     </div>
-    <div class="col-1 categorie"><h5 class="bg-secondary text-light">Météo</h5></div>
-    <div class="col-5 ">
+    <div class="d-none d-lg-block col-12 col-lg-1 categorie">
+      <h5 class="bg-secondary text-light">Météo</h5>
+    </div>
+    <div class="col-12 col-lg-5">
       <div class="row">
-        <div class="col">
+        <div class="col-12 col-lg-5">
           <div class="row" *ngIf="mesuresMeteo.temperature">
             <div class="col">Temperature:</div>
             <div class="col valeur">{{mesuresMeteo.temperature}} °C</div>
@@ -30,7 +34,7 @@
             <div class="col valeur">{{mesuresMeteo.pressure}} hPa</div>
           </div>
         </div>
-        <div class="col">
+        <div class="col-12 col-lg-5">
           <div class="row" *ngIf="mesuresMeteo.humidity">
             <div class="col">Taux humidité:</div>
             <div class="col valeur">{{mesuresMeteo.humidity}} %</div>
@@ -47,8 +51,10 @@
       </div>
     </div>
   </ng-container>
-  <div class="col-1 categorie"><h5  class="bg-secondary text-light">Pollution</h5></div>
-  <div class="col-3">
+  <div class="d-none d-lg-block col-12 col-lg-1 categorie">
+    <h5 class="bg-secondary text-light">Pollution</h5>
+  </div>
+  <div class="col-12 col-lg-3">
     <div class="row justify-content-center"></div>
     <div class="row" *ngFor="let mesure of mesuresPollution | async">
       <div class="col">{{mesure.typeDeDonnee}}:</div>
@@ -57,7 +63,3 @@
 
   </div>
 </div>
-
-
-
-
