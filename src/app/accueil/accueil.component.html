@@ -1,4 +1,4 @@
-<div class="d-flex flex-column-reverse flex-md-row container-accueil justify-content-end"  style="background-color:  rgb(211, 210, 210)">
+<div class="d-flex flex-column-reverse flex-md-row container-accueil justify-content-end" >
 
 
 
@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <div class="col-12 col-md-9 px-0"  >
+  <div class="col-12 col-md-9 px-0 container-cartes"  >
 
     <div class="d-none d-md-block carte" [ngStyle]="{'backgroud-color':styleCarte[0],'height': styleCarte[1]}">
       <div class="btn-carte">
@@ -30,7 +30,7 @@
 
       <app-carte-polluants *ngIf="affichageCarteCouleur"></app-carte-polluants>
     </div>
-      <div class="col bg-light" [hidden]="!affichageDonnees" style=" height: 30%">
+      <div class="col bg-light  container-sous-carte" [hidden]="!affichageDonnees" style=" height: 30%">
         <app-sous-la-carte  (estAffichable)="this.changerAffichageDonnees($event)" ></app-sous-la-carte>
         </div>
 
