@@ -1,6 +1,15 @@
 
 
 
+
+
+
+
+
+
+
+
+
 <div class="d-flex flex-wrap min-vh-100" style="background-color:  rgb(211, 210, 210)">
 
   <div class="col-12 col-md-3 px-0">
@@ -13,9 +22,9 @@
 
   </div>
 
-  <div class="col-12 col-md-9 px-0">
+  <div class="col-12 col-md-9 px-0"  >
 
-    <div class="d-none d-md-block carte" style="background-color: #969696; height: 80%">
+    <div class="d-none d-md-block carte" [ngStyle]="{'backgroud-color':styleCarte[0],'height': styleCarte[1]}">
       <div class="btn-carte">
         <button *ngIf="!affichageCarteCouleur" (click)="changerValeurAffichageCarteCouleur()">Afficher carte
           couleur</button>
@@ -23,7 +32,7 @@
         <button *ngIf="affichageCarteCouleur" (click)="changerValeurAffichageCarteCouleur()">Afficher carte
           normale</button>
       </div>
-      <div class="d-none d-md-block" [ngStyle]="{'backgroud-color':styleCarte[0],'height': styleCarte[1]}" >
+
       <app-carte *ngIf="!affichageCarteCouleur"></app-carte>
 
       <app-carte-polluants *ngIf="affichageCarteCouleur"></app-carte-polluants>
@@ -34,10 +43,8 @@
 
     </div>
 
-    <div class="col" style=" height: 20%">
-      <app-sous-la-carte></app-sous-la-carte>
-    </div>
+
 
   </div>
 
-</div>
+

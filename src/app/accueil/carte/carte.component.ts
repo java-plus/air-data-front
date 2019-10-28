@@ -72,28 +72,7 @@ export class CarteComponent implements OnInit {
   //  périmètres de communes: chargés à partir du fichier "communes.json" présents dans le dossier ./air-data-front/src/assets
   ngOnInit() {
 
-    this.userConnectSub = this.authService.subConnecte.subscribe(
-      (userConnecte) => {
-        this.userConnecte = userConnecte;
 
-      }
-    );
-    this.favoriSelectSub = this.favoriService.subFavoriSelect.subscribe(
-      (favori) => {
-        this.favoriSelection = favori;
-        if (this.favoriSelection) {
-          let codeCommune = this.favoriSelection.commune.codeCommune;
-          let latitude = this.favoriSelection.commune.latitude;
-          let longitude = this.favoriSelection.commune.longitude;
-          const nomCommune = this.favoriSelection.commune.nom;
-          this.clickSurMap(codeCommune,nomCommune, {
-            originalEvent: MouseEvent,
-            latlng: { lat: latitude, lng: longitude },
-            type: "click"
-          });
-        }
-      }, (error) => console.log(error)
-    );
 
     // Déclaration de la carte avec les coordonnées du centre et le niveau de zoom.
     const myfrugalmap = L.map('frugalmap').setView([47.4712, -0.3], 8);
@@ -224,6 +203,29 @@ export class CarteComponent implements OnInit {
           });
       }
     });
+
+    this.userConnectSub = this.authService.subConnecte.subscribe(
+      (userConnecte) => {
+        this.userConnecte = userConnecte;
+
+      }
+    );
+    this.favoriSelectSub = this.favoriService.subFavoriSelect.subscribe(
+      (favori) => {
+        this.favoriSelection = favori;
+        if (this.favoriSelection) {
+          let codeCommune = this.favoriSelection.commune.codeCommune;
+          let latitude = this.favoriSelection.commune.latitude;
+          let longitude = this.favoriSelection.commune.longitude;
+          const nomCommune = this.favoriSelection.commune.nom;
+          this.clickSurMap(codeCommune,nomCommune, {
+            originalEvent: MouseEvent,
+            latlng: { lat: latitude, lng: longitude },
+            type: "click"
+          });
+        }
+      }, (error) => console.log(error)
+    );
   }
   //------ fin du ngOnInit ---------//
 

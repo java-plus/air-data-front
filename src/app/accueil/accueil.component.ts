@@ -11,13 +11,13 @@ export class AccueilComponent implements OnInit {
 
   clickSurCarte = false;
   affichageDonnees = false;
-  styleCarte = [' #969696', ' 100%'];
+  styleCarte = ['#969696', '100%'];
   constructor() { }
 
 
 
   changerAffichageDonnees(event: boolean) {
-    this.styleCarte = [' #969696', ' 70%'];
+    this.styleCarte = ['#969696', '70%'];
     this.affichageDonnees = event;
   }
 
