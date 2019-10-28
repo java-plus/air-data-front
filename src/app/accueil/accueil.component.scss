@@ -11,9 +11,13 @@
 }
 
 .container-accueil {
-min-height: 92vh !important;
+  height: 92vh !important;
 }
 
 .container-sous-carte {
   z-index: 1000;
+}
+
+.container-cartes, .container-favoris{
+  max-height: fit-content;
 }
