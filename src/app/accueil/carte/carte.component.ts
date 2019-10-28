@@ -156,7 +156,7 @@ export class CarteComponent implements OnInit {
 
       //fonction activée au survol de la sourie d'une commune
       function highlightFeature(e) {
-        var layer = e.target;
+        let layer = e.target;
         layer.setStyle({
           weight: 1,
           color: 'red',
@@ -170,7 +170,7 @@ export class CarteComponent implements OnInit {
       }
 
 
-      var carteService = this.carteService;
+      let carteService = this.carteService;
       let nomCommune;
 
       //fonction activée à la sortie de la sourie d'une commune

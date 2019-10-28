@@ -115,8 +115,6 @@ export class ListeFavorisComponent implements OnInit, OnDestroy {
   /** Méthode permettant d'afficher les informations en focntion du favori selectionné */
   afficherResultatFavori(fav) {
     this.favoriService.subFavoriSelectNext(fav);
-    console.log("----- composant favori -- pose du behaviorSubjectFavori ------");
-    console.log(fav);
     this.afficherResultatFavoriSurLaMap();
   }
 
