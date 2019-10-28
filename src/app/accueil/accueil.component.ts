@@ -10,9 +10,8 @@ import { CarteComponent } from './carte/carte.component';
 export class AccueilComponent implements OnInit {
 
   clickSurCarte = false;
-
-  affichageCarteCouleur: boolean = false;
-
+  affichageDonnees = false;
+  styleCarte = [' #969696', ' 100%'];
   constructor() { }
 
   ngOnInit() {
@@ -22,12 +21,8 @@ export class AccueilComponent implements OnInit {
     this.clickSurCarte = true;
   }
 
-  changerValeurAffichageCarteCouleur() {
-    if (this.affichageCarteCouleur) {
-      this.affichageCarteCouleur = false;
-    } else {
-      this.affichageCarteCouleur = true;
-    }
+  changerAffichageDonnees(event: boolean) {
+    this.styleCarte = [' #969696', ' 70%'];
+    this.affichageDonnees = event;
   }
-
 }

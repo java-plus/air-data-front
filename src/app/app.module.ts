@@ -6,7 +6,6 @@ import { CreerFavorisComponent } from './favoris/creer-favoris/creer-favoris.com
 import { ListeFavorisComponent } from './favoris/liste-favoris/liste-favoris.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EmailValidatorDirective } from './validators/email-validator.directive';
 import { AccueilComponent } from './accueil/accueil.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -35,7 +34,6 @@ import { CartePolluantsComponent } from './accueil/carte-polluants/carte-polluan
     CreerFavorisComponent,
     ListeFavorisComponent,
     LoginComponent,
-    EmailValidatorDirective,
     AccueilComponent,
     CarteComponent,
     AnalyseComponent,

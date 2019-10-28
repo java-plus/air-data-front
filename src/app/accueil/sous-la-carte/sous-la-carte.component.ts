@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { CarteService } from 'src/app/services/carte.service';
-import { Observable } from 'rxjs';
-import { MesureMeteo } from 'src/app/model/MesureMeteo';
-
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {CarteService} from 'src/app/services/carte.service';
+import {Observable} from 'rxjs';
+import {MesureMeteo} from 'src/app/model/MesureMeteo';
 
 
 // Classe représentant le comosant sous la carte
 @Component({
   selector: 'app-sous-la-carte',
   templateUrl: './sous-la-carte.component.html',
-  styleUrls: []
+  styleUrls: ['./sous-la-carte.component.scss']
 })
 export class SousLaCarteComponent implements OnInit {
 
@@ -18,19 +17,22 @@ export class SousLaCarteComponent implements OnInit {
   mesuresPollution = this.carteService.subMesuresPollutionCommuneConcerne;
   // variable représentant la liste des mesures météo d'une commune
   // Cette valeur est chargée grâce à une promesse et est donc asynchrone
-  mesuresMeteo:MesureMeteo;
+  mesuresMeteo: MesureMeteo;
 
-  // variable représentant la commune courante sélectionnée par l'utilisateur dans le composant carte ou dans les favoris
-  nomCommuneConcerne:string;
+  @Output() estAffichable = new EventEmitter();
 
+  nomCommuneConcerne: string;
 
-  constructor(private carteService:CarteService) { }
+  constructor(private carteService: CarteService) {
+  }
 
   // à l'initialisation du composant la liste des mesures météo est chargée
   ngOnInit() {
-    this.carteService.subNomCommuneConcerne.subscribe((data)=>this.nomCommuneConcerne=data);
-    this.carteService.subMesuresMeteoCommuneConcerne.subscribe((data)=>this.mesuresMeteo=data);
-
+    this.carteService.subNomCommuneConcerne.subscribe((data) => this.nomCommuneConcerne = data);
+    this.carteService.subMesuresMeteoCommuneConcerne.subscribe((data) => {
+      this.mesuresMeteo = data;
+      this.estAffichable.next(true);
+    });
   }
 
 
