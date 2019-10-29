@@ -26,6 +26,8 @@ import {
 import { CourbeAnalyseComponent } from './analyse/courbe-analyse/courbe-analyse.component';
 import {ChartsModule} from 'ng2-charts';
 import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.component';
+import { CreationDeCompteComponent } from './creation-de-compte/creation-de-compte.component';
+import { AgeValidatorDirective } from './validators/age-validator.directive';
 import { CartePolluantsComponent } from './accueil/carte-polluants/carte-polluants.component';
 
 @NgModule({
@@ -42,6 +44,8 @@ import { CartePolluantsComponent } from './accueil/carte-polluants/carte-polluan
     FormulaireAnalyseComponent,
     CourbeAnalyseComponent,
     SousLaCarteComponent,
+    CreationDeCompteComponent,
+    AgeValidatorDirective,
     CartePolluantsComponent
   ],
   imports: [
