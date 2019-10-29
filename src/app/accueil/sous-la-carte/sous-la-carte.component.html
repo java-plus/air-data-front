@@ -1,48 +1,71 @@
-
-<div class="row text-center">
-  <h1 class="col-12 text-center">{{nomCommuneConcerne}}</h1>
+<div class="row">
+  <div class="col text-center bg-dark text-light">
+    <h3>{{nomCommuneConcerne}}</h3>
+  </div>
 </div>
-<div class="row" >
+<div class="row">
+  <ng-container *ngIf="mesuresMeteo">
+    <div class="col-12 col-lg-2 mb-3 mb-lg-0">
+      <div class="row justify-content-center" *ngIf="mesuresMeteo.weatherIcon">
+        <img [src]="'http://openweathermap.org/img/wn/'+mesuresMeteo.weatherIcon+'@2x.png'" alt="Icone météo"></div>
+      <div class="row justify-content-center" *ngIf="mesuresMeteo.weatherDescription">
+        {{mesuresMeteo.weatherDescription}}</div>
+    </div>
+    <div class="d-none d-lg-block col-12 col-lg-1 categorie">
+      <h5 class="bg-secondary text-light">Météo</h5>
+    </div>
+    <div class="d-lg-none d-block col-12 col-lg-1 mt-3">
+      <h5 class="bg-secondary text-light">Météo</h5>
+    </div>
+    <div class="col-12 col-lg-5">
+      <div class="row">
+        <div class="col-12 col-lg-5">
+          <div class="row" *ngIf="mesuresMeteo.temperature">
+            <div class="col">Temperature:</div>
+            <div class="col valeur">{{mesuresMeteo.temperature}} °C</div>
+          </div>
+          <div class="row" *ngIf="mesuresMeteo.tempMin">
+            <div class="col">T° min:</div>
+            <div class="col valeur">{{mesuresMeteo.tempMin}} °C</div>
+          </div>
+          <div class="row" *ngIf="mesuresMeteo.tempMax">
+            <div class="col">T° max:</div>
+            <div class="col valeur">{{mesuresMeteo.tempMax}} °C</div>
+          </div>
+          <div class="row" *ngIf="mesuresMeteo.pressure">
+            <div class="col">Pression:</div>
+            <div class="col valeur">{{mesuresMeteo.pressure}} hPa</div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-5">
+          <div class="row" *ngIf="mesuresMeteo.humidity">
+            <div class="col">Taux humidité:</div>
+            <div class="col valeur">{{mesuresMeteo.humidity}} %</div>
+          </div>
+          <div class="row" *ngIf="mesuresMeteo.windSpeed">
+            <div class="col">Vitesse du vent:</div>
+            <div class="col valeur">{{mesuresMeteo.windSpeed}} km/h</div>
+          </div>
+          <div class="row" *ngIf="mesuresMeteo.windDegrees">
+            <div class="col">Orientation du vent:</div>
+            <div class="col valeur">{{mesuresMeteo.windDegrees}}°</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div class="d-none d-lg-block col-12 col-lg-1 categorie">
+    <h5 class="bg-secondary text-light">Pollution</h5>
+  </div>
+  <div class="d-lg-none d-block col-12 col-lg-1 mt-3">
+    <h5 class="bg-secondary text-light">Pollution</h5>
+  </div>
+  <div class="col-12 col-lg-3 mb-3 mb-lg-0">
+    <div class="row justify-content-center"></div>
+    <div class="row" *ngFor="let mesure of mesuresPollution | async">
+      <div class="col">{{mesure.typeDeDonnee}}:</div>
+      <div class="col valeur">{{mesure.valeur}} µg/m3</div>
+    </div>
 
-  <div class="col-6" >
-<table class="table table-sm">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col" class="text-center" *ngFor="let mesure of mesuresPollution | async">{{mesure.typeDeDonnee}}</th>
-    </tr>
-
-  </thead>
-  <tbody>
-
-    <tr>
-      <td class="text-center" *ngFor="let mesure of mesuresPollution | async">{{mesure.valeur}}</td>
-    </tr>
-  </tbody>
-</table>
+  </div>
 </div>
-<div class="col-6" >
-<table class="table table-sm">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col" class="text-center">Description</th>
-      <th scope="col" class="text-center">temperature</th>
-      <th scope="col" class="text-center">pressure</th>
-      <th scope="col" class="text-center">humidity</th>
-      <th scope="col" class="text-center">tempMin</th>
-      <th scope="col" class="text-center">tempMax</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngIf="mesuresMeteo!=undefined">
-      <td class="text-center"> {{mesuresMeteo.weatherDescription}}</td>
-      <td class="text-center"> {{mesuresMeteo.temperature}}</td>
-      <td class="text-center"> {{mesuresMeteo.pressure}}</td>
-      <td class="text-center"> {{mesuresMeteo.humidity}}</td>
-      <td class="text-center"> {{mesuresMeteo.tempMin}}</td>
-      <td class="text-center"> {{mesuresMeteo.tempMax}}</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-

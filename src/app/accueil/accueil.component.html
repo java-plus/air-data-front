@@ -1,23 +1,43 @@
-<div class="d-flex flex-wrap min-vh-100" style="background-color:  rgb(211, 210, 210)">
-
-  <div class="col-12 col-md-3 px-0">
+<div class="d-flex flex-column-reverse flex-md-row container-accueil justify-content-end" >
 
 
-    <div class="d-none d-md-block" style="max-height: 100%;">
+
+  <div class="col-12 col-md-3 px-0 container-favoris">
+
+    <div class="d-md-none d-block ">
+      <p>Favoris</p>
+    </div>
+
+    <div class="d-md-block">
       <app-liste-favoris></app-liste-favoris>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-9 px-0 container-cartes"  >
+
+    <div class="d-none d-md-block carte" [ngStyle]="{'backgroud-color':styleCarte[0],'height': styleCarte[1]}">
+      <div class="btn-carte">
+        <button *ngIf="!affichageCarteCouleur" (click)="changerValeurAffichageCarteCouleur()"><i-feather  name="layers" class="big fill-red"></i-feather><br>
+
+          Carte Couleur</button>
+
+
+        <button *ngIf="affichageCarteCouleur" (click)="changerValeurAffichageCarteCouleur()"><i-feather  name="layers" class="big fill-red"></i-feather><br>Carte Normale</button>
+      </div>
+
+      <app-carte *ngIf="!affichageCarteCouleur"></app-carte>
+
+
+      <app-carte-polluants *ngIf="affichageCarteCouleur"></app-carte-polluants>
+    </div>
+      <div class="col bg-light  container-sous-carte" [hidden]="!affichageDonnees" style=" height: 30%">
+        <app-sous-la-carte  (estAffichable)="this.changerAffichageDonnees($event)" ></app-sous-la-carte>
+        </div>
 
     </div>
 
-  </div>
 
-  <div class="col-12 col-md-9 px-0">
-
-    <div class="d-none d-md-block" style="background-color: #969696; height: 80%"><app-carte></app-carte></div>
-
-    <div class="col bg-light" style=" height: 20%">
-    <app-sous-la-carte></app-sous-la-carte>
-    </div>
 
   </div>
 
-</div>
+

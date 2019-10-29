@@ -28,6 +28,7 @@ import {ChartsModule} from 'ng2-charts';
 import { SousLaCarteComponent } from './accueil/sous-la-carte/sous-la-carte.component';
 import { CreationDeCompteComponent } from './creation-de-compte/creation-de-compte.component';
 import { AgeValidatorDirective } from './validators/age-validator.directive';
+import { CartePolluantsComponent } from './accueil/carte-polluants/carte-polluants.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { AgeValidatorDirective } from './validators/age-validator.directive';
     CourbeAnalyseComponent,
     SousLaCarteComponent,
     CreationDeCompteComponent,
-    AgeValidatorDirective
+    AgeValidatorDirective,
+    CartePolluantsComponent
   ],
   imports: [
     BrowserModule,

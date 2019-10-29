@@ -1,0 +1,35 @@
+
+.carte {
+  position:relative;
+}
+
+.btn-carte {
+  position: absolute;
+  z-index: 1500;
+  top: 10px;
+    left: 60px;
+}
+
+.container-favoris {
+  overflow-y: auto;
+}
+.container-favoris >div:first-child{
+  border-top: 1px solid grey;
+}
+
+.container-favoris > div:first-child p{
+  padding:16px 0 0 16px;
+  font-weight: 700;
+}
+
+.container-accueil {
+  height: 94vh !important;
+}
+
+.container-sous-carte {
+  z-index: 1000;
+}
+
+.container-cartes, .container-favoris{
+  max-height: fit-content;
+}
