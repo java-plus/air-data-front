@@ -390,6 +390,11 @@ export class CartePolluantsComponent implements OnInit {
       this.myfrugalmap.remove();
     }
     this.myfrugalmap = L.map('frugalmap').setView([47.4712, -0.3], 8);
+    if (this.group) {
+      this.group.off;
+      this.group.remove;
+    }
+    this.group = L.featureGroup().addTo(this.myfrugalmap);
     L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
       attribution: 'Frugal Map'
     }).addTo(this.myfrugalmap);
@@ -418,6 +423,7 @@ export class CartePolluantsComponent implements OnInit {
     this.carteService.getGeoJsonBack().subscribe((json: any) => {
       let date: number = Date.now();
       let nomStorage: string = "polluants" + date;
+      localStorage.clear();
       localStorage.setItem(nomStorage, JSON.stringify(json));
       let geojson;
       let determinerSeuils = this.determinerSeuils;
@@ -428,6 +434,17 @@ export class CartePolluantsComponent implements OnInit {
           let verif: number = determinerVerif(feature, polluant);
           let retour = determinerStyle(seuils, verif);
           return retour;
+        },
+        // Comportement de la carte devant les événements
+        // "survol de la sourie d'une commune" => highlightFeature,
+        // "sortie de la sourie d'une commune"=> resetHighlight
+        // "clic de la sourie sur une commune"=> zoomToFeature
+        onEachFeature: function onEachFeature(feature, layer) {
+          layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToFeature
+          });
         }
 
       }).addTo(this.myfrugalmap);
