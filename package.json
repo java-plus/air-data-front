@@ -22,7 +22,7 @@
     "@ng-bootstrap/ng-bootstrap": "^5.1.1",
     "angular-feather": "^6.0.2",
     "bootstrap": "^4.3.1",
-    "chart.js": "^2.8.0",
+    "chart.js": "^2.9.4",
     "ng2-charts": "^2.3.0",
     "leaflet": "^1.5.1",
     "leaflet-mouse-position": "^1.2.0",
